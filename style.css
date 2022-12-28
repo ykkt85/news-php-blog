@@ -56,7 +56,6 @@
 }
 
 /*================ GENERAL ================*/
-
 * {
     margin: 0;
     padding: 0;
@@ -190,12 +189,12 @@ nav button {
     width: 100%;
 }
 
-/*================ cATEGORY BUTTON ================*/
+/*================ CATEGORY BUTTON ================*/
 .category__button {
     background: var(--color-primary-light);
     color: var(--color-primary);
     display: inline-block;
-    padding: 0.3rem 0.5rem;
+    padding: 0.5rem 1rem;
     border-radius: var(--card-border-radius-2);
     font-weight: 600;
     font-size: 0.8rem;
@@ -208,7 +207,7 @@ nav button {
 
 /*================ GENERAL POST ================*/
 .post__thumbnail {
-    /*後で変更*/
+    /*後で変更・途中*/
     border-radius: 0;
     border: 1rem solid var(--color-gray-900);
     overflow: hidden;
@@ -216,7 +215,6 @@ nav button {
 }
 
 /*================ FEATURED ================*/
-
 .featured {
     margin-top: 8rem;
 }
@@ -232,7 +230,6 @@ nav button {
 }
 
 /*================ POSTS ================*/
-
 .posts__container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -241,11 +238,10 @@ nav button {
 }
 
 /*================ CATEGORY BUTTONS ================*/
-/*
 .category__buttons {
     padding: 4rem 0;
-    border-top: 2px solid var(--color-gray-900);
-    border-bottom: 2px solid var(--color-gray-900);
+    border-top: 2px solid var(--color-bg);
+    border-bottom: 2px solid var(--color-bg);
 }
 
 .category__buttons-container {
@@ -254,7 +250,6 @@ nav button {
     grid-template-columns: repeat(3, 1fr);
     gap: 1rem;
 }
-*/
 
 /*================ CATEGORY FOOTER ================*/
 footer {
@@ -429,7 +424,7 @@ footer {
 
 }
 
-/*================ EMPUTY PAGES ================*/
+/*================ ENPUTY PAGES ================*/
 .empty__page {
     height: 70vh;
     display: grid;
