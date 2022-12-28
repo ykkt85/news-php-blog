@@ -3,7 +3,7 @@ Description:
 How to use:
 Credits: none
 
-is possible...
+is possible...:
 Motivation:
 This project solves:
 Technologies:
