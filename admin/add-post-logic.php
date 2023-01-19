@@ -10,7 +10,7 @@ if (isset($_POST['submit'])){
     $thumbnail = $_FILES['thumbnail'];
     $body = filter_var($_POST['body'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-    // 注目記事がチェックされてれば1にする
+    // 注目記事がチェックされていれば1にする
     $is_featured = $is_featured == 1 ?: 0;
 
     // フォーム内容を確認
@@ -65,8 +65,6 @@ if (isset($_POST['submit'])){
             $_SESSION['add-post-success'] = "新しい記事を投稿しました";
             header(('location: ' . ROOT_URL . 'admin/'));
             die();
-        } else {
-            var_dump($connection->error);
         }
     }
 } else {

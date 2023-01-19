@@ -21,27 +21,27 @@ if (isset($_GET['post_ID'])){
 
     <section class="form__section">
         <div class="container form__section-container">
-            <h2>投稿編集</h2>
-            <!-- 投稿編集に失敗した場合 -->
-            <!--<?php if (isset($_SESSION['edit-post-error'])):?>    
+            <h2>記事編集</h2>
+            <!-- 記事編集に失敗した場合 -->
+            <?php if (isset($_SESSION['edit-post-error'])):?>    
                 <div class="alert__message error">
                     <p>
                         <?php echo $_SESSION['edit-post-error'];
                         unset($_SESSION['edit-post-error']); ?>
                     </p>
                 </div>
-            <?php endif; ?>-->
+            <?php endif; ?>
             <form class="form__column" action="<?php echo ROOT_URL ?>admin/edit-post-logic.php" enctype="multipart/form-data" method="POST">
                 <input type="hidden" name="post_ID" value="<?php echo $post['post_ID'] ?>">
                 <input type="hidden" name="previous_thumbnail_name" value="<?php echo $post['thumbnail'] ?>">
                 <input type="text" name="title" value="<?php echo $post['title'] ?>" placeholder="タイトル">
-                <select name="tag">
+                <select name="tag_ID">
                     <?php while ($tag = mysqli_fetch_assoc($tag_result)): ?>
-                        <option value="<?php $tag['tag_ID'] ?>"><?php echo $tag['tag_title'] ?></option>
+                        <option value="<?php echo $tag['tag_ID'] ?>"><?php echo $tag['tag_title'] ?></option>     
                     <?php endwhile; ?>
                 </select>
                 <div class="form__control inline">
-                    <input type="checkbox"  name="is_featured" id="is_featured" value="1" checked>
+                    <input type="checkbox" name="is_featured" value="1" id="is_featured" checked>
                     <label for="is_featured">注目記事</label>
                 </div>
                 <div class="form__control">

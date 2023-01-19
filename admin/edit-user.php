@@ -12,8 +12,6 @@ if (isset($_GET['user_ID'])){
 } else {
     header('location: ' . ROOT_URL . 'admin/manage-users.php');
     die();
-    // 途中
-    //echo $_GET['user_ID'];
 }
 ?>
 

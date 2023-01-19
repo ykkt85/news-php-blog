@@ -70,13 +70,7 @@ $users = mysqli_query($connection, $query);
                         </a>
                     </li>
                     <!--管理者の場合は表示-->
-                    <?php if ($_SESSION['role_ID'] == 1): ?>
-                        <li>
-                            <a href="<?php echo ROOT_URL ?>admin/add-user.php">
-                                <i class="uil uil-user-plus"></i>
-                                <h5>投稿者追加</h5>
-                            </a>
-                        </li>                
+                    <?php if ($_SESSION['role_ID'] == 1): ?>              
                         <li>
                             <a href="<?php echo ROOT_URL ?>admin/manage-users.php" class="active">
                                 <i class="uil uil-users-alt"></i>
