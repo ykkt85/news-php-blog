@@ -1,16 +1,16 @@
 <?php
 include 'partials/header.php';
 
-// 現在のユーザーが投稿した記事を取得
+// ログイン中のユーザーが投稿した記事を取得
 $current_user_id = $_SESSION['user_ID'];
-$query = "SELECT post_ID, title, tag_ID FROM posts WHERE user_ID=$current_user_id AND is_deleted=0 ORDER BY post_ID DESC";
+$query = "SELECT post_ID, title, tag_ID FROM posts WHERE user_ID=$current_user_id AND is_deleted=0 ORDER BY updated_at DESC";
 $posts = mysqli_query($connection, $query);
 ?>
 
     <!--================ END OF NAV ================-->
 
     <section class="dashboard">
-        <!-- 新規投稿に成功した場合 -->
+        <!-- 新規記事投稿に成功した場合 -->
         <?php if (isset($_SESSION['add-post-success'])): ?>
             <div class="alert__message success container">
                 <p>
@@ -18,7 +18,7 @@ $posts = mysqli_query($connection, $query);
                     unset($_SESSION['add-post-success']); ?>
                 </p>
             </div>
-        <!-- 投稿編集に成功した場合 -->
+        <!-- 記事編集に成功した場合 -->
         <?php elseif (isset($_SESSION['edit-post-success'])): ?>
             <div class="alert__message success container">
                 <p>
@@ -26,7 +26,7 @@ $posts = mysqli_query($connection, $query);
                     unset($_SESSION['edit-post-success']); ?>
                 </p>
             </div>
-        <!-- 投稿削除に成功した場合 -->
+        <!-- 記事削除に成功した場合 -->
         <?php elseif (isset($_SESSION['delete-post-success'])): ?>
             <div class="alert__message success container">
                 <p>
@@ -34,7 +34,7 @@ $posts = mysqli_query($connection, $query);
                     unset($_SESSION['delete-post-success']); ?>
                 </p>
             </div>
-        <!-- 投稿編集に失敗した場合 -->
+        <!-- 記事編集に失敗した場合 -->
         <?php elseif (isset($_SESSION['edit-post-error'])): ?>
             <div class="alert__message error container">
                 <p>
@@ -42,7 +42,7 @@ $posts = mysqli_query($connection, $query);
                     unset($_SESSION['edit-post-error']); ?>
                 </p>
             </div>
-        <!-- 投稿削除に失敗した場合 -->
+        <!-- 記事削除に失敗した場合 -->
         <?php elseif (isset($_SESSION['delete-post-error'])): ?>
             <div class="alert__message error container">
                 <p>
@@ -52,9 +52,10 @@ $posts = mysqli_query($connection, $query);
             </div>
         <?php endif; ?>
         <div class="container dashboard__container">
-            <!--メディアクエリ用ボタン途中-->
+            <!-- メディアクエリ用ボタン途中 -->
             <button id="show__sidebar-btn" class="sidebar__toggle"><i class="uil uil-angle-right-b"></i></button>
             <button id="show__sidebar-btn" class="sidebar__toggle"><i class="uil uil-angle-right-b"></i></button>
+            <!-- メディアクエリ用ボタン途中 ここまで -->
             <aside>
                 <ul>
                     <li>
@@ -66,17 +67,11 @@ $posts = mysqli_query($connection, $query);
                     <li>
                         <a href="<?php echo ROOT_URL ?>admin/index.php" class="active">
                             <i class="uil uil-newspaper"></i>
-                            <h5>投稿編集</h5>
+                            <h5>記事編集</h5>
                         </a>
                     </li>
                     <!--管理者の場合は表示-->
-                    <?php if ($_SESSION['role_ID'] == 1): ?>
-                        <li>
-                            <a href="<?php echo ROOT_URL ?>admin/add-user.php">
-                                <i class="uil uil-user-plus"></i>
-                                <h5>投稿者追加</h5>
-                            </a>
-                        </li>                
+                    <?php if ($_SESSION['role_ID'] == 1): ?>              
                         <li>
                             <a href="<?php echo ROOT_URL ?>admin/manage-users.php">
                                 <i class="uil uil-users-alt"></i>
@@ -117,7 +112,7 @@ $posts = mysqli_query($connection, $query);
                 </ul>
             </aside>
             <main>
-                <h2>投稿編集</h2>
+                <h2>記事編集</h2>
                 <?php if(mysqli_num_rows($posts) > 0): ?>
                     <table>
                         <thead>
@@ -129,6 +124,7 @@ $posts = mysqli_query($connection, $query);
                             </tr>
                         </thead>
                         <tbody>
+                            <!-- 投稿記事を表示 -->
                             <?php while($post = mysqli_fetch_assoc($posts)): ?>
                                 <!-- tagタイトルを取得 -->
                                 <?php
@@ -146,6 +142,7 @@ $posts = mysqli_query($connection, $query);
                             <?php endwhile; ?>
                         </tbody>
                     </table>
+                <!-- 投稿記事がない場合 -->
                 <?php else: ?>
                     <div class="alert__message error"><?php echo "投稿はありません"; ?></div>
                 <?php endif; ?>

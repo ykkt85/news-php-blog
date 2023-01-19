@@ -22,7 +22,7 @@ unset($_SESSION['add-tag-data']);
                 </div>
             <?php endif; ?>
             <form class="form__column" action="<?php echo ROOT_URL ?>admin/add-tag-logic.php" method="POST">
-                <input type="text" name="tag_title" value="<?php echo $tag_title ?>" placeholder="タグ名">
+                <input type="text" name="tag_title" value="<?php echo $tag_title ?>" placeholder="タグ名" readonly>
                 <textarea rows="4" name="description" placeholder="説明"><?php echo $description ?></textarea>
                 <button type="submit" name="submit" class="btn purple">追加</button>
             </form>

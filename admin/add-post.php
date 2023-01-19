@@ -16,8 +16,8 @@ unset($_SESSION['add-post-data']);
 
     <section class="form__section">
         <div class="container form__section-container">
-            <h2>新規投稿</h2>
-            <!-- 新規投稿に失敗した場合 -->
+            <h2>新規記事</h2>
+            <!-- 新規記事投稿に失敗した場合 -->
             <?php if (isset($_SESSION['add-post-error'])):?>    
                 <div class="alert__message error">
                     <p>

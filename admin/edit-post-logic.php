@@ -1,27 +1,24 @@
 <?php
 require 'config/database.php';
 
+// フォームから値が送られたとき
 if (isset($_POST['submit'])){
     $post_ID = filter_var($_POST['post_ID'], FILTER_SANITIZE_NUMBER_INT);
     $title = filter_var($_POST['title'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-    $tag_ID = filter_var($_POST['tag'], FILTER_SANITIZE_NUMBER_INT);
+    $tag_ID = filter_var($_POST['tag_ID'], FILTER_SANITIZE_NUMBER_INT);
     $is_featured = filter_var($_POST['is_featured'], FILTER_SANITIZE_NUMBER_INT);
     $thumbnail = $_FILES['thumbnail'];
     $previous_thumbnail_name = filter_var($_POST['previous_thumbnail_name'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $body = filter_var($_POST['body'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-    var_dump($tag_ID);
-    var_dump($_POST['tag']);
-    // 注目記事がチェックされてれば1にする
+    
+    // 注目記事がチェックされていれば1にする
     $is_featured = $is_featured == 1 ?: 0;
 
     // フォーム内容を確認
-    if (!$title){
+    if (!$title) {
         $_SESSION['edit-post-error'] = "タイトルを入力してください";
-    } elseif (!$tag_ID){
-        $_SESSION['edit-post-error'] = "タグを選択してください";
-    
-    /*} elseif (!$thumbnail['name'] && !$previous_thumbnail_name){
-        $_SESSION['edit-post-error'] = "画像を選択してください";*/
+    } elseif (!$thumbnail['name'] && !$previous_thumbnail_name){
+        $_SESSION['edit-post-error'] = "画像を選択してください";
     } elseif (!$body){
         $_SESSION['edit-post-error'] = "本文を入力してください";
     } else {
@@ -73,7 +70,7 @@ if (isset($_POST['submit'])){
         $thumbnail_to_insert = $thumbnail_name ?? $previous_thumbnail_name;
 
         // データベースにデータを記録
-        $query = "UPDATE posts SET (title, tag_ID, is_featured, thumbnail, body, updated_at,) VALUES('$title', $tag_ID, $is_featured, '$thumbnail_to_insert', '$body', CURRENT_TIMESTAMP()) WHERE post_ID=$post_ID LIMIT 1";
+        $query = "UPDATE posts SET title='$title', tag_ID=$tag_ID, is_featured=$is_featured, thumbnail='$thumbnail_to_insert', body='$body', updated_at=CURRENT_TIMESTAMP() WHERE post_ID=$post_ID LIMIT 1";
         $result = mysqli_query($connection, $query);
 
         // エラーがない場合
@@ -81,9 +78,6 @@ if (isset($_POST['submit'])){
             $_SESSION['edit-post-success'] = "記事を編集しました";
             header(('location: ' . ROOT_URL . 'admin/'));
             die();
-        } else {
-            var_dump($connection->error);
-            var_dump($query);
         }
     }
 } else {
