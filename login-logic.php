@@ -41,7 +41,7 @@ if (isset($_POST['submit'])){
         }
     }
 
-    // ログインセッションの値がある場合
+    // エラーがある場合
     if (isset($_SESSION['login-error'])){
         $_SESSION['login-data'] = $_POST;
         header('location:' . ROOT_URL . 'login.php');

@@ -111,7 +111,7 @@ $users = mysqli_query($connection, $query);
                 </ul>
             </aside>
             <main>
-                <h2>投稿者編集</h2>
+                <h2>投稿者・管理者編集</h2>
                 <?php if(mysqli_num_rows($users) > 0): ?>
                     <table>
                         <thead>

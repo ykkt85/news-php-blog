@@ -12,7 +12,7 @@ if (isset($_POST['submit'])){
     if (!$email){
         $_SESSION['signup-error'] = "メールアドレスを入力してください";
     
-    // パスワードが８文字以下の場合
+    // パスワードが８文字未満の場合
     } elseif (strlen($createdpassword) < 8 || strlen($confirmedpassword) < 8){
         $_SESSION['signup-error'] = "パスワードは８文字以上で設定してください";
     
@@ -41,8 +41,8 @@ if (isset($_POST['submit'])){
     
     } else {
         // データベースに登録
-        $inset_user_query = "INSERT INTO users (email, password, role_ID, access_token, created_at, updated_at, is_deleted) VALUES('$email', '$hashed_password', 0, NULL, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 0)";
-        $insert_user_result = mysqli_query($connection, $inset_user_query);
+        $insert_user_query = "INSERT INTO users (email, password, role_ID, token, created_at, updated_at, is_deleted) VALUES('$email', '$hashed_password', 0, NULL, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 0)";
+        $insert_user_result = mysqli_query($connection, $insert_user_query);
         
         // DB接続エラーがない場合
         if (!mysqli_errno($connection)){

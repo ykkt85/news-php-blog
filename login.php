@@ -27,6 +27,7 @@ unset($_SESSION['login-data']);
     <section class="form__section">
         <div class="container form__section-container">
             <h2>ログイン</h2>
+            <!-- 新規投稿者をを登録した時 -->
             <?php if (isset($_SESSION['signup-success'])): ?>
                 <div class="alert__message success">
                     <p>
@@ -34,6 +35,14 @@ unset($_SESSION['login-data']);
                         unset($_SESSION['signup-success']); ?>
                     </p>
                 </div>
+            <!-- パスワードを変更したとき -->
+            <?php if (isset($_SESSION['new-password-success'])): ?>
+                <div class ="alert__message success">
+                    <p><?php echo $_SESSION['new-password-success'];
+                    unset($_SESSION['new-password-success']); ?></p>
+                </div>
+            <?php endif; ?>
+            <!-- ログインに失敗した時 -->
             <?php elseif (isset($_SESSION['login-error'])): ?>
                 <div class="alert__message error">
                     <p>
@@ -47,6 +56,7 @@ unset($_SESSION['login-data']);
                 <input type="password" name="password" value="<?php echo $password; ?>" placeholder="パスワード">
                 <button type="submit" name="submit" class="btn purple">ログイン</button>
                 <small>アカウントをお持ちでない場合は <b><a href="<?php echo ROOT_URL ?>signup.php">こちら</a></b></small>
+                <small>パスワードを忘れた場合は <b><a href="<?php echo ROOT_URL ?>reset-password.php">こちら</a></b></small>
             </form>        
         </div>
     </section>

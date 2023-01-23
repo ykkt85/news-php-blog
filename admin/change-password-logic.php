@@ -5,45 +5,50 @@ require 'config/database.php';
 if (isset($_POST['submit'])){
     $email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);
     $previouspassword = filter_var($_POST['previouspassword'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-    $createdpassword = filter_var($_POST['createdpassword'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-    $confirmedpassword = filter_var($_POST['confirmedpassword'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-    //フォームの値確認
-    // 以前のパスワードが異なる場合
-    if ($previouspassword /*以下途中*/){
-        $_SESSION['change-password-error'] = "パスワードが違います";
- 
-    // フォームに全ての値が入力されている場合
+    // DBからパスワード呼び出し
+    $query = "SELECT * FROM users where email=$email AND is_deleted=0";
+    $users = mysqli_query($connection, $query);
+    $user = mysqli_fetch_assoc($users);
+
+    // パスワードが正しいか確認
+    if (password_verify($previouspassword, $user['password'])){
+        // アクセストークンを生成
+        $access_token = bin2hex(random_bytes(32));
+    
+    // パスワードが異なる場合
     } else {
-        $hashed_password = password_hash($createdpassword, PASSWORD_DEFAULT);
-        // 途中
-        // $hashed_access_token = password_hash($access_token, PASSWORD_DEFAULT);
-        
+        $_SESSION['change-password-error'] = "パスワードが違います";
+        $_SESSION['change-password-data'] = $_POST;
+        header('location:' . ROOT_URL . 'admin/change-password.php');
     }
 
-    // $_SESSION['change-password-error']に何らかの値が含まれている場合
-    if (isset($_SESSION['change-password-error'])){
-        // change-passwordページに値を渡してリダイレクト
-        $_SESSION['change-password-data'] = $_POST;
-        header('location:' . ROOT_URL . 'change-password.php');
+    // パスワード変更用のメールを送る
+    // 途中
+    // メールタイトル
+    $auto_reply_title = 'パスワード変更｜Tsukuba University News';
+    // メール本文
+    $auto_reply_text = "下記URLから新しいパスワードを設定してください\n";
+    $auto_reply_text .= "http://localhost:8888/TsukubaUniversityNews/admin/new-password.php?access_token=".$access_token."\n";
+    $auto_reply_text .= "Tsukuba University News";
+    mb_send_mail($_POST['email'], $auto_reply_title, $auto_reply_body);
+
+
+    // DBにアクセストークンを登録
+    $insert_user_query = "UPDATE users SET access_token=$access_token updated_at=CURRENT_TIMESTAMP() WHERE email=$email AND is_deleted=0 LIMIT 1";
+    $insert_user_result = mysqli_query($connection, $insert_user_query);
+        
+    // DB接続エラーがない場合
+    if (!mysqli_errno($connection)){
+        $_SESSION['change-password-success'] = "パスワード変更用のURLを送信しました。登録済みのメールアドレスを確認してください";
+        header('location:' . ROOT_URL . 'admin/');
+        die();
     
     } else {
-        // データベースに登録
-        $inset_user_query = "INSERT INTO users (email, password, role_ID, access_token, created_at, updated_at, is_deleted) VALUES('$email', '$hashed_password', 0, NULL, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 0)";
-        $insert_user_result = mysqli_query($connection, $inset_user_query);
-        
-        // DB接続エラーがない場合
-        if (!mysqli_errno($connection)){
-            $_SESSION['change-password-success'] = "ユーザー登録が完了しました。ログインしてください";
-            header('location:' . ROOT_URL . 'login.php');
-            die();
-        
-        } else {
-            $_SESSION['change-password-error'] = "ユーザーを登録できません";
-            $_SESSION['change-password-data'] = $_POST;
-            header('location: ' . ROOT_URL . 'change-password.php');
-            die();
-        }
+        $_SESSION['change-password-error'] = "パスワードを変更できません";
+        $_SESSION['change-password-data'] = $_POST;
+        header('location: ' . ROOT_URL . 'admin/change-password.php');
+        die();
     }
 
 } else {
