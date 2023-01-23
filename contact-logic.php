@@ -46,12 +46,12 @@ if (isset($_POST['submit'])){
         $mail->isSMTP();
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
-        $mail->Username = 'kato.yuka.td@alumni.tsukuba.ac.jp';
-        $mail->Password = 'vbnhhkoqlavxyoce';
+        $mail->Username = '●●';
+        $mail->Password = '●●';
         $mail->SMTPSecure = 'ssl';
         $mail->Port = 465;
 
-        $mail->setFrom('kato.yuka.td@alumni.tsukuba.ac.jp');
+        $mail->setFrom('●●');
         $mail->addAddress($_POST['email']);
         $mail->isHTML(true);
 
@@ -67,6 +67,16 @@ if (isset($_POST['submit'])){
             </script>
             ";
 
+        // 途中
+        $auto_reply_title = 'お問い合わせありがとうございます';
+        $auto_reply_text = "この度は、お問い合わせ頂き誠にありがとうございます。
+        下記の内容でお問い合わせを受け付けました。\n\n";
+        $auto_reply_text .= "お問い合わせ日時：" . date("Y-m-d H:i") . "\n";
+        $auto_reply_text .= "氏名：" . $_POST['your_name'] . "\n";
+        $auto_reply_text .= "メールアドレス：" . $_POST['email'] . "\n\n";
+        $auto_reply_text .= "GRAYCODE 事務局";
+        mb_send_mail($_POST['email'], $auto_reply_title, $auto_reply_body);
+        
         // エラーがない場合
         if (!mysqli_errno($connection) && mb_send_mail($email, $email->Subject, $email->body)){
             $_SESSION['contact-success'] = "お問い合わせいただきありがとうございます";

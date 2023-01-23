@@ -19,13 +19,13 @@ if (isset($_GET['user_ID'])){
 
     <section class="form__section">
         <div class="container form__section-container">
-            <h2>投稿者・管理者を編集</h2>
+            <h2>投稿者・管理者編集</h2>
             <form class="form__column" action="<?php echo ROOT_URL ?>admin/edit-user-logic.php" enctype="multipart/form-data" method="POST">
                 <input type="hidden" value="<?php echo $user['user_ID'] ?>" name="user_ID">
                 <input type="email" value="<?php echo $user['email'] ?>" name="email" readonly>
                 <select name="role_ID">
-                    <option value="0">いいえ</option>
-                    <option value="1">はい</option>
+                    <option value="0">投稿者</option>
+                    <option value="1">管理者</option>
                 </select>
                 <button type="submit" name="submit" class="btn purple">保存</button>
             </form>

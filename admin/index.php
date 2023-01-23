@@ -3,8 +3,9 @@ include 'partials/header.php';
 
 // ログイン中のユーザーが投稿した記事を取得
 $current_user_id = $_SESSION['user_ID'];
-$query = "SELECT post_ID, title, tag_ID FROM posts WHERE user_ID=$current_user_id AND is_deleted=0 ORDER BY updated_at DESC";
-$posts = mysqli_query($connection, $query);
+$post_query = "SELECT post_ID, title, tag_ID FROM posts WHERE user_ID=$current_user_id AND is_deleted=0 ORDER BY updated_at DESC";
+$posts = mysqli_query($connection, $post_query);
+$post = mysqli_fetch_assoc($posts);
 ?>
 
     <!--================ END OF NAV ================-->
@@ -26,14 +27,6 @@ $posts = mysqli_query($connection, $query);
                     unset($_SESSION['edit-post-success']); ?>
                 </p>
             </div>
-        <!-- 記事削除に成功した場合 -->
-        <?php elseif (isset($_SESSION['delete-post-success'])): ?>
-            <div class="alert__message success container">
-                <p>
-                    <?php echo $_SESSION['delete-post-success'];
-                    unset($_SESSION['delete-post-success']); ?>
-                </p>
-            </div>
         <!-- 記事編集に失敗した場合 -->
         <?php elseif (isset($_SESSION['edit-post-error'])): ?>
             <div class="alert__message error container">
@@ -42,12 +35,28 @@ $posts = mysqli_query($connection, $query);
                     unset($_SESSION['edit-post-error']); ?>
                 </p>
             </div>
+        <!-- 記事削除に成功した場合 -->
+        <?php elseif (isset($_SESSION['delete-post-success'])): ?>
+            <div class="alert__message success container">
+                <p>
+                    <?php echo $_SESSION['delete-post-success'];
+                    unset($_SESSION['delete-post-success']); ?>
+                </p>
+            </div>
         <!-- 記事削除に失敗した場合 -->
         <?php elseif (isset($_SESSION['delete-post-error'])): ?>
             <div class="alert__message error container">
                 <p>
                     <?php echo $_SESSION['delete-post-error'];
                     unset($_SESSION['delete-post-error']); ?>
+                </p>
+            </div>
+        <!-- パスワード変更に成功した場合 -->
+        <?php elseif (isset($_SESSION['new-password-success'])): ?>
+            <div class="alert__message success container">
+                <p>
+                    <?php echo $_SESSION['new-password-success'];
+                    unset($_SESSION['new-password-success']); ?>
                 </p>
             </div>
         <?php endif; ?>
@@ -113,6 +122,13 @@ $posts = mysqli_query($connection, $query);
             </aside>
             <main>
                 <h2>記事編集</h2>
+                    <!-- 現在ログイン中のユーザーのメールアドレスを取得 -->
+                    <?php
+                    $user_query = "SELECT email from users WHERE user_ID=$current_user_id";
+                    $users = mysqli_query($connection, $user_query);
+                    $user = mysqli_fetch_assoc($users);
+                    ?>
+                <p>現在ログイン中のユーザー：<?php echo $user['email'] ?></p>
                 <?php if(mysqli_num_rows($posts) > 0): ?>
                     <table>
                         <thead>
@@ -130,8 +146,8 @@ $posts = mysqli_query($connection, $query);
                                 <?php
                                 $tag_ID = $post['tag_ID'];
                                 $tag_query = "SELECT tag_title from tags WHERE tag_ID=$tag_ID";
-                                $tag_result = mysqli_query($connection, $tag_query);
-                                $tag = mysqli_fetch_assoc($tag_result);
+                                $tags = mysqli_query($connection, $tag_query);
+                                $tag = mysqli_fetch_assoc($tags);
                                 ?>
                                 <tr>
                                     <td><?php echo $post['title'] ?></td>
