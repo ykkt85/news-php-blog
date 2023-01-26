@@ -15,7 +15,7 @@ if (isset($_POST['submit'])){
     // パスワード変更用のメールを送る設定途中
     // ヘッダー途中
     // $header = "MIME-Version: 1.0\n";
-	$header = "From: Tsukuba University News <kato.yuka.td@alumni.tsukuba.ac.jp>\n";
+	$header = "From: Tsukuba University News <name@gmail.com>\n";
     // メールタイトル
     $auto_reply_title = 'パスワード変更 | Tsukuba University News';
     // メール本文
