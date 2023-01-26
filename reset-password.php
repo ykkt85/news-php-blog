@@ -1,7 +1,10 @@
 <?php
 require 'config/database.php';
 
+// 前回エラー時のセッション値を表示
 $email = $_SESSION['reset-password-data']['email'] ?? NULL;
+
+// セッション値を破棄
 unset($_SESSION['reset-password-data']);
 ?>
 
@@ -26,7 +29,7 @@ unset($_SESSION['reset-password-data']);
     <section class="form__section">
         <div class="container form__section-container">
             <h2>パスワード変更</h2>
-            <!-- 一致するメールアドレスが存在した時 -->
+            <!-- 一致するメールアドレスが存在する時 -->
             <?php if (isset($_SESSION['reset-password-success'])): ?>
                 <div class="alert__message success">
                     <p>
@@ -34,7 +37,7 @@ unset($_SESSION['reset-password-data']);
                         unset($_SESSION['reset-password-success']); ?>
                     </p>
                 </div>
-            <!-- 一致するメールアドレスが存在しなかった時 -->
+            <!-- 一致するメールアドレスが存在しない時 -->
             <?php elseif (isset($_SESSION['reset-password-error'])): ?>
                 <div class="alert__message error">
                     <p>
@@ -43,14 +46,14 @@ unset($_SESSION['reset-password-data']);
                     </p>
                 </div>
             <?php endif; ?>
+            <!-- パスワードリセット用のフォーム -->
             <form class="form__column" action="<?php echo ROOT_URL ?>reset-password-logic.php" method="POST">
-                <input type="email" name="email" value="<?php echo $email; ?>" placeholder="メールアドレス">
+                <input type="email" name="email" value="<?php echo h($email) ?>" placeholder="メールアドレス">
                 <button type="submit" name="submit" class="btn purple">確認</button>
             </form>        
         </div>
     </section>
-
-    <!--================ END OF LOGIN ================-->
+    <!--================ END OF RESET-PASSWORD ================-->
 
     <script src="js/main.js"></script>
 </body>

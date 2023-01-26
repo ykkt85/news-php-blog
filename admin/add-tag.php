@@ -1,7 +1,7 @@
 <?php
 include 'partials/header.php';
 
-// エラー時にセッションデータを戻す
+// 前回エラー時にセッションデータを戻す
 $tag_title = $_SESSION['add-tag-data']['tag_title'] ?? NULL;
 $description = $_SESSION['add-tag-data']['description'] ?? NULL;
 
@@ -22,13 +22,13 @@ unset($_SESSION['add-tag-data']);
                 </div>
             <?php endif; ?>
             <form class="form__column" action="<?php echo ROOT_URL ?>admin/add-tag-logic.php" method="POST">
-                <input type="text" name="tag_title" value="<?php echo $tag_title ?>" placeholder="タグ名" readonly>
-                <textarea rows="4" name="description" placeholder="説明"><?php echo $description ?></textarea>
+                <input type="text" name="tag_title" value="<?php echo h($tag_title) ?>" placeholder="タグ名" readonly>
+                <textarea rows="4" name="description" placeholder="説明"><?php echo h($description) ?></textarea>
                 <button type="submit" name="submit" class="btn purple">追加</button>
             </form>
         </div>
     </section>
-    <!--================ END OF ADD-CATEGORY ================-->
+    <!--================ END OF ADD-TAG ================-->
 
     <script src="../js/main.js"></script>
 </body>

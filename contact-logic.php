@@ -1,18 +1,17 @@
 <?php
 require 'config/database.php';
 
+// PHPMailerへの接続
 // 途中
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
-
 require '../sendemail/PHPMailer/src/Exception.php';
 require '../sendemail/PHPMailer/src/PHPMailer.php';
 require '../sendemail/PHPMailer/src/SMTP.php';
-
 mb_language("Japanese");
 mb_internal_encoding("UTF-8");
 
-// フォームからデータが送られてきたとき
+// contact.phpのフォームが送信された場合
 if (isset($_POST['submit'])){
     $title = filter_var($_POST['title'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $name = filter_var($_POST['name'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -37,7 +36,7 @@ if (isset($_POST['submit'])){
         die();
 
     } else {
-        // データベースにデータを記録
+        // DBに値を記録
         $query = "INSERT INTO contacts (title, name, email, body, created_at, is_deleted) VALUES('$title', '$name', '$email', '$body', CURRENT_TIMESTAMP(), 0)";
         $result = mysqli_query($connection, $query);
 
@@ -82,10 +81,14 @@ if (isset($_POST['submit'])){
             $_SESSION['contact-success'] = "お問い合わせいただきありがとうございます";
             header(('location: ' . ROOT_URL . 'contact.php'));
             die();
+        
+        // エラーがある場合
         } else {
-            var_dump($connection->error);
+            var_dump(mysqli_error($connection));
         }
     }
+
+// contact.phpのフォームが送信されていない場合
 } else {
     header('location: ' . ROOT_URL . 'index.php');
     die();

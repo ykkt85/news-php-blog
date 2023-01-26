@@ -16,7 +16,7 @@ $posts = mysqli_query($connection, $query);
         <form class="container search__bar-container" action="<?php echo ROOT_URL ?>search.php" method="GET">
             <div>
                 <i class="uil uil-search"></i>
-                <input type="search" name="search" placeholder="単語を入力">
+                <input type="search" name="search" placeholder="タイトルを入力">
             </div>
             <button type="submit" name="submit" class="btn white">検索</button>
         </form>
@@ -28,7 +28,7 @@ $posts = mysqli_query($connection, $query);
         <section class="featured">
             <div class="container featured__container">
                 <div class="post__thumbnail">
-                    <img src="./images/<?php echo $featured['thumbnail'] ?>">
+                    <img src="./images/<?php echo h($featured['thumbnail']) ?>">
                 </div>
                 <div class="post__info">
                     <?php
@@ -38,11 +38,11 @@ $posts = mysqli_query($connection, $query);
                     $tag_result = mysqli_query($connection, $tag_query);
                     $tag = mysqli_fetch_assoc($tag_result);
                     ?>
-                    <h2 class="post__title"><a href="<?php echo ROOT_URL ?>post.php?post_ID=<?php echo $featured['post_ID'] ?>"><?php echo $featured['title'] ?></a></h2>
-                    <a href="<?php echo ROOT_URL ?>tag-posts.php?tag_ID=<?php echo $tag['tag_ID'] ?>" class="category__button"><?php echo $tag['tag_title'] ?></a>
+                    <h2 class="post__title"><a href="<?php echo ROOT_URL ?>post.php?post_ID=<?php echo $featured['post_ID'] ?>"><?php echo h($featured['title']) ?></a></h2>
+                    <a href="<?php echo ROOT_URL ?>tag-posts.php?tag_ID=<?php echo $tag['tag_ID'] ?>" class="category__button"><?php echo h($tag['tag_title']) ?></a>
                     <small class="publish__date"><?php echo date("Y.m.d - H:i", strtotime($featured['updated_at'])) ?></small>
                     <p class="post__body">
-                        <?php echo substr($featured['body'], 0, 180) ?>...
+                        <?php echo substr(h($featured['body']), 0, 180) ?>...
                     </p>
                 </div>
             </div>
@@ -56,23 +56,23 @@ $posts = mysqli_query($connection, $query);
             <?php while($post = mysqli_fetch_assoc($posts)): ?>
                 <article class="post">
                     <div class="post__thumbnail">
-                        <img src="./images/<?php echo $post['thumbnail'] ?>">
+                        <img src="./images/<?php echo h($post['thumbnail']) ?>">
                     </div>
                     <div class="post__info">
                     <?php
-                    // DBからタグデータを取得
+                    // DBからタグの値を取得
                     $tag_ID = $post['tag_ID'];
                     $tag_query = "SELECT * FROM tags WHERE tag_ID=$tag_ID";
                     $tag_result = mysqli_query($connection, $tag_query);
                     $tag = mysqli_fetch_assoc($tag_result);
                     ?>
                         <h3 class="post__title">
-                            <a href="<?php echo ROOT_URL ?>post.php?post_ID=<?php echo $post['post_ID'] ?>"><?php echo $post['title'] ?></a>
+                            <a href="<?php echo ROOT_URL ?>post.php?post_ID=<?php echo $post['post_ID'] ?>"><?php echo h($post['title']) ?></a>
                         </h3>
-                        <a href="<?php echo ROOT_URL ?>tag-posts.php?tag_ID=<?php echo $tag['tag_ID'] ?>" class="category__button"><?php echo $tag['tag_title'] ?></a>
+                        <a href="<?php echo ROOT_URL ?>tag-posts.php?tag_ID=<?php echo $tag['tag_ID'] ?>" class="category__button"><?php echo h($tag['tag_title']) ?></a>
                         <small class="publish__date"><?php echo date("Y.m.d - H:i", strtotime($post['updated_at'])) ?></small>
                         <p class="post__body">
-                            <?php echo substr($post['body'], 0, 180) ?>...
+                            <?php echo substr(h($post['body']), 0, 180) ?>...
                         </p>
                     </div>
                 </article>
@@ -84,11 +84,12 @@ $posts = mysqli_query($connection, $query);
     <section class="category__buttons">
         <div class="container category__buttons-container">
             <?php
+            // DBからタグの値を取得
             $all_tags_query = "SELECT * FROM tags WHERE is_deleted=0";
             $all_tags = mysqli_query($connection, $all_tags_query);
-            ?>
-            <?php while($tag = mysqli_fetch_assoc($all_tags)): ?>
-                <a href="<?php echo ROOT_URL ?>tag_posts.php?tag_ID=<?php echo $tag['tag_ID'] ?>" class="category__button"><?php echo $tag['tag_title'] ?></a>
+            // 登録されているタグがある場合
+            while($tag = mysqli_fetch_assoc($all_tags)): ?>
+                <a href="<?php echo ROOT_URL ?>tag-posts.php?tag_ID=<?php echo $tag['tag_ID'] ?>" class="category__button"><?php echo h($tag['tag_title']) ?></a>
             <?php endwhile; ?>
             </div>
     </section>

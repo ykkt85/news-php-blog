@@ -1,12 +1,12 @@
 <?php
 require 'config/database.php';
 
-// 登録エラーの場合値を戻す
+// 前回エラーの場合セッション値を表示
 $email = $_SESSION['signup-data']['email'] ?? null;
 $createdpassword = $_SESSION['signup-data']['createdpassword'] ?? null;
 $confirmedpassword = $_SESSION['signup-data']['confirmedpassword'] ?? null;
 
-// セッション情報を消去
+// セッション値を破棄
 unset($_SESSION['signup-data']);
 ?>
 
@@ -31,6 +31,7 @@ unset($_SESSION['signup-data']);
     <section class="form__section">
         <div class="container form__section-container">
             <h2>新しいユーザーを登録</h2>
+            <!-- ユーザーの新規登録に失敗した場合 -->
             <?php if (isset($_SESSION['signup-error'])): ?>
                 <div class="alert__message error">
                     <p>
@@ -39,17 +40,17 @@ unset($_SESSION['signup-data']);
                     </p>
                 </div>
             <?php endif; ?>
+            <!-- ユーザー登録フォーム -->
             <form class="form__column" action="<?php echo ROOT_URL ?>signup-logic.php" method="POST">
-                <!--少人数ログイン想定・アドレス被り無し想定のためメールとパスワードのみ-->
-                <input type="email" name="email" value="<?php echo $email ?>" placeholder="メールアドレス">
-                <input type="password" name="createdpassword" value="<?php echo $createdpassword ?>" placeholder="パスワード">
-                <input type="password" name="confirmedpassword" value="<?php echo $confirmedpassword ?>" placeholder="パスワード（確認）">
+                <!-- 少人数ログイン想定・アドレス被り無し想定のためメールとパスワードのみ -->
+                <input type="email" name="email" value="<?php echo h($email) ?>" placeholder="メールアドレス">
+                <input type="password" name="createdpassword" value="<?php echo h($createdpassword) ?>" placeholder="パスワード">
+                <input type="password" name="confirmedpassword" value="<?php echo h($confirmedpassword) ?>" placeholder="パスワード（確認）">
                 <button type="submit" name="submit" class="btn purple">登録</button>
                 <small>アカウントをお持ちの方は <b><a href="<?php echo ROOT_URL ?>login.php">こちら</a></b></small>    
             </form>
         </div>
     </section>
-
     <!--================ END OF SIGNUP ================-->
 
     <script src="js/main.js"></script>

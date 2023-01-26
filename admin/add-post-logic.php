@@ -1,7 +1,7 @@
 <?php
 require 'config/database.php';
 
-// フォームからデータが送られてきたとき
+// add-post.phpのフォームから値が送られてきた場合
 if (isset($_POST['submit'])){
     $user_ID = $_SESSION['user_ID'];
     $title = filter_var($_POST['title'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -27,12 +27,12 @@ if (isset($_POST['submit'])){
         $thumbnail_tmp_name = $thumbnail['tmp_name'];
         $thumbnail_description_path = '../images/' . $thumbnail_name;
 
-        // データの拡張子を確認
+        // 画像ファイルの拡張子を確認
         $allowed_files = ['png', 'jpg', 'jpeg'];
         $extension = explode('.', $thumbnail_name);
         $extension = end($extension);
         if (in_array($extension, $allowed_files)){
-            // データの大きさを確認
+            // データサイズを確認
             if ($thumbnail['size'] < 2_000_000){
                 move_uploaded_file($thumbnail_tmp_name, $thumbnail_description_path);
             } else {
@@ -43,31 +43,32 @@ if (isset($_POST['submit'])){
         }
     }
 
-    // この時点でエラーがあるとき
+    // この時点でエラーがある場合
     if (isset($_SESSION['add-post-error'])){
         $_SESSION['add-post-data'] = $_POST;
         header('location: ' . ROOT_URL . 'admin/add-post.php');
         die();
 
     } else {
-        // 注目記事が指定されたとき
+        // 注目記事に指定された時他の記事を注目記事から外す
         if ($is_featured == 1){
             $zero_all_featured_query = "UPDATE posts SET is_featured=0";
             $zero_all_featured_result = mysqli_query($connection, $zero_all_featured_query);
         }
 
-        // データベースにデータを記録
+        // DBに値を記録
         $query = "INSERT INTO posts (title, tag_ID, is_featured, thumbnail, body, status_ID, user_ID, created_at, updated_at, is_deleted) VALUES('$title', $tag_ID, $is_featured, '$thumbnail_name', '$body', 0, $user_ID, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 0)";
         $result = mysqli_query($connection, $query);
 
         // エラーがない場合
         if (!mysqli_errno($connection)){
-            $_SESSION['add-post-success'] = "新しい記事を投稿しました";
+            $_SESSION['add-post-success'] = "新しい記事が投稿されました";
             header(('location: ' . ROOT_URL . 'admin/'));
             die();
         }
     }
+// フォームから値が送られていない場合
 } else {
-    header('location: ' . ROOT_URL . 'admin/index.php');
+    header('location: ' . ROOT_URL . 'admin/');
     die();
 }

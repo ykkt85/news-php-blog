@@ -1,7 +1,7 @@
 <?php
 require 'config/database.php';
 
-// フォームから値が送られたとき
+// edit-post.phpのフォームから値が送信された場合
 if (isset($_POST['submit'])){
     $post_ID = filter_var($_POST['post_ID'], FILTER_SANITIZE_NUMBER_INT);
     $title = filter_var($_POST['title'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -54,13 +54,14 @@ if (isset($_POST['submit'])){
         }
     }
 
-    // この時点でエラーがあるとき
+    // この時点でエラーがある場合
     if (isset($_SESSION['edit-post-error'])){
         $_SESSION['edit-post-data'] = $_POST;
-        header('location: ' . ROOT_URL . 'admin/');
+        $_SESSION['post_ID'] = $post_ID;
+        header('location: ' . ROOT_URL . 'admin/edit-post.php?post_ID=' . $_SESSION['post_ID']);
 
     } else {
-        // 注目記事が指定されたとき
+        // 注目記事が指定された場合
         if ($is_featured == 1){
             $zero_all_featured_query = "UPDATE posts SET is_featured=0";
             $zero_all_featured_result = mysqli_query($connection, $zero_all_featured_query);
@@ -80,6 +81,8 @@ if (isset($_POST['submit'])){
             die();
         }
     }
+
+// edit-post.phpのフォームから値が送信されていない場合
 } else {
     header('location: ' . ROOT_URL . 'admin/');
     die();

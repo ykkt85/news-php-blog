@@ -50,9 +50,11 @@ $tags = mysqli_query($connection, $query);
             </div>
         <?php endif; ?>
         <div class="container dashboard__container">
-            <!--メディアクエリ用ボタン途中-->
+            <!-- メディアクエリ用ボタン途中 -->
             <button id="show__sidebar-btn" class="sidebar__toggle"><i class="uil uil-angle-right-b"></i></button>
             <button id="show__sidebar-btn" class="sidebar__toggle"><i class="uil uil-angle-right-b"></i></button>
+            <!-- メディアクエリ用ボタン途中 ここまで -->
+            <!-- サイドバー -->
             <aside>
                 <ul>
                     <li>
@@ -67,7 +69,7 @@ $tags = mysqli_query($connection, $query);
                             <h5>投稿編集</h5>
                         </a>
                     </li>
-                    <!--管理者の場合は表示-->
+                    <!--ログイン中のユーザーが管理者の場合は表示-->
                     <?php if ($_SESSION['role_ID'] == 1): ?>              
                         <li>
                             <a href="<?php echo ROOT_URL ?>admin/manage-users.php">
@@ -88,18 +90,18 @@ $tags = mysqli_query($connection, $query);
                             </a>
                         </li>
                     <?php endif; ?>
-                    <!--<li>
+                    <!-- <li>
                         <a href="<?php echo ROOT_URL ?>admin/change-email.php">
                             <i class="uil uil-envelope-edit"></i>                            
                             <h5>メールアドレス変更</h5>
                         </a>
-                    </li>-->
+                    </li>
                     <li>
                         <a href="<?php echo ROOT_URL ?>admin/change-password.php">
                             <i class="uil uil-key-skeleton-alt"></i>
                             <h5>パスワード変更</h5>
                         </a>
-                    </li>
+                    </li> -->
                     <li>
                         <a href="<?php echo ROOT_URL ?>logout.php">
                             <i class="uil uil-signout"></i>
@@ -110,6 +112,7 @@ $tags = mysqli_query($connection, $query);
             </aside>
             <main>
                 <h2>タグ編集</h2>
+                <!-- タグが登録されている場合 -->
                 <?php if(mysqli_num_rows($tags) > 0): ?>
                     <table>
                         <thead>
@@ -121,23 +124,25 @@ $tags = mysqli_query($connection, $query);
                             </tr>
                         </thead>
                         <tbody>
+                            <!-- タグ表示 -->
                             <?php while($tag = mysqli_fetch_assoc($tags)): ?>
                                 <tr>
-                                    <td><?php echo $tag['tag_title']; ?></td>
-                                    <td><?php echo $tag['description']; ?></td>
+                                    <td><?php echo h($tag['tag_title']) ?></td>
+                                    <td><?php echo h($tag['description']) ?></td>
                                     <td><a href="<?php echo ROOT_URL ?>admin/edit-tag.php?tag_ID=<?php echo $tag['tag_ID'] ?>" class="btn sm">編集</a></td>
                                     <td><a href="<?php echo ROOT_URL ?>admin/delete-tag.php?tag_ID=<?php echo $tag['tag_ID'] ?>" class="btn sm danger">削除</a></td>
                                 </tr>
                             <?php endwhile; ?>
                         </tbody>
                     </table>
+                <!-- タグが登録されていないとき -->
                 <?php else: ?>
-                    <div class="alert__message error"><?php echo "タグが見つかりません"; ?></div>
+                    <div class="alert__message error"><?php echo "タグが登録されていません"; ?></div>
                 <?php endif; ?>
             </main>
         </div>
     </section>
-    <!--================ END OF MANAGE-tags ================-->
+    <!--================ END OF MANAGE-TAGS ================-->
     
     <script src="../js/main.js"></script>
 </body>

@@ -6,7 +6,7 @@ include 'partials/header.php';
     <section class="empty__page">
         <h1>Site Map</h1>
     </section>
-    <!--================ END OF EMPTY PAGE ================-->
+    <!--================ END OF SITE-MAP ================-->
 
 <?php
 include 'partials/footer.php';

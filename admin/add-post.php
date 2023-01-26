@@ -1,18 +1,19 @@
 <?php
 include 'partials/header.php';
 
+// タグ表示のためDBからデータを取得
 $query = "SELECT * FROM tags WHERE is_deleted=0";
 $tags = mysqli_query($connection, $query);
 
 
-// エラー時にセッションデータを戻す
+// 前回エラー時にセッションデータを表示
 $title = $_SESSION['add-post-data']['title'] ?? NULL;
 $body = $_SESSION['add-post-data']['body'] ?? NULL;
 
 // セッションデータを消去
 unset($_SESSION['add-post-data']);
 ?>
-    <!--================ END OF NAV ================-->
+    <!--================ END OF PHP ================-->
 
     <section class="form__section">
         <div class="container form__section-container">
@@ -26,8 +27,9 @@ unset($_SESSION['add-post-data']);
                     </p>
                 </div>
             <?php endif; ?>
+            <!-- 記事投稿 -->
             <form class="form__column" action="<?php echo ROOT_URL ?>admin/add-post-logic.php" enctype="multipart/form-data" method="POST">
-                <input type="text" name="title" value="<?php echo $title ?>" placeholder="タイトル">
+                <input type="text" name="title" value="<?php echo h($title) ?>" placeholder="タイトル">
                 <select name="tag_ID">
                     <?php while($tag = mysqli_fetch_assoc($tags)): ?>
                         <option value="<?php echo $tag['tag_ID'] ?>"><?php echo $tag['tag_title'] ?></option>
@@ -41,12 +43,12 @@ unset($_SESSION['add-post-data']);
                     <label for="thumbnail">写真を追加</label>
                     <input type="file" name="thumbnail" id="thumbnail">
                 </div>
-                <textarea rows="15" name="body" placeholder="本文"><?php echo $body ?></textarea>
+                <textarea rows="15" name="body" placeholder="本文"><?php echo h($body) ?></textarea>
                 <button type="submit" name="submit" class="btn purple">投稿する</button>
             </form>
         </div>
     </section>
-    <!--================ END OF ADD-CATEGORY ================-->
+    <!--================ END OF ADD-POST ================-->
     
     <script src="../js/main.js"></script>
 </body>

@@ -1,16 +1,25 @@
 <?php
 require 'config/database.php';
 
-// URLにトークンの値を持っているか確認
+// new-password.phpのURLにトークンの値を持っている場合
 if (isset($_GET['token'])){
-    $token = filter_var($_GET['token'], FILTER_SANITIZE_NUMBER_INT);
+    $token = filter_var($_GET['token'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
     // DBから一致するトークンを持つ投稿者を取得
-    $query = "SELECT * FROM users WHERE token=$token AND is_deleted=0";
+    $query = "SELECT * FROM users WHERE token='$token' AND is_deleted=0";
     $result = mysqli_query($connection, $query);
+
+    // DBに一致するトークンが存在する場合
     if(mysqli_num_rows($result) == 1){
         $user = mysqli_fetch_assoc($result);
+
+    // DBに一致するトークンが存在しない場合
+    } else {
+        $_SESSION['new-password-error'] = '無効のURLです';
+        header('location: ' . ROOT_URL . 'message.php');
+        die();
     }
+// new-password.phpのURLにトークンの値を持っていない場合
 } else {
     header('location: ' . ROOT_URL);
     die();
@@ -46,6 +55,7 @@ if (isset($_GET['token'])){
                     </p>
                 </div>
             <?php endif; ?>
+            <!-- 新しいパスワードを登録するフォーム -->
             <form class="form__column" action="<?php echo ROOT_URL ?>new-password-logic.php" method="POST">
                 <input type="hidden" name="token" value="<?php echo $user['token'] ?>">
                 <input type="password" name="createdpassword" value="" placeholder="新しいパスワード">
@@ -55,7 +65,7 @@ if (isset($_GET['token'])){
         </div>
     </section>
 
-    <!--================ END OF LOGIN ================-->
+    <!--================ END OF NEW-PASSWORD ================-->
 
     <script src="../js/main.js"></script>
 </body>
