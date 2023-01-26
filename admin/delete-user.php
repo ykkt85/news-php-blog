@@ -19,7 +19,7 @@ if (isset($_GET['user_ID'])){
     if (!mysqli_errno($connection)){
         $_SESSION['delete-user-success'] = "ユーザー {$user['email']} が削除されました";
         header('location: ' . ROOT_URL . 'admin/manage-users.php');
-    
+    // エラーがある場合
     } else {
         $_SESSION['delete-user-error'] = "ユーザー {$user['email']} の削除に失敗しました";
         header('location: ' . ROOT_URL . 'admin/manage-users.php');

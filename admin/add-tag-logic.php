@@ -1,7 +1,7 @@
 <?php
 require 'config/database.php';
 
-// 登録ボタンがクリックされた時
+// add-tag.phpのフォームから値が渡された場合
 if(isset($_POST['submit'])){
     $tag_title = filter_var($_POST['tag_title'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $description = filter_var($_POST['description'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -16,7 +16,7 @@ if(isset($_POST['submit'])){
         $_SESSION['add-tag-error'] = "説明を入力してください";
     
     } else {
-        // tagに被りがないか確認
+        // タグ名に被りがないか確認
         $check_tag_query = "SELECT * FROM tags WHERE tag_title='$tag_title'";
         $check_tag_result = mysqli_query($connection, $check_tag_query);
         if (mysqli_num_rows($check_tag_result) > 0){
@@ -44,13 +44,13 @@ if(isset($_POST['submit'])){
             die();
 
         } else {
-            $_SESSION['add-tag-success'] = "タグ「 $tag_title 」が登録されました";
+            $_SESSION['add-tag-success'] = "タグ「" . h($tag_title) . " 」が登録されました";
             header('location: ' . ROOT_URL . 'admin/manage-tags.php');
             die();
         }
     }
 
-// 登録ボタンがクリックされずに画面遷移した場合
+// フォームの値が渡されずに画面遷移した場合
 } else {
     header('location: ' . ROOT_URL . 'admin/manage-tags.php');
     die();

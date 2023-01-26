@@ -1,7 +1,7 @@
 <?php
 include 'partials/header.php';
 
-// 自分以外のユーザーを読み込む
+// ログイン中以外のユーザーを読み込む
 $current_admin_id = $_SESSION['user_ID'];
 $query = "SELECT * FROM users WHERE user_ID!=$current_admin_id AND is_deleted=0";
 $users = mysqli_query($connection, $query);
@@ -55,6 +55,8 @@ $users = mysqli_query($connection, $query);
             <!-- メディアクエリ用ボタン途中 -->
             <button id="show__sidebar-btn" class="sidebar__toggle"><i class="uil uil-angle-right-b"></i></button>
             <button id="show__sidebar-btn" class="sidebar__toggle"><i class="uil uil-angle-right-b"></i></button>
+            <!-- メディアクエリ用ボタン途中 ここまで -->
+            <!-- サイドバー -->
             <aside>
                 <ul>
                     <li>
@@ -69,7 +71,7 @@ $users = mysqli_query($connection, $query);
                             <h5>投稿編集</h5>
                         </a>
                     </li>
-                    <!--管理者の場合は表示-->
+                    <!-- ログイン中のユーザーが管理者の場合は表示 -->
                     <?php if ($_SESSION['role_ID'] == 1): ?>              
                         <li>
                             <a href="<?php echo ROOT_URL ?>admin/manage-users.php" class="active">
@@ -90,18 +92,18 @@ $users = mysqli_query($connection, $query);
                             </a>
                         </li>
                     <?php endif; ?>
-                    <!--<li>
+                    <!-- <li>
                         <a href="<?php echo ROOT_URL ?>admin/change-email.php">
                             <i class="uil uil-envelope-edit"></i>                            
                             <h5>メールアドレス変更</h5>
                         </a>
-                    </li>-->
+                    </li>
                     <li>
                         <a href="<?php echo ROOT_URL ?>admin/change-password.php">
                             <i class="uil uil-key-skeleton-alt"></i>
                             <h5>パスワード変更</h5>
                         </a>
-                    </li>
+                    </li> -->
                     <li>
                         <a href="<?php echo ROOT_URL ?>logout.php">
                             <i class="uil uil-signout"></i>
@@ -112,6 +114,7 @@ $users = mysqli_query($connection, $query);
             </aside>
             <main>
                 <h2>投稿者・管理者編集</h2>
+                <!-- ログイン中のユーザー以外に登録されているユーザーがいる場合 -->
                 <?php if(mysqli_num_rows($users) > 0): ?>
                     <table>
                         <thead>
@@ -123,9 +126,10 @@ $users = mysqli_query($connection, $query);
                             </tr>
                         </thead>
                         <tbody>
+                            <!-- ログイン中以外のユーザーを表示 -->
                             <?php while($user = mysqli_fetch_assoc($users)): ?>
                                     <tr>
-                                        <td><?php echo $user['email'] ?></td>
+                                        <td><?php echo h($user['email']) ?></td>
                                         <td><a href="<?php echo ROOT_URL ?>admin/edit-user.php?user_ID=<?php echo $user['user_ID'] ?>" class="btn sm">編集</a></td>
                                         <td><a href="<?php echo ROOT_URL ?>admin/delete-user.php?user_ID=<?php echo $user['user_ID'] ?>" class="btn sm danger">削除</a></td>
                                         <td><?php echo $user['role_ID'] ? 'はい' : 'いいえ' ?></td>
@@ -133,13 +137,14 @@ $users = mysqli_query($connection, $query);
                             <?php endwhile; ?>
                         </tbody>
                     </table>
+                <!-- ログイン中以外のユーザーが登録されていない場合 -->
                 <?php else: ?>
                     <div class="alert__message error"><?php echo "ユーザーが見つかりません"; ?></div>
                 <?php endif; ?>
             </main>
         </div>
     </section>
-    <!--================ END OF MANAGE-CATEGORIES ================-->
+    <!--================ END OF MANAGE-USERS ================-->
     
     <script src="../js/main.js"></script>
 </body>

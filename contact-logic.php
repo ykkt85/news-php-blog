@@ -1,18 +1,11 @@
 <?php
 require 'config/database.php';
 
-// 途中
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
-
-require '../sendemail/PHPMailer/src/Exception.php';
-require '../sendemail/PHPMailer/src/PHPMailer.php';
-require '../sendemail/PHPMailer/src/SMTP.php';
-
+// mb_send_mailの設定
 mb_language("Japanese");
 mb_internal_encoding("UTF-8");
 
-// フォームからデータが送られてきたとき
+// contact.phpのフォームが送信された場合
 if (isset($_POST['submit'])){
     $title = filter_var($_POST['title'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $name = filter_var($_POST['name'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -37,55 +30,41 @@ if (isset($_POST['submit'])){
         die();
 
     } else {
-        // データベースにデータを記録
+        // DBに値を記録
         $query = "INSERT INTO contacts (title, name, email, body, created_at, is_deleted) VALUES('$title', '$name', '$email', '$body', CURRENT_TIMESTAMP(), 0)";
         $result = mysqli_query($connection, $query);
 
-        // 問い合わせ先に自動メールを送信
-        $mail = new PHPMailer(true);
-        $mail->isSMTP();
-        $mail->Host = 'smtp.gmail.com';
-        $mail->SMTPAuth = true;
-        $mail->Username = '●●';
-        $mail->Password = '●●';
-        $mail->SMTPSecure = 'ssl';
-        $mail->Port = 465;
-
-        $mail->setFrom('●●');
-        $mail->addAddress($_POST['email']);
-        $mail->isHTML(true);
-
-        $mail->Subject = '筑波大学新聞';
-        $mail->Body = "お問い合わせくださりありがとうございます。\r\n返信には2営業日程度かかることがあります。";
-
-        $mail->send();
-
-        echo
-            "
-            <script>
-                alert('送信に成功しました');
-            </script>
-            ";
-
-        // 途中
-        $auto_reply_title = 'お問い合わせありがとうございます';
-        $auto_reply_text = "この度は、お問い合わせ頂き誠にありがとうございます。
-        下記の内容でお問い合わせを受け付けました。\n\n";
-        $auto_reply_text .= "お問い合わせ日時：" . date("Y-m-d H:i") . "\n";
-        $auto_reply_text .= "氏名：" . $_POST['your_name'] . "\n";
-        $auto_reply_text .= "メールアドレス：" . $_POST['email'] . "\n\n";
-        $auto_reply_text .= "GRAYCODE 事務局";
-        mb_send_mail($_POST['email'], $auto_reply_title, $auto_reply_body);
-        
+        // パスワード変更用のメールを送る設定途中
+        // ヘッダー途中
+        // $header = "MIME-Version: 1.0\n";
+        $header = "From: Tsukuba University News <name@gmail.com>\n";
+        // メールタイトル
+        $auto_reply_title = 'お問い合わせ内容 | Tsukuba University News';
+        // メール本文
+        $auto_reply_body = "お問い合わせを受け付けました。\n\n";
+        $auto_reply_body .= "≪ お問い合わせ内容 ≫\n";        
+        $auto_reply_body .= "タイトル：" . $title . "\n";
+        $auto_reply_body .= "お名前：" . $name . " 様\n";
+        $auto_reply_body .= "内容：" . $body . "\n\n";
+        $auto_reply_body .= "Tsukuba University News";
+        // 送信
+        mb_send_mail($email, $auto_reply_title, $auto_reply_body, $header);
+                
         // エラーがない場合
-        if (!mysqli_errno($connection) && mb_send_mail($email, $email->Subject, $email->body)){
+        if (!mysqli_errno($connection)){
             $_SESSION['contact-success'] = "お問い合わせいただきありがとうございます";
-            header(('location: ' . ROOT_URL . 'contact.php'));
+            var_dump(mb_send_mail($email, $auto_reply_title, $auto_reply_body, $header));
+            var_dump($email, $auto_reply_title, $auto_reply_body, $header);
+            //header(('location: ' . ROOT_URL . 'message.php'));
             die();
+        
+        // エラーがある場合
         } else {
-            var_dump($connection->error);
+            var_dump(mysqli_error($connection));
         }
     }
+
+// contact.phpのフォームが送信されていない場合
 } else {
     header('location: ' . ROOT_URL . 'index.php');
     die();

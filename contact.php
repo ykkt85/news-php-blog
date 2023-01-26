@@ -33,17 +33,18 @@ unset($_SESSION['contact-data']);
                 </div>
             <?php endif; ?>
 
+            <!-- 問い合わせフォーム -->
             <form class="form__column" action="<?php echo ROOT_URL ?>contact-logic.php" enctype="multipart/form-data" method="POST">
-                <input type="text" name="title" value="<?php echo $title ?>" placeholder="件名">
-                <input type="text" name="name" value="<?php echo $name ?>" placeholder="名前">
-                <input type="email" name="email" value="<?php echo $email ?>" placeholder="メールアドレス">
-                <textarea rows="15" name="body" placeholder="本文"><?php echo $body ?></textarea>
+                <input type="text" name="title" value="<?php echo h($title) ?>" placeholder="件名">
+                <input type="text" name="name" value="<?php echo h($name) ?>" placeholder="名前">
+                <input type="email" name="email" value="<?php echo h($email) ?>" placeholder="メールアドレス">
+                <textarea rows="15" name="body" placeholder="本文"><?php echo h($body) ?></textarea>
                 <button type="submit" name="submit" class="btn purple">送信</button>
             </form>
         </div>
     </section>
-    <!--================ END OF ADD-CATEGORY ================-->
+    <!--================ END OF CONARCT ================-->
     
-    <script src="../js/main.js"></script>
+    <script src="js/main.js"></script>
 </body>
 </html>

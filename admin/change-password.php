@@ -1,4 +1,5 @@
 <?php
+// 使わないかも
 require 'partials/header.php';
 
 // 現在のユーザー情報を取得
@@ -12,6 +13,7 @@ $user = mysqli_fetch_assoc($result);
     <section class="form__section">
         <div class="container form__section-container">
             <h2>パスワード変更</h2>
+            <!-- パスワード変更に成功した場合 -->
             <?php if (isset($_SESSION['change-password-success'])): ?>
                 <div class="alert__message success">
                     <p>
@@ -19,6 +21,7 @@ $user = mysqli_fetch_assoc($result);
                         unset($_SESSION['change-password-success']); ?>
                     </p>
                 </div>
+            <!-- パスワード変更に失敗した場合 -->
             <?php elseif (isset($_SESSION['change-password-error'])): ?>
                 <div class="alert__message error">
                     <p>
@@ -27,6 +30,7 @@ $user = mysqli_fetch_assoc($result);
                     </p>
                 </div>
             <?php endif; ?>
+            <!-- パスワード変更用のフォーム -->
             <form class="form__column" action="<?php echo ROOT_URL ?>admin/change-password-logic.php" method="POST">
                 <input type="email" name="email" value="<?php echo $user['email']; ?>" placeholder="メールアドレス" readonly>
                 <input type="password" name="previouspassword" value="" placeholder="現在のパスワード">
@@ -35,7 +39,7 @@ $user = mysqli_fetch_assoc($result);
         </div>
     </section>
 
-    <!--================ END OF LOGIN ================-->
+    <!--================ END OF CHANGE-PASSWORD ================-->
 
     <script src="../js/main.js"></script>
 </body>

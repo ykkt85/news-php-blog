@@ -1,8 +1,11 @@
 <?php
 require 'config/database.php';
 
+// 前回エラー時のセッション値を表示
 $email = $_SESSION['login-data']['email'] ?? NULL;
 $password = $_SESSION['login-data']['password'] ?? NULL;
+
+// セッション値を破棄
 unset($_SESSION['login-data']);
 ?>
 
@@ -51,16 +54,16 @@ unset($_SESSION['login-data']);
                     </p>
                 </div>
             <?php endif; ?>
+            <!-- ログインフォーム -->
             <form class="form__column" action="<?php echo ROOT_URL ?>login-logic.php" method="POST">
-                <input type="email" name="email" value="<?php echo $email; ?>" placeholder="メールアドレス">
-                <input type="password" name="password" value="<?php echo $password; ?>" placeholder="パスワード">
+                <input type="email" name="email" value="<?php echo h($email) ?>" placeholder="メールアドレス">
+                <input type="password" name="password" value="<?php echo h($password) ?>" placeholder="パスワード">
                 <button type="submit" name="submit" class="btn purple">ログイン</button>
                 <small>アカウントをお持ちでない場合は <b><a href="<?php echo ROOT_URL ?>signup.php">こちら</a></b></small>
                 <small>パスワードを忘れた場合は <b><a href="<?php echo ROOT_URL ?>reset-password.php">こちら</a></b></small>
             </form>        
         </div>
     </section>
-
     <!--================ END OF LOGIN ================-->
 
     <script src="js/main.js"></script>

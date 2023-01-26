@@ -1,12 +1,13 @@
 <?php
+// 使わないかも
 require 'config/database.php';
 
-// 変更ボタンがクリックされた時
+// change-password.phpのフォームから値が送信された場合
 if (isset($_POST['submit'])){
     $email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);
     $previouspassword = filter_var($_POST['previouspassword'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-    // DBからパスワード呼び出し
+    // DBからパスワードを取り出し
     $query = "SELECT * FROM users where email=$email AND is_deleted=0";
     $users = mysqli_query($connection, $query);
     $user = mysqli_fetch_assoc($users);

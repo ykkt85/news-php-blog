@@ -1,12 +1,12 @@
 <?php
 require 'config/database.php';
 
-// 変更ボタンを押した場合
+// edit-user.phpのフォームから値が送信された場合
 if (isset($_POST['submit'])){
     $user_ID = filter_var($_POST['user_ID'], FILTER_SANITIZE_NUMBER_INT);
     $role_ID = filter_var($_POST['role_ID'], FILTER_SANITIZE_NUMBER_INT);
 
-    // DBの内容を上書き保存
+    // DBの値を上書き保存
     $query = "UPDATE users SET role_ID=$role_ID, updated_at=CURRENT_TIMESTAMP() WHERE user_ID=$user_ID LIMIT 1";
     $result = mysqli_query($connection, $query);
 
@@ -20,6 +20,7 @@ if (isset($_POST['submit'])){
         header('location: ' . ROOT_URL . 'admin/manage-users.php');
     }
 
+// edit-user.phpのフォームから値が送信されていない場合
 } else {
     header('location: ' . ROOT_URL . 'admin/manage-users.php');
     die();

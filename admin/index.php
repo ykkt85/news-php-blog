@@ -1,14 +1,14 @@
 <?php
 include 'partials/header.php';
 
-// ログイン中のユーザーが投稿した記事を取得
+// ログイン中のユーザーが投稿した記事をDBから取得
 $current_user_id = $_SESSION['user_ID'];
 $post_query = "SELECT post_ID, title, tag_ID FROM posts WHERE user_ID=$current_user_id AND is_deleted=0 ORDER BY updated_at DESC";
 $posts = mysqli_query($connection, $post_query);
 $post = mysqli_fetch_assoc($posts);
 ?>
 
-    <!--================ END OF NAV ================-->
+    <!--================ END OF PHP ================-->
 
     <section class="dashboard">
         <!-- 新規記事投稿に成功した場合 -->
@@ -65,6 +65,7 @@ $post = mysqli_fetch_assoc($posts);
             <button id="show__sidebar-btn" class="sidebar__toggle"><i class="uil uil-angle-right-b"></i></button>
             <button id="show__sidebar-btn" class="sidebar__toggle"><i class="uil uil-angle-right-b"></i></button>
             <!-- メディアクエリ用ボタン途中 ここまで -->
+            <!-- サイドバー -->
             <aside>
                 <ul>
                     <li>
@@ -79,7 +80,7 @@ $post = mysqli_fetch_assoc($posts);
                             <h5>記事編集</h5>
                         </a>
                     </li>
-                    <!--管理者の場合は表示-->
+                    <!-- ログイン中のユーザーが管理者の場合は表示 -->
                     <?php if ($_SESSION['role_ID'] == 1): ?>              
                         <li>
                             <a href="<?php echo ROOT_URL ?>admin/manage-users.php">
@@ -100,18 +101,18 @@ $post = mysqli_fetch_assoc($posts);
                             </a>
                         </li>
                     <?php endif; ?>
-                    <!--<li>
+                    <!-- <li>
                         <a href="<?php echo ROOT_URL ?>admin/change-email.php">
                             <i class="uil uil-envelope-edit"></i>                            
                             <h5>メールアドレス変更</h5>
                         </a>
-                    </li>-->
+                    </li>
                     <li>
                         <a href="<?php echo ROOT_URL ?>admin/change-password.php">
                             <i class="uil uil-key-skeleton-alt"></i>
                             <h5>パスワード変更</h5>
                         </a>
-                    </li>
+                    </li> -->
                     <li>
                         <a href="<?php echo ROOT_URL ?>logout.php">
                             <i class="uil uil-signout"></i>
@@ -128,7 +129,8 @@ $post = mysqli_fetch_assoc($posts);
                     $users = mysqli_query($connection, $user_query);
                     $user = mysqli_fetch_assoc($users);
                     ?>
-                <p>現在ログイン中のユーザー：<?php echo $user['email'] ?></p>
+                <p>現在ログイン中のユーザー：<?php echo h($user['email']) ?></p>
+                <!-- ログイン中のユーザーの投稿記事がある場合 -->
                 <?php if(mysqli_num_rows($posts) > 0): ?>
                     <table>
                         <thead>
@@ -142,7 +144,7 @@ $post = mysqli_fetch_assoc($posts);
                         <tbody>
                             <!-- 投稿記事を表示 -->
                             <?php while($post = mysqli_fetch_assoc($posts)): ?>
-                                <!-- tagタイトルを取得 -->
+                                <!-- タグのタイトルを取得 -->
                                 <?php
                                 $tag_ID = $post['tag_ID'];
                                 $tag_query = "SELECT tag_title from tags WHERE tag_ID=$tag_ID";
@@ -150,22 +152,22 @@ $post = mysqli_fetch_assoc($posts);
                                 $tag = mysqli_fetch_assoc($tags);
                                 ?>
                                 <tr>
-                                    <td><?php echo $post['title'] ?></td>
-                                    <td><?php echo $tag['tag_title'] ?></td>
+                                    <td><?php echo h($post['title']) ?></td>
+                                    <td><?php echo h($tag['tag_title']) ?></td>
                                     <td><a href="<?php echo ROOT_URL ?>admin/edit-post.php?post_ID=<?php echo $post['post_ID'] ?>" class="btn sm">編集</a></td>
                                     <td><a href="<?php echo ROOT_URL ?>admin/delete-post.php?post_ID=<?php echo $post['post_ID'] ?>" class="btn sm danger">削除</a></td>
                                 </tr>
                             <?php endwhile; ?>
                         </tbody>
                     </table>
-                <!-- 投稿記事がない場合 -->
+                <!-- ログイン中のユーザーの投稿記事がない場合 -->
                 <?php else: ?>
                     <div class="alert__message error"><?php echo "投稿はありません"; ?></div>
                 <?php endif; ?>
             </main>
         </div>
     </section>
-    <!--================ END OF MANAGE-CATEGORIES ================-->
+    <!--================ END OF INDEX (MANAGE-POSTS) ================-->
 
     <script src="../js/main.js"></script>
 </body>
