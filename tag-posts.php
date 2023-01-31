@@ -26,7 +26,7 @@ if (isset($_GET['tag_ID'])){
     </section>
     <!--================ END OF SEARCH ================-->
 
-    <header class="category__title">
+    <header class="tag__title">
         <?php
         // DBからタグの値を取得
         $tag_ID = $ID;
@@ -69,14 +69,14 @@ if (isset($_GET['tag_ID'])){
     <?php endif; ?>
     <!--================ END OF POSTS ================-->
     
-    <section class="category__buttons">
-        <div class="container category__buttons-container">
+    <section class="tag__buttons">
+        <div class="container tag__buttons-container">
             <?php
             $all_tags_query = "SELECT * FROM tags WHERE is_deleted=0";
             $all_tags = mysqli_query($connection, $all_tags_query);
             ?>
             <?php while($tag = mysqli_fetch_assoc($all_tags)): ?>
-                <a href="<?php echo ROOT_URL ?>tag-posts.php?tag_ID=<?php echo $tag['tag_ID'] ?>" class="category__button"><?php echo h($tag['tag_title']) ?></a>
+                <a href="<?php echo ROOT_URL ?>tag-posts.php?tag_ID=<?php echo $tag['tag_ID'] ?>" class="tag__button"><?php echo h($tag['tag_title']) ?></a>
             <?php endwhile; ?>
         </div>
     </section>

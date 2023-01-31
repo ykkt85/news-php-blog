@@ -28,7 +28,7 @@ if (isset($_GET['post_ID'])){
             ?>
             <!-- 記事表示 -->
             <h2><?php echo h($post['title']) ?></h2>
-            <a href="<?php echo ROOT_URL ?>tag-posts.php?tag_ID=<?php echo $tag['tag_ID'] ?>" class="category__button"><?php echo h($tag['tag_title']) ?></a>
+            <a href="<?php echo ROOT_URL ?>tag-posts.php?tag_ID=<?php echo $tag['tag_ID'] ?>" class="tag__button"><?php echo h($tag['tag_title']) ?></a>
             <small class="publish__date"><?php echo date("Y.m.d - H:i", strtotime($post['updated_at'])) ?></small>
             <div class="singlepost__thumbnail">
                 <img src="./images/<?php echo h($post['thumbnail']) ?>">

@@ -24,10 +24,10 @@ require 'config/database.php';
         <div class="container nav__container">
             <a href="<?php echo ROOT_URL ?>" class="nav__logo">Tsukuba University News</a>
             <ul class="nav__items">
-                <li><a href="<?php echo ROOT_URL ?>tokusyu.php">特集</a></li>
-                <li><a href="<?php echo ROOT_URL ?>minitokusyu.php">ミニ特集</a></li>
-                <li><a href="<?php echo ROOT_URL ?>sports.php">スポーツ</a></li>
-                <li><a href="<?php echo ROOT_URL ?>studies.php">研究</a></li>
+                <li><a href="<?php echo ROOT_URL ?>tag-tokusyu.php">特集</a></li>
+                <li><a href="<?php echo ROOT_URL ?>tag-minitokusyu.php">ミニ特集</a></li>
+                <li><a href="<?php echo ROOT_URL ?>tag-sports.php">スポーツ</a></li>
+                <li><a href="<?php echo ROOT_URL ?>tag-studies.php">研究</a></li>
                 <!-- ログイン中の場合は表示 -->
                 <?php if (isset($_SESSION['user_ID'])): ?>
                     <li><a href="<?php echo ROOT_URL ?>admin/">管理</a></li>
