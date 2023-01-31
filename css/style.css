@@ -165,8 +165,8 @@ nav button {
     width: 100%;
 }
 
-/*================ CATEGORY BUTTON ================*/
-.category__button {
+/*================ TAG BUTTON ================*/
+.tag__button {
     background: var(--color-primary-light);
     color: var(--color-primary);
     display: inline-block;
@@ -177,7 +177,7 @@ nav button {
     text-align: center;
 }
 
-.category__button:hover {
+.tag__button:hover {
     color: var(--color-white);
 }
 
@@ -213,21 +213,21 @@ nav button {
     margin-bottom: 5rem;
 }
 
-/*================ CATEGORY BUTTONS ================*/
-.category__buttons {
+/*================ TAG BUTTONS ================*/
+.tag__buttons {
     padding: 4rem 0;
     border-top: 2px solid var(--color-bg);
     border-bottom: 2px solid var(--color-bg);
 }
 
-.category__buttons-container {
+.tag__buttons-container {
     width: fit-content;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 1rem;
 }
 
-/*================ CATEGORY FOOTER ================*/
+/*================ TAG FOOTER ================*/
 footer {
     background: var(--color-gray-500);
     padding: 5rem;
@@ -386,8 +386,8 @@ footer {
     line-height: 1.7;
 }
 
-/*================ CATEGORY POSTS ================*/
-.category__title {
+/*================ TAG POSTS ================*/
+.tag__title {
     height: 15rem;
     margin-top: 4.5rem;
     background: var(--color-primary-light);
@@ -395,7 +395,7 @@ footer {
     place-items: center;
 }
 
-.category__title h2 {
+.tag__title h2 {
     color: var(--color-bg);
 
 }

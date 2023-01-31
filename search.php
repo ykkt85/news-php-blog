@@ -47,7 +47,7 @@ if (isset($_GET['search']) && isset($_GET['submit'])){
                             <h3 class="post__title">
                                 <a href="<?php echo ROOT_URL ?>post.php?post_ID=<?php echo $post['post_ID'] ?>"><?php echo h($post['title']) ?></a>
                             </h3>
-                            <a href="<?php echo ROOT_URL ?>tag-posts.php?tag_ID=<?php echo $tag['tag_ID'] ?>" class="category__button"><?php echo h($tag['tag_title']) ?></a>
+                            <a href="<?php echo ROOT_URL ?>tag-posts.php?tag_ID=<?php echo $tag['tag_ID'] ?>" class="tag__button"><?php echo h($tag['tag_title']) ?></a>
                             <small class="publish__date"><?php echo date("Y.m.d - H:i", strtotime($post['updated_at'])) ?></small>
                             <p class="post__body">
                                 <?php echo substr(h($post['body']), 0, 180) ?>...
@@ -65,14 +65,14 @@ if (isset($_GET['search']) && isset($_GET['submit'])){
     <?php endif; ?>
     <!--================ END OF POSTS ================-->
 
-    <section class="category__buttons">
-        <div class="container category__buttons-container">
+    <section class="tag__buttons">
+        <div class="container tag__buttons-container">
             <?php
             $all_tags_query = "SELECT * FROM tags WHERE is_deleted=0";
             $all_tags = mysqli_query($connection, $all_tags_query);
             ?>
             <?php while($tag = mysqli_fetch_assoc($all_tags)): ?>
-                <a href="<?php echo ROOT_URL ?>tag-posts.php?tag_ID=<?php echo $tag['tag_ID'] ?>" class="category__button"><?php echo h($tag['tag_title']) ?></a>
+                <a href="<?php echo ROOT_URL ?>tag-posts.php?tag_ID=<?php echo $tag['tag_ID'] ?>" class="tag__button"><?php echo h($tag['tag_title']) ?></a>
             <?php endwhile; ?>
             </div>
     </section>

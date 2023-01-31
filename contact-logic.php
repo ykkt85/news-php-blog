@@ -4,6 +4,7 @@ require 'config/database.php';
 // mb_send_mailの設定
 mb_language("Japanese");
 mb_internal_encoding("UTF-8");
+date_default_timezone_set('Asia/Tokyo');
 
 // contact.phpのフォームが送信された場合
 if (isset($_POST['submit'])){
@@ -34,10 +35,7 @@ if (isset($_POST['submit'])){
         $query = "INSERT INTO contacts (title, name, email, body, created_at, is_deleted) VALUES('$title', '$name', '$email', '$body', CURRENT_TIMESTAMP(), 0)";
         $result = mysqli_query($connection, $query);
 
-        // パスワード変更用のメールを送る設定途中
-        // ヘッダー途中
-        // $header = "MIME-Version: 1.0\n";
-        $header = "From: Tsukuba University News <name@gmail.com>\n";
+        // パスワード変更用メールを送るための設定
         // メールタイトル
         $auto_reply_title = 'お問い合わせ内容 | Tsukuba University News';
         // メール本文
@@ -46,21 +44,18 @@ if (isset($_POST['submit'])){
         $auto_reply_body .= "タイトル：" . $title . "\n";
         $auto_reply_body .= "お名前：" . $name . " 様\n";
         $auto_reply_body .= "内容：" . $body . "\n\n";
+        $auto_reply_body .= "このメールは自動送信メールです。返信いただいても回答いたしかねますので、予めご了承ください。\n\n";
         $auto_reply_body .= "Tsukuba University News";
+        // ヘッダー
+        $header = "From: Tsukuba University News <name@gmail.com>\n";
         // 送信
         mb_send_mail($email, $auto_reply_title, $auto_reply_body, $header);
                 
         // エラーがない場合
         if (!mysqli_errno($connection)){
             $_SESSION['contact-success'] = "お問い合わせいただきありがとうございます";
-            var_dump(mb_send_mail($email, $auto_reply_title, $auto_reply_body, $header));
-            var_dump($email, $auto_reply_title, $auto_reply_body, $header);
-            //header(('location: ' . ROOT_URL . 'message.php'));
+            header(('location: ' . ROOT_URL . 'message.php'));
             die();
-        
-        // エラーがある場合
-        } else {
-            var_dump(mysqli_error($connection));
         }
     }
 
