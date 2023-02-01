@@ -10,7 +10,7 @@ include 'partials/header.php';
             </div>
         <!-- 問い合わせフォームから問い合わせを送った場合 -->
         <?php elseif (isset($_SESSION['contact-success'])): ?>
-            <div class ="alert__message error lg">
+            <div class ="alert__message success lg">
                 <p><?php echo $_SESSION['contact-success'];
                 unset($_SESSION['contact-success']) ?></p>
             </div>

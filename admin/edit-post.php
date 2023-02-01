@@ -56,6 +56,6 @@ if (isset($_GET['post_ID'])){
     </section>
     <!--================ END OF EDIT-POST ================-->
     
-    <script src="../js/main.js"></script>
+    <script src="<?php echo ROOT_URL ?>js/main.js"></script>
 </body>
 </html>

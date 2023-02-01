@@ -30,6 +30,6 @@ unset($_SESSION['add-tag-data']);
     </section>
     <!--================ END OF ADD-TAG ================-->
 
-    <script src="../js/main.js"></script>
+    <script src="<?php echo ROOT_URL ?>js/main.js"></script>
 </body>
 </html>
