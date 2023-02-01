@@ -33,6 +33,6 @@ if (isset($_GET['tag_ID'])){
     </section>
     <!--================ END OF EDIT-TAG ================-->
     
-    <script src="../js/main.js"></script>
+    <script src="<?php echo ROOT_URL ?>js/main.js"></script>
 </body>
 </html>

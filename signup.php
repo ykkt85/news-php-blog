@@ -53,6 +53,6 @@ unset($_SESSION['signup-data']);
     </section>
     <!--================ END OF SIGNUP ================-->
 
-    <script src="js/main.js"></script>
+    <script src="<?php echo ROOT_URL ?>js/main.js"></script>
 </body>
 </html>

@@ -55,6 +55,6 @@ unset($_SESSION['reset-password-data']);
     </section>
     <!--================ END OF RESET-PASSWORD ================-->
 
-    <script src="js/main.js"></script>
+    <script src="<?php echo ROOT_URL ?>js/main.js"></script>
 </body>
 </html>

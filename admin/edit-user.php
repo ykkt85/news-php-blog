@@ -35,6 +35,6 @@ if (isset($_GET['user_ID'])){
     </section>
     <!--================ END OF EDIT-USER ================-->
     
-    <script src="../js/main.js"></script>
+    <script src="<?php echo ROOT_URL ?>js/main.js"></script>
 </body>
 </html>

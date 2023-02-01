@@ -67,6 +67,6 @@ if (isset($_GET['token'])){
 
     <!--================ END OF NEW-PASSWORD ================-->
 
-    <script src="../js/main.js"></script>
+    <script src="<?php echo ROOT_URL ?>js/main.js"></script>
 </body>
 </html>

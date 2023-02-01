@@ -144,6 +144,6 @@ $tags = mysqli_query($connection, $query);
     </section>
     <!--================ END OF MANAGE-TAGS ================-->
     
-    <script src="../js/main.js"></script>
+    <script src="<?php echo ROOT_URL ?>js/main.js"></script>
 </body>
 </html>
