@@ -29,10 +29,10 @@ if (isset($_GET['tag_ID'])){
     <header class="tag__title">
         <?php
         // DBからタグの値を取得
-        $tag_ID = $ID;
-        $tag_query = "SELECT * FROM tags WHERE tag_ID=$tag_ID AND is_deleted=0";
-        $tag_result = mysqli_query($connection, $tag_query);
-        $tag = mysqli_fetch_assoc($tag_result);
+        $tagID = $ID;
+        $tagQuery = "SELECT * FROM tags WHERE tag_ID=$tagID AND is_deleted=0";
+        $tagResult = mysqli_query($connection, $tagQuery);
+        $tag = mysqli_fetch_assoc($tagResult);
         ?>
         <h2><?php echo $tag['tag_title'] ?></h2>
     </header>
@@ -72,10 +72,10 @@ if (isset($_GET['tag_ID'])){
     <section class="tag__buttons">
         <div class="container tag__buttons-container">
             <?php
-            $all_tags_query = "SELECT * FROM tags WHERE is_deleted=0";
-            $all_tags = mysqli_query($connection, $all_tags_query);
+            $allTagsQuery = "SELECT * FROM tags WHERE is_deleted=0";
+            $allTags = mysqli_query($connection, $allTagsQuery);
             ?>
-            <?php while($tag = mysqli_fetch_assoc($all_tags)): ?>
+            <?php while($tag = mysqli_fetch_assoc($allTags)): ?>
                 <a href="<?php echo ROOT_URL ?>tag-posts.php?tag_ID=<?php echo $tag['tag_ID'] ?>" class="tag__button"><?php echo h($tag['tag_title']) ?></a>
             <?php endwhile; ?>
         </div>

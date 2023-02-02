@@ -14,19 +14,19 @@ if (isset($_POST['submit'])){
 
     // パスワード変更用メールを送るための設定
     // メールタイトル
-    $auto_reply_title = 'パスワード変更 | Tsukuba University News';
+    $autoReplyTitle = 'パスワード変更 | Tsukuba University News';
     // メール本文
-    $auto_reply_body = "下記URLから新しいパスワードを設定してください\n";
-    $auto_reply_body .= "http://localhost:8888/TsukubaUniversityNews/new-password.php?token=" . $token . "\n\n";
-    $auto_reply_body .= "Tsukuba University News";
+    $autoReplyBody = "下記URLから新しいパスワードを設定してください\n";
+    $autoReplyBody .= "http://localhost:8888/TsukubaUniversityNews/new-password.php?token=" . $token . "\n\n";
+    $autoReplyBody .= "Tsukuba University News";
     // ヘッダー
 	$header = "From: Tsukuba University News <name@gmail.com>\n";
     // 送信
-    mb_send_mail($email, $auto_reply_title, $auto_reply_body, $header);
+    mb_send_mail($email, $autoReplyTitle, $autoReplyBody, $header);
 
     // DBにトークンを登録
-    $insert_user_query = "UPDATE users SET token='$token', updated_at=CURRENT_TIMESTAMP() WHERE email='$email' AND is_deleted=0 LIMIT 1";
-    $insert_user_result = mysqli_query($connection, $insert_user_query);
+    $insertUserQuery = "UPDATE users SET token='$token', updated_at=CURRENT_TIMESTAMP() WHERE email='$email' AND is_deleted=0 LIMIT 1";
+    $insertUserResult = mysqli_query($connection, $insertUserQuery);
         
     // DB接続エラーがない場合
     if (!mysqli_errno($connection)){

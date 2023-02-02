@@ -2,9 +2,9 @@
 include 'partials/header.php';
 
 // ログイン中のユーザーが投稿した記事をDBから取得
-$current_user_id = $_SESSION['user_ID'];
-$post_query = "SELECT post_ID, title, tag_ID FROM posts WHERE user_ID=$current_user_id AND is_deleted=0 ORDER BY updated_at DESC";
-$posts = mysqli_query($connection, $post_query);
+$currentUserID = $_SESSION['user_ID'];
+$postQuery = "SELECT post_ID, title, tag_ID FROM posts WHERE user_ID=$currentUserID AND is_deleted=0 ORDER BY updated_at DESC";
+$posts = mysqli_query($connection, $postQuery);
 $post = mysqli_fetch_assoc($posts);
 ?>
 
@@ -125,8 +125,8 @@ $post = mysqli_fetch_assoc($posts);
                 <h2>記事編集</h2>
                     <!-- 現在ログイン中のユーザーのメールアドレスを取得 -->
                     <?php
-                    $user_query = "SELECT email from users WHERE user_ID=$current_user_id";
-                    $users = mysqli_query($connection, $user_query);
+                    $userQuery = "SELECT email from users WHERE user_ID=$currentUserID";
+                    $users = mysqli_query($connection, $userQuery);
                     $user = mysqli_fetch_assoc($users);
                     ?>
                 <p>現在ログイン中のユーザー：<?php echo h($user['email']) ?></p>
@@ -146,9 +146,9 @@ $post = mysqli_fetch_assoc($posts);
                             <?php while($post = mysqli_fetch_assoc($posts)): ?>
                                 <!-- タグのタイトルを取得 -->
                                 <?php
-                                $tag_ID = $post['tag_ID'];
-                                $tag_query = "SELECT tag_title from tags WHERE tag_ID=$tag_ID";
-                                $tags = mysqli_query($connection, $tag_query);
+                                $tagID = $post['tag_ID'];
+                                $tagQuery = "SELECT tag_title from tags WHERE tag_ID=$tagID";
+                                $tags = mysqli_query($connection, $tagQuery);
                                 $tag = mysqli_fetch_assoc($tags);
                                 ?>
                                 <tr>

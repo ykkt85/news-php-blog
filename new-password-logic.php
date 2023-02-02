@@ -4,8 +4,8 @@ require 'config/database.php';
 // new-password.phpからフォームが送信された場合
 if (isset($_POST['submit'])){
     $token = filter_var($_POST['token'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-    $createdpassword = filter_var($_POST['createdpassword'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-    $confirmedpassword = filter_var($_POST['confirmedpassword'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $createdPassword = filter_var($_POST['createdpassword'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $confirmedPassword = filter_var($_POST['confirmedpassword'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
     // DBからトークンを取得
     $query = "SELECT * FROM users WHERE token='$token' AND is_deleted=0";
@@ -14,17 +14,17 @@ if (isset($_POST['submit'])){
 
     //フォームの値確認
     // パスワードが８文字未満の場合
-    if (strlen($createdpassword) < 8 || strlen($confirmedpassword) < 8){
+    if (strlen($createdPassword) < 8 || strlen($confirmedPassword) < 8){
         $_SESSION['new-password-error'] = "パスワードは８文字以上で設定してください";
     // パスワードが異なる場合
-    } elseif ($createdpassword !== $confirmedpassword){
+    } elseif ($createdPassword !== $confirmedPassword){
         $_SESSION['new-password-error'] = "パスワードが違います";
     // トークンが異なる場合
     } elseif (mysqli_num_rows($result) != 1) {
         $_SESSION['new-password-error'] = "パスワード変更用のURLが違います";
     // フォームに全ての値が正しく入力されている場合はパスワードをハッシュ化
     } else {
-        $hashed_password = password_hash($createdpassword, PASSWORD_DEFAULT);
+        $hashedPassword = password_hash($createdPassword, PASSWORD_DEFAULT);
     }
 
     // この時点でエラーがある場合
@@ -36,8 +36,8 @@ if (isset($_POST['submit'])){
     
     } else {
         // DBに登録
-        $insert_user_query = "UPDATE users SET password='$hashed_password', token=NULL, updated_at=CURRENT_TIMESTAMP() WHERE token='$token' AND is_deleted=0 LIMIT 1";
-        $insert_user_result = mysqli_query($connection, $insert_user_query);
+        $insertUserQuery = "UPDATE users SET password='$hashedPassword', token=NULL, updated_at=CURRENT_TIMESTAMP() WHERE token='$token' AND is_deleted=0 LIMIT 1";
+        $insertUserResult = mysqli_query($connection, $insertUserQuery);
         
         // DB接続エラーがない場合
         if (!mysqli_errno($connection)){

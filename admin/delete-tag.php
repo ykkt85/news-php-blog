@@ -3,20 +3,20 @@ require 'config/database.php';
 
 // delete-tag.phpのURLにtag_IDの値が含まれている場合
 if (isset($_GET['tag_ID'])){
-    $tag_ID = filter_var($_GET['tag_ID'], FILTER_SANITIZE_NUMBER_INT);
+    $tagID = filter_var($_GET['tag_ID'], FILTER_SANITIZE_NUMBER_INT);
     
     // DBの内容を上書き
-    $update_tag_query = "UPDATE tags SET is_deleted=1 WHERE tag_ID=$tag_ID LIMIT 1";
-    $update_tag_result = mysqli_query($connection, $update_tag_query);
+    $updateTagQuery = "UPDATE tags SET is_deleted=1 WHERE tag_ID=$tagID LIMIT 1";
+    $updateTagResult = mysqli_query($connection, $updateTagQuery);
 
     // 削除したタグがついていた記事のタグ表示を変更
-    $update_deleted_query = "UPDATE posts SET tag_ID=10 WHERE tag_ID=$tag_ID";
-    $update_deleted_result = mysqli_query($connection, $update_deleted_query);
+    $updateDeletedQuery = "UPDATE posts SET tag_ID=10 WHERE tag_ID=$tagID";
+    $updateDeletedResult = mysqli_query($connection, $updateDeletedQuery);
     
     // DBの値を取り出す
-    $fetch_tag_query = "SELECT * FROM tags WHERE tag_ID=$tag_ID LIMIT 1";
-    $fetch_tag_result = mysqli_query($connection, $fetch_tag_query);
-    $tag = mysqli_fetch_assoc($fetch_tag_result);
+    $fetchTagQuery = "SELECT * FROM tags WHERE tag_ID=$tagID LIMIT 1";
+    $fetchTagResult = mysqli_query($connection, $fetchTagQuery);
+    $tag = mysqli_fetch_assoc($fetchTagResult);
     
     // エラーがない場合
     if (!mysqli_errno($connection)){

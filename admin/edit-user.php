@@ -3,10 +3,10 @@ include 'partials/header.php';
 
 // edit-user.phpのURLにuser_IDの値が含まれている場合
 if (isset($_GET['user_ID'])){
-    $user_ID = filter_var($_GET['user_ID'], FILTER_SANITIZE_NUMBER_INT);
+    $userID = filter_var($_GET['user_ID'], FILTER_SANITIZE_NUMBER_INT);
 
     // DBから値を取得
-    $query = "SELECT * FROM users WHERE user_id=$user_ID";
+    $query = "SELECT * FROM users WHERE user_id=$userID";
     $result = mysqli_query($connection, $query);
     $user = mysqli_fetch_assoc($result);
 

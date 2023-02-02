@@ -2,8 +2,8 @@
 include 'partials/header.php';
 
 // ログイン中以外のユーザーを読み込む
-$current_admin_id = $_SESSION['user_ID'];
-$query = "SELECT * FROM users WHERE user_ID!=$current_admin_id AND is_deleted=0";
+$currentAdminID = $_SESSION['user_ID'];
+$query = "SELECT * FROM users WHERE user_ID!=$currentAdminID AND is_deleted=0";
 $users = mysqli_query($connection, $query);
 ?>
 

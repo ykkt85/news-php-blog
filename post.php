@@ -3,8 +3,8 @@ include 'partials/header.php';
 
 // post.phpのURLにpost_IDがある場合、DBから記事データを取得
 if (isset($_GET['post_ID'])){
-    $post_ID = filter_var($_GET['post_ID'], FILTER_SANITIZE_NUMBER_INT);
-    $query = "SELECT * FROM posts WHERE post_ID=$post_ID AND is_deleted=0";
+    $postID = filter_var($_GET['post_ID'], FILTER_SANITIZE_NUMBER_INT);
+    $query = "SELECT * FROM posts WHERE post_ID=$postID AND is_deleted=0";
     $result = mysqli_query($connection, $query);
     $post = mysqli_fetch_assoc($result);
 
@@ -21,10 +21,10 @@ if (isset($_GET['post_ID'])){
         <div class="container singlepost__container">
             <?php
             // DBからタグの値を取得
-            $tag_ID = $post['tag_ID'];
-            $tag_query = "SELECT * FROM tags WHERE tag_ID=$tag_ID";
-            $tag_result = mysqli_query($connection, $tag_query);
-            $tag = mysqli_fetch_assoc($tag_result);
+            $tagID = $post['tag_ID'];
+            $tagQuery = "SELECT * FROM tags WHERE tag_ID=$tagID";
+            $tagResult = mysqli_query($connection, $tagQuery);
+            $tag = mysqli_fetch_assoc($tagResult);
             ?>
             <!-- 記事表示 -->
             <h2><?php echo h($post['title']) ?></h2>

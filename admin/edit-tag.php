@@ -3,10 +3,10 @@ include 'partials/header.php';
 
 // edit-tag.phpのURLからtag_IDの値を受け取った場合
 if (isset($_GET['tag_ID'])){
-    $tag_ID = filter_var($_GET['tag_ID'], FILTER_SANITIZE_NUMBER_INT);
+    $tagID = filter_var($_GET['tag_ID'], FILTER_SANITIZE_NUMBER_INT);
 
     // DBから値を取り出す
-    $query = "SELECT * FROM tags WHERE tag_ID=$tag_ID";
+    $query = "SELECT * FROM tags WHERE tag_ID=$tagID";
     $result = mysqli_query($connection, $query);
     if(mysqli_num_rows($result) == 1){
         $tag = mysqli_fetch_assoc($result);

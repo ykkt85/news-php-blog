@@ -2,9 +2,9 @@
 include 'partials/header.php';
 
 // DBから注目記事を取得
-$featured_query = "SELECT * FROM posts WHERE is_featured=1 AND is_deleted=0";
-$featured_result = mysqli_query($connection, $featured_query);
-$featured = mysqli_fetch_assoc($featured_result);
+$featuredQuery = "SELECT * FROM posts WHERE is_featured=1 AND is_deleted=0";
+$featuredResult = mysqli_query($connection, $featuredQuery);
+$featured = mysqli_fetch_assoc($featuredResult);
 
 // DBから記事を取得
 $query = "SELECT * FROM posts WHERE is_deleted=0 ORDER BY created_at DESC";
@@ -24,7 +24,7 @@ $posts = mysqli_query($connection, $query);
     <!--================ END OF SEARCH ================-->
 
     <!-- 注目記事があれば表示 -->
-    <?php if (mysqli_num_rows($featured_result) == 1): ?>
+    <?php if (mysqli_num_rows($featuredResult) == 1): ?>
         <section class="featured">
             <div class="container featured__container">
                 <div class="post__thumbnail">
@@ -33,10 +33,10 @@ $posts = mysqli_query($connection, $query);
                 <div class="post__info">
                     <?php
                     // DBからタグデータを取得
-                    $tag_ID = $featured['tag_ID'];
-                    $tag_query = "SELECT * FROM tags WHERE tag_ID=$tag_ID";
-                    $tag_result = mysqli_query($connection, $tag_query);
-                    $tag = mysqli_fetch_assoc($tag_result);
+                    $tagID = $featured['tag_ID'];
+                    $tagQuery = "SELECT * FROM tags WHERE tag_ID=$tagID";
+                    $tagResult = mysqli_query($connection, $tagQuery);
+                    $tag = mysqli_fetch_assoc($tagResult);
                     ?>
                     <h2 class="post__title"><a href="<?php echo ROOT_URL ?>post.php?post_ID=<?php echo $featured['post_ID'] ?>"><?php echo h($featured['title']) ?></a></h2>
                     <a href="<?php echo ROOT_URL ?>tag-posts.php?tag_ID=<?php echo $tag['tag_ID'] ?>" class="tag__button"><?php echo h($tag['tag_title']) ?></a>
@@ -61,10 +61,10 @@ $posts = mysqli_query($connection, $query);
                     <div class="post__info">
                     <?php
                     // DBからタグの値を取得
-                    $tag_ID = $post['tag_ID'];
-                    $tag_query = "SELECT * FROM tags WHERE tag_ID=$tag_ID";
-                    $tag_result = mysqli_query($connection, $tag_query);
-                    $tag = mysqli_fetch_assoc($tag_result);
+                    $tagID = $post['tag_ID'];
+                    $tagQuery = "SELECT * FROM tags WHERE tag_ID=$tagID";
+                    $tagResult = mysqli_query($connection, $tagQuery);
+                    $tag = mysqli_fetch_assoc($tagResult);
                     ?>
                         <h3 class="post__title">
                             <a href="<?php echo ROOT_URL ?>post.php?post_ID=<?php echo $post['post_ID'] ?>"><?php echo h($post['title']) ?></a>
@@ -85,10 +85,10 @@ $posts = mysqli_query($connection, $query);
         <div class="container tag__buttons-container">
             <?php
             // DBからタグの値を取得
-            $all_tags_query = "SELECT * FROM tags WHERE is_deleted=0";
-            $all_tags = mysqli_query($connection, $all_tags_query);
+            $allTagsQuery = "SELECT * FROM tags WHERE is_deleted=0";
+            $allTags = mysqli_query($connection, $allTagsQuery);
             // 登録されているタグがある場合
-            while($tag = mysqli_fetch_assoc($all_tags)): ?>
+            while($tag = mysqli_fetch_assoc($allTags)): ?>
                 <a href="<?php echo ROOT_URL ?>tag-posts.php?tag_ID=<?php echo $tag['tag_ID'] ?>" class="tag__button"><?php echo h($tag['tag_title']) ?></a>
             <?php endwhile; ?>
             </div>

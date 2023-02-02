@@ -17,19 +17,19 @@ if (isset($_POST['submit'])){
     
     // フォームに全ての値が入力されている場合
     } else {
-        $fetch_user_query = "SELECT * FROM users WHERE email='$email'";
-        $fetch_user_result = mysqli_query($connection, $fetch_user_query);
+        $fetchUserQuery = "SELECT * FROM users WHERE email='$email'";
+        $fetchUserResult = mysqli_query($connection, $fetchUserQuery);
         
         // DBから合致するメールアドレスを取得
-        if (mysqli_num_rows($fetch_user_result) === 1){
-            $user_record = mysqli_fetch_assoc($fetch_user_result);
-            $db_password = $user_record['password'];
+        if (mysqli_num_rows($fetchUserResult) === 1){
+            $userRecord = mysqli_fetch_assoc($fetchUserResult);
+            $dbPassword = $userRecord['password'];
             
             // パスワードを比較
-            if (password_verify($password, $db_password)){
-                $_SESSION['user_ID'] = $user_record['user_ID'];
-                $_SESSION['role_ID'] = $user_record['role_ID'];
-                $_SESSION['email'] = $user_record['email'];
+            if (password_verify($password, $dbPassword)){
+                $_SESSION['user_ID'] = $userRecord['user_ID'];
+                $_SESSION['role_ID'] = $userRecord['role_ID'];
+                $_SESSION['email'] = $userRecord['email'];
                 header('location: ' . ROOT_URL . 'admin/index.php');
             // 入力したパスワードと登録したパスワードが異なる場合
             } else {

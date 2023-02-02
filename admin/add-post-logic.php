@@ -3,15 +3,15 @@ require 'config/database.php';
 
 // add-post.phpのフォームから値が送られてきた場合
 if (isset($_POST['submit'])){
-    $user_ID = $_SESSION['user_ID'];
+    $userID = $_SESSION['user_ID'];
     $title = filter_var($_POST['title'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-    $tag_ID = filter_var($_POST['tag_ID'], FILTER_SANITIZE_NUMBER_INT);
-    $is_featured = filter_var($_POST['is_featured'], FILTER_SANITIZE_NUMBER_INT);
+    $tagID = filter_var($_POST['tag_ID'], FILTER_SANITIZE_NUMBER_INT);
+    $isFeatured = filter_var($_POST['is_featured'], FILTER_SANITIZE_NUMBER_INT);
     $thumbnail = $_FILES['thumbnail'];
     $body = filter_var($_POST['body'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
     // 注目記事がチェックされていれば1にする
-    $is_featured = $is_featured == 1 ?: 0;
+    $isFeatured = $isFeatured == 1 ?: 0;
 
     // フォーム内容を確認
     if (!$title){
@@ -23,18 +23,18 @@ if (isset($_POST['submit'])){
     } else {
         // 画像の名前を変更
         $time = time();
-        $thumbnail_name = $time . $thumbnail['name'];
-        $thumbnail_tmp_name = $thumbnail['tmp_name'];
-        $thumbnail_description_path = '../images/' . $thumbnail_name;
+        $thumbnailName = $time . $thumbnail['name'];
+        $thumbnailTmpName = $thumbnail['tmp_name'];
+        $thumbnailDescriptionPath = '../images/' . $thumbnailName;
 
         // 画像ファイルの拡張子を確認
-        $allowed_files = ['png', 'jpg', 'jpeg'];
-        $extension = explode('.', $thumbnail_name);
+        $allowedFiles = ['png', 'jpg', 'jpeg'];
+        $extension = explode('.', $thumbnailName);
         $extension = end($extension);
-        if (in_array($extension, $allowed_files)){
+        if (in_array($extension, $allowedFiles)){
             // データサイズを確認
             if ($thumbnail['size'] < 2_000_000){
-                move_uploaded_file($thumbnail_tmp_name, $thumbnail_description_path);
+                move_uploaded_file($thumbnailTmpName, $thumbnailDescriptionPath);
             } else {
                 $_SESSION['add-post-error'] = "画像サイズが大きすぎます。2MB以下の画像を指定し直してください";
             }
@@ -51,13 +51,13 @@ if (isset($_POST['submit'])){
 
     } else {
         // 注目記事に指定された時他の記事を注目記事から外す
-        if ($is_featured == 1){
-            $zero_all_featured_query = "UPDATE posts SET is_featured=0";
-            $zero_all_featured_result = mysqli_query($connection, $zero_all_featured_query);
+        if ($isFeatured == 1){
+            $zeroAllFeaturedQuery = "UPDATE posts SET is_featured=0";
+            $zeroAllFeaturedResult = mysqli_query($connection, $zeroAllFeaturedQuery);
         }
 
         // DBに値を記録
-        $query = "INSERT INTO posts (title, tag_ID, is_featured, thumbnail, body, status_ID, user_ID, created_at, updated_at, is_deleted) VALUES('$title', $tag_ID, $is_featured, '$thumbnail_name', '$body', 0, $user_ID, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 0)";
+        $query = "INSERT INTO posts (title, tag_ID, is_featured, thumbnail, body, status_ID, user_ID, created_at, updated_at, is_deleted) VALUES('$title', $tagID, $isFeatured, '$thumbnailName', '$body', 0, $userID, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 0)";
         $result = mysqli_query($connection, $query);
 
         // エラーがない場合

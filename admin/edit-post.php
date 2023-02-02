@@ -2,15 +2,15 @@
 include 'partials/header.php';
 
 // DBからタグの値を取得
-$tag_query = "SELECT * FROM tags WHERE is_deleted=0";
-$tag_result = mysqli_query($connection, $tag_query);
+$tagQuery = "SELECT * FROM tags WHERE is_deleted=0";
+$tagResult = mysqli_query($connection, $tagQuery);
 
 // DBから記事の値を取得
 if (isset($_GET['post_ID'])){
-    $post_ID = filter_var($_GET['post_ID'], FILTER_SANITIZE_NUMBER_INT);
-    $post_query = "SELECT * FROM posts WHERE post_ID=$post_ID";
-    $post_result = mysqli_query($connection, $post_query);
-    $post = mysqli_fetch_assoc($post_result);
+    $postID = filter_var($_GET['post_ID'], FILTER_SANITIZE_NUMBER_INT);
+    $postQuery = "SELECT * FROM posts WHERE post_ID=$postID";
+    $postResult = mysqli_query($connection, $postQuery);
+    $post = mysqli_fetch_assoc($postResult);
 } else {
     header('location:'. ROOT_URL .'admin/');
     die();
@@ -37,7 +37,7 @@ if (isset($_GET['post_ID'])){
                 <input type="hidden" name="previous_thumbnail_name" value="<?php echo $post['thumbnail'] ?>">
                 <input type="text" name="title" value="<?php echo h($post['title']) ?>" placeholder="タイトル">
                 <select name="tag_ID">
-                    <?php while ($tag = mysqli_fetch_assoc($tag_result)): ?>
+                    <?php while ($tag = mysqli_fetch_assoc($tagResult)): ?>
                         <option value="<?php echo $tag['tag_ID'] ?>"><?php echo $tag['tag_title'] ?></option>     
                     <?php endwhile; ?>
                 </select>

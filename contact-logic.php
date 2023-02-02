@@ -37,19 +37,19 @@ if (isset($_POST['submit'])){
 
         // パスワード変更用メールを送るための設定
         // メールタイトル
-        $auto_reply_title = 'お問い合わせ内容 | Tsukuba University News';
+        $autoReplyTitle = 'お問い合わせ内容 | Tsukuba University News';
         // メール本文
-        $auto_reply_body = "お問い合わせを受け付けました。\n\n";
-        $auto_reply_body .= "≪ お問い合わせ内容 ≫\n";        
-        $auto_reply_body .= "タイトル：" . $title . "\n";
-        $auto_reply_body .= "お名前：" . $name . " 様\n";
-        $auto_reply_body .= "内容：" . $body . "\n\n";
-        $auto_reply_body .= "このメールは自動送信メールです。返信いただいても回答いたしかねますので、予めご了承ください。\n\n";
-        $auto_reply_body .= "Tsukuba University News";
+        $autoReplyBody = "お問い合わせを受け付けました。\n\n";
+        $autoReplyBody .= "≪ お問い合わせ内容 ≫\n";        
+        $autoReplyBody .= "タイトル：" . $title . "\n";
+        $autoReplyBody .= "お名前：" . $name . " 様\n";
+        $autoReplyBody .= "内容：" . $body . "\n\n";
+        $autoReplyBody .= "このメールは自動送信メールです。返信いただいても回答いたしかねますので、予めご了承ください。\n\n";
+        $autoReplyBody .= "Tsukuba University News";
         // ヘッダー
         $header = "From: Tsukuba University News <name@gmail.com>\n";
         // 送信
-        mb_send_mail($email, $auto_reply_title, $auto_reply_body, $header);
+        mb_send_mail($email, $autoReplyTitle, $autoReplyBody, $header);
                 
         // エラーがない場合
         if (!mysqli_errno($connection)){
