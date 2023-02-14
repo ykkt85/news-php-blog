@@ -2,7 +2,6 @@
 require 'config/database.php';
 ?>
 
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>

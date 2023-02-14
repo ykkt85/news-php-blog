@@ -2,11 +2,13 @@
 require 'config/database.php';
 
 // 前回エラー時のセッション値を表示
-$email = $_SESSION['reset-password-data']['email'] ?? NULL;
+$email = $_SESSION['reset_password_data']['email'] ?? NULL;
 
 // セッション値を破棄
-unset($_SESSION['reset-password-data']);
+unset($_SESSION['reset_password_data']);
 ?>
+
+<!--================================ HTML ================================-->
 
 <!DOCTYPE html>
 <html lang="ja">
@@ -22,27 +24,26 @@ unset($_SESSION['reset-password-data']);
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
     <!-- MONTSERRAT GOOGLE FONT -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
 </head>
-<body>
 
+<body>
     <section class="form__section">
         <div class="container form__section-container">
             <h2>パスワード変更</h2>
             <!-- 一致するメールアドレスが存在する時 -->
-            <?php if (isset($_SESSION['reset-password-success'])): ?>
+            <?php if (isset($_SESSION['reset_password_success'])): ?>
                 <div class="alert__message success">
                     <p>
-                        <?php echo $_SESSION['reset-password-success'];
-                        unset($_SESSION['reset-password-success']); ?>
+                        <?php echo $_SESSION['reset_password_success'];
+                        unset($_SESSION['reset_password_success']); ?>
                     </p>
                 </div>
             <!-- 一致するメールアドレスが存在しない時 -->
-            <?php elseif (isset($_SESSION['reset-password-error'])): ?>
+            <?php elseif (isset($_SESSION['reset_password_error'])): ?>
                 <div class="alert__message error">
                     <p>
-                        <?php echo $_SESSION['reset-password-error'];
-                        unset($_SESSION['reset-password-error']); ?>
+                        <?php echo $_SESSION['reset_password_error'];
+                        unset($_SESSION['reset_password_error']); ?>
                     </p>
                 </div>
             <?php endif; ?>

@@ -1,7 +1,8 @@
 <?php
 include 'partials/header.php';
 ?>
-    <!--================ END OF NAV ================-->
+
+<!--================================ HTML ================================-->
 
     <section class="empty__page">
         <h1>Privacy Policy</h1>

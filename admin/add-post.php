@@ -1,10 +1,9 @@
 <?php
 include 'partials/header.php';
+$connection = dbconnect();
 
 // タグ表示のためDBからデータを取得
-$query = "SELECT * FROM tags WHERE is_deleted=0";
-$tags = mysqli_query($connection, $query);
-
+$stmt = $connection->query('SELECT * FROM tags WHERE is_deleted=0');
 
 // 前回エラー時にセッションデータを表示
 $title = $_SESSION['add-post-data']['title'] ?? NULL;
@@ -13,7 +12,8 @@ $body = $_SESSION['add-post-data']['body'] ?? NULL;
 // セッションデータを消去
 unset($_SESSION['add-post-data']);
 ?>
-    <!--================ END OF PHP ================-->
+
+<!--================================ HTML ================================-->
 
     <section class="form__section">
         <div class="container form__section-container">
@@ -31,7 +31,7 @@ unset($_SESSION['add-post-data']);
             <form class="form__column" action="<?php echo ROOT_URL ?>admin/add-post-logic.php" enctype="multipart/form-data" method="POST">
                 <input type="text" name="title" value="<?php echo h($title) ?>" placeholder="タイトル">
                 <select name="tag_ID">
-                    <?php while($tag = mysqli_fetch_assoc($tags)): ?>
+                    <?php while($tag = $stmt->fetch_assoc()): ?>
                         <option value="<?php echo $tag['tag_ID'] ?>"><?php echo $tag['tag_title'] ?></option>
                     <?php endwhile; ?>
                 </select>
