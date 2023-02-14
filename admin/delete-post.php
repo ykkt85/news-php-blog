@@ -7,22 +7,23 @@ if (isset($_GET['post_ID'])){
     $isDeleted = filter_var($_POST['is_deleted'], FILTER_SANITIZE_NUMBER_INT);
     
     // DBの値を上書き
-    $updatePostQuery = "UPDATE posts SET is_deleted=1 WHERE post_ID=$postID LIMIT 1";
-    $updatePostResult = mysqli_query($connection, $updatePostQuery);
+    $connection = dbconnect();
+    $stmt = $connection->prepare('UPDATE posts SET updated_at=CURRENT_TIMESTAMP(), is_deleted=1 WHERE post_ID=? LIMIT 1');
+    $stmt->bind_param('i', $postID);
+    $success = $stmt->execute();
 
     // DBの値を取り出す
-    $fetchPostQuery = "SELECT * FROM posts WHERE post_ID=$postID LIMIT 1";
-    $fetchPostResult = mysqli_query($connection, $fetchPostQuery);
-    $post = mysqli_fetch_assoc($fetchPostResult);
-    
-    // エラーがない場合
-    if (!mysqli_errno($connection)){
-        $_SESSION['delete-post-success'] = "投稿「 " . h($post['title']) . "」が削除されました";
+    $stmt = $connection->prepare('SELECT title FROM posts WHERE post_ID=? LIMIT 1');
+    $stmt->bind_param('i', $postID);
+    $success = $stmt->execute();
+    $stmt->bind_result($title);
+    $stmt->fetch();
+
+    if (isset($title)){
+        $_SESSION['delete_post_success'] = "投稿「 " . h($title) . "」が削除されました";
         header('location: ' . ROOT_URL . 'admin/');
-    
-    // エラーがある場合
     } else {
-        $_SESSION['delete-post-error'] = "投稿「 ". h($post['title']) . " 」の削除に失敗しました";
+        $_SESSION['delete_post_error'] = "投稿「 ". h($title) . "」の削除に失敗しました";
         header('location: ' . ROOT_URL . 'admin/');
     }
 

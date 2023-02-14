@@ -7,21 +7,25 @@ if (isset($_GET['user_ID'])){
     $isDeleted = filter_var($_POST['is_deleted'], FILTER_SANITIZE_NUMBER_INT);
     
     // DBの内容を上書き
-    $updateUserQuery = "UPDATE users SET is_deleted=1 WHERE user_ID=$userID LIMIT 1";
-    $updateUserResult = mysqli_query($connection, $updateUserQuery);
+    $connection = dbconnect();
+    $stmt = $connection->prepare('UPDATE users SET updated_at=CURRENT_TIMESTAMP(), is_deleted=1 WHERE user_ID=? LIMIT 1');
+    $stmt->bind_param('i', $userID);
+    $successUpdate = $stmt->execute();
 
     // DBの内容を取り出す
-    $fetchUserQuery = "SELECT * FROM users WHERE user_ID=$userID LIMIT 1";
-    $fetchUserResult = mysqli_query($connection, $fetchUserQuery);
-    $user = mysqli_fetch_assoc($fetchUserResult);
+    $stmt = $connection->prepare('SELECT email FROM users WHERE user_ID=? LIMIT 1');
+    $stmt->bind_param('i', $userID);
+    $successSelect = $stmt->execute();
+    $stmt->bind_result($email);
+    $stmt->fetch();
     
     // エラーがない場合
-    if (!mysqli_errno($connection)){
-        $_SESSION['delete-user-success'] = "ユーザー {$user['email']} が削除されました";
+    if ($successUpdate && $successSelect){
+        $_SESSION['delete_user_success'] = "ユーザー {$email} が削除されました";
         header('location: ' . ROOT_URL . 'admin/manage-users.php');
     // エラーがある場合
     } else {
-        $_SESSION['delete-user-error'] = "ユーザー {$user['email']} の削除に失敗しました";
+        $_SESSION['delete_user_error'] = "ユーザー {$email} の削除に失敗しました";
         header('location: ' . ROOT_URL . 'admin/manage-users.php');
     }
 

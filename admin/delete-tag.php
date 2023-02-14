@@ -4,28 +4,35 @@ require 'config/database.php';
 // delete-tag.phpのURLにtag_IDの値が含まれている場合
 if (isset($_GET['tag_ID'])){
     $tagID = filter_var($_GET['tag_ID'], FILTER_SANITIZE_NUMBER_INT);
+    $connection = dbconnect();
     
     // DBの内容を上書き
-    $updateTagQuery = "UPDATE tags SET is_deleted=1 WHERE tag_ID=$tagID LIMIT 1";
-    $updateTagResult = mysqli_query($connection, $updateTagQuery);
+    $stmt = $connection->prepare('UPDATE tags SET updated_at=CURRENT_TIMESTAMP(), is_deleted=1 WHERE tag_ID=? LIMIT 1');
+    $stmt->bind_param('i', $tagID);
+    $successTags = $stmt->execute();
+
 
     // 削除したタグがついていた記事のタグ表示を変更
-    $updateDeletedQuery = "UPDATE posts SET tag_ID=10 WHERE tag_ID=$tagID";
-    $updateDeletedResult = mysqli_query($connection, $updateDeletedQuery);
+    $stmt = $connection->prepare('UPDATE posts SET tag_ID=10 WHERE tag_ID=?');
+    $stmt->bind_param('i', $tagID);
+    $successPosts = $stmt->execute();
+
     
     // DBの値を取り出す
-    $fetchTagQuery = "SELECT * FROM tags WHERE tag_ID=$tagID LIMIT 1";
-    $fetchTagResult = mysqli_query($connection, $fetchTagQuery);
-    $tag = mysqli_fetch_assoc($fetchTagResult);
+    $stmt = $connection->prepare('SELECT tag_title FROM tags WHERE tag_ID=? LIMIT 1');
+    $stmt->bind_param('i', $tagID);
+    $successTagTitle = $stmt->execute();
+    $stmt->bind_result($tagTitle);
+    $stmt->fetch();
     
-    // エラーがない場合
-    if (!mysqli_errno($connection)){
-        $_SESSION['delete-tag-success'] = "タグ「 {$tag['tag_title']} 」が削除されました";
+    // 全ての動作においてエラーがない場合
+    if ($successTags && $successPosts && $successTagTitle){
+        $_SESSION['delete_tag_success'] = "タグ「 {$tagTitle} 」が削除されました";
         header('location: ' . ROOT_URL . 'admin/manage-tags.php');
     
     // エラーがある場合
     } else {
-        $_SESSION['delete-tag-error'] = "タグ「 {$tag['tag_title']} 」の削除に失敗しました";
+        $_SESSION['delete_tag_error'] = "タグ「 {$tagTitle} 」の削除に失敗しました";
         header('location: ' . ROOT_URL . 'admin/manage-tags.php');
     }
 

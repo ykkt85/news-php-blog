@@ -9,42 +9,48 @@ if(isset($_POST['submit'])){
     //フォームの値確認
     // タグ名が空の場合
     if (!$tagTitle){
-        $_SESSION['add-tag-error'] = "タグ名を入力してください";
+        $_SESSION['add_tag_error'] = "タグ名を入力してください";
     
     // 説明が空の場合
     } elseif (!$description){
-        $_SESSION['add-tag-error'] = "説明を入力してください";
+        $_SESSION['add_tag_error'] = "説明を入力してください";
     
     } else {
         // タグ名に被りがないか確認
-        $checkTagQuery = "SELECT * FROM tags WHERE tag_title='$tagTitle'";
-        $checkTagResult = mysqli_query($connection, $checkTagQuery);
-        if (mysqli_num_rows($checkTagResult) > 0){
-            $_SESSION['add-tag-error'] = "そのタグ名は既に登録されています"; 
+        $connection = dbconnect();
+        $stmt = $connection->prepare('SELECT tag_title FROM tags WHERE tag_title=?');
+        $stmt->bind_param('s', $tagTitle);
+        $success = $stmt->execute();
+        $stmt->bind_result($tagID);
+        $stmt->fetch();
+        if ($tagID !== NULL){
+            $_SESSION['add_tag_error'] = "そのタグ名は既に登録されています";
         }
     }
 
-    // $_SESSION['add-tag-error']に何らかの値が含まれている場合
-    if (isset($_SESSION['add-tag-error'])){
+    // $_SESSION['add_tag_error']に何らかの値が含まれている場合
+    if (isset($_SESSION['add_tag_error'])){
         // add-tagページに値を渡してリダイレクト
-        $_SESSION['add-tag-data'] = $_POST;
+        $_SESSION['add_tag_data'] = $_POST;
         header('location: ' . ROOT_URL . 'admin/add-tag.php');
         die();
 
     } else {
         // DBに値を記録
-        $insertTagQuery = "INSERT INTO tags (tag_title, description) VALUES('$tagTitle', '$description')";
-        $insertTagResult = mysqli_query($connection, $insertTagQuery);
+        $connection = dbconnect();
+        $stmt = $connection->prepare('INSERT INTO tags (tag_title, description, created_at, updated_at, is_deleted) VALUES(?, ?, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 0)');
+        $stmt->bind_param('ss', $tagTitle, $description);
+        $success = $stmt->execute();
 
-        // DB接続エラーがある場合
-        if (mysqli_errno($connection)) {
-            $_SESSION['add-tag-error'] = "タグを登録できません";
-            $_SESSION['add-tag-data'] = $_POST;
+        // エラーがある場合
+        if (!$success){
+            $_SESSION['add_tag_error'] = "タグを登録できません";
+            $_SESSION['add_tag_data'] = $_POST;
             header('location: ' . ROOT_URL . 'admin/add-tag.php');
             die();
-
+        // エラーがない場合
         } else {
-            $_SESSION['add-tag-success'] = "タグ「" . h($tagTitle) . " 」が登録されました";
+            $_SESSION['add_tag_success'] = "タグ「" . h($tagTitle) . "」が登録されました";
             header('location: ' . ROOT_URL . 'admin/manage-tags.php');
             die();
         }

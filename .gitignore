@@ -1,0 +1,4 @@
+# 以下に追跡しないファイルを指定
+
+# /config/constants.php
+# /admin/

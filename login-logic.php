@@ -9,42 +9,38 @@ if (isset($_POST['submit'])){
     // フォームの値確認
     // メールアドレスが空の場合
     if (!$email){
-        $_SESSION['login-error'] = "メールアドレスを入力してください";
+        $_SESSION['login_error'] = "メールアドレスを入力してください";
     
     // パスワードが空の場合
     } elseif (!$password){
-        $_SESSION['login-error'] = "パスワードを入力してください";
+        $_SESSION['login_error'] = "パスワードを入力してください";
     
     // フォームに全ての値が入力されている場合
     } else {
-        $fetchUserQuery = "SELECT * FROM users WHERE email='$email'";
-        $fetchUserResult = mysqli_query($connection, $fetchUserQuery);
-        
-        // DBから合致するメールアドレスを取得
-        if (mysqli_num_rows($fetchUserResult) === 1){
-            $userRecord = mysqli_fetch_assoc($fetchUserResult);
-            $dbPassword = $userRecord['password'];
-            
-            // パスワードを比較
-            if (password_verify($password, $dbPassword)){
-                $_SESSION['user_ID'] = $userRecord['user_ID'];
-                $_SESSION['role_ID'] = $userRecord['role_ID'];
-                $_SESSION['email'] = $userRecord['email'];
-                header('location: ' . ROOT_URL . 'admin/index.php');
-            // 入力したパスワードと登録したパスワードが異なる場合
-            } else {
-                $_SESSION['login-error'] = "パスワードが正しくありません";
-            }
+        //　DBに接続
+        $connection = dbconnect();
+        $stmt = $connection->prepare('SELECT user_ID, email, password, role_ID FROM users WHERE email=?');
+        $stmt->bind_param('s', $email);
+        $success = $stmt->execute();
+        $stmt->bind_result($userID, $email, $hashed, $roleID);
+        $stmt->fetch();
 
-        // DBから合致するメールアドレスを取得できない場合
+        // パスワードが正しいか確認
+        if (password_verify($password, $hashed)){
+            // 各セッション値を設定
+            session_regenerate_id();
+            $_SESSION['user_ID'] = $userID;
+            $_SESSION['email'] = $email;
+            $_SESSION['role_ID'] = $roleID;
+            header('location: ' . ROOT_URL . 'admin/index.php');
         } else {
-            $_SESSION['login-error'] = "ユーザーが見つかりません";
+            $_SESSION['login_error'] = "パスワードが正しくありません";
         }
     }
 
     // エラーがある場合
-    if (isset($_SESSION['login-error'])){
-        $_SESSION['login-data'] = $_POST;
+    if (isset($_SESSION['login_error'])){
+        $_SESSION['login_data'] = $_POST;
         header('location:' . ROOT_URL . 'login.php');
         die();
     }

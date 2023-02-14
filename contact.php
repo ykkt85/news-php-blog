@@ -2,33 +2,34 @@
 include 'partials/header.php';
 
 // エラー時にセッションデータを戻す
-$title = $_SESSION['contact-data']['title'] ?? NULL;
-$name = $_SESSION['contact-data']['name'] ?? NULL;
-$email = $_SESSION['contact-data']['email'] ?? NULL;
-$body = $_SESSION['contact-data']['body'] ?? NULL;
+$title = $_SESSION['contact_data']['title'] ?? NULL;
+$name = $_SESSION['contact_data']['name'] ?? NULL;
+$email = $_SESSION['contact_data']['email'] ?? NULL;
+$body = $_SESSION['contact_data']['body'] ?? NULL;
 
 // セッションデータを消去
-unset($_SESSION['contact-data']);
+unset($_SESSION['contact_data']);
 ?>
-    <!--================ END OF NAV ================-->
+
+<!--================================ HTML ================================-->
 
     <section class="form__section">
         <div class="container form__section-container">
             <h2>問い合わせ</h2>
             <!-- 問い合わせに成功した場合 -->
-            <?php if (isset($_SESSION['contact-success'])):?>    
+            <?php if (isset($_SESSION['contact_success'])):?>    
                 <div class="alert__message success">
                     <p>
-                        <?php echo $_SESSION['contact-success'];
-                        unset($_SESSION['contact-success']); ?>
+                        <?php echo $_SESSION['contact_success'];
+                        unset($_SESSION['contact_success']); ?>
                     </p>
                 </div>
             <!-- 問い合わせに失敗した場合 -->
-            <?php elseif (isset($_SESSION['contact-error'])):?>    
+            <?php elseif (isset($_SESSION['contact_error'])):?>    
                 <div class="alert__message error">
                     <p>
-                        <?php echo $_SESSION['contact-error'];
-                        unset($_SESSION['contact-error']); ?>
+                        <?php echo $_SESSION['contact_error'];
+                        unset($_SESSION['contact_error']); ?>
                     </p>
                 </div>
             <?php endif; ?>

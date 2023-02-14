@@ -6,9 +6,12 @@ if (isset($_GET['user_ID'])){
     $userID = filter_var($_GET['user_ID'], FILTER_SANITIZE_NUMBER_INT);
 
     // DBから値を取得
-    $query = "SELECT * FROM users WHERE user_id=$userID";
-    $result = mysqli_query($connection, $query);
-    $user = mysqli_fetch_assoc($result);
+    $connection = dbconnect();
+    $stmt = $connection->prepare('SELECT user_ID, email FROM users WHERE user_id=?');
+    $stmt->bind_param('i', $userID);
+    $stmt->execute();
+    $stmt->bind_result($userID, $email);
+    $stmt->fetch();
 
 // edit-user.phpのURLにuser_IDの値が含まれていない場合
 } else {
@@ -17,14 +20,14 @@ if (isset($_GET['user_ID'])){
 }
 ?>
 
-    <!--================ END OF PHP ================-->
+<!--================================ HTML ================================-->
 
     <section class="form__section">
         <div class="container form__section-container">
             <h2>投稿者・管理者編集</h2>
             <form class="form__column" action="<?php echo ROOT_URL ?>admin/edit-user-logic.php" enctype="multipart/form-data" method="POST">
-                <input type="hidden" value="<?php echo $user['user_ID'] ?>" name="user_ID">
-                <input type="email" value="<?php echo h($user['email']) ?>" name="email" readonly>
+                <input type="hidden" value="<?php echo $userID ?>" name="user_ID">
+                <input type="email" value="<?php echo h($email) ?>" name="email" readonly>
                 <select name="role_ID">
                     <option value="0">投稿者</option>
                     <option value="1">管理者</option>

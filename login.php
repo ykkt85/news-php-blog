@@ -2,12 +2,14 @@
 require 'config/database.php';
 
 // 前回エラー時のセッション値を表示
-$email = $_SESSION['login-data']['email'] ?? NULL;
-$password = $_SESSION['login-data']['password'] ?? NULL;
+$email = $_SESSION['login_data']['email'] ?? NULL;
+$password = $_SESSION['login_data']['password'] ?? NULL;
 
 // セッション値を破棄
-unset($_SESSION['login-data']);
+unset($_SESSION['login_data']);
 ?>
+
+<!--================================ HTML ================================-->
 
 <!DOCTYPE html>
 <html lang="ja">
@@ -23,10 +25,9 @@ unset($_SESSION['login-data']);
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
     <!-- MONTSERRAT GOOGLE FONT -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
 </head>
-<body>
 
+<body>
     <section class="form__section">
         <div class="container form__section-container">
             <h2>ログイン</h2>

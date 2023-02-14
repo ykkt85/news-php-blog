@@ -1,12 +1,15 @@
 <?php
 include 'partials/header.php';
+$connection = dbconnect();
 
 // 検索バーから記事検索をした場合
-if (isset($_GET['search']) && isset($_GET['submit'])){
+if (isset($_GET['search'])){
     // DBから検索結果に合致するタイトルを含む記事を取得
     $search = filter_var($_GET['search'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-    $query = "SELECT * FROM posts WHERE is_deleted=0 AND title LIKE '%$search%' ORDER BY created_at DESC";
-    $posts = mysqli_query($connection, $query);
+    $stmt = $connection->prepare("SELECT p.post_ID, p.title, p.tag_ID, p.thumbnail, p.body, p.created_at, t.tag_title FROM posts AS p INNER JOIN tags AS t ON p.tag_ID=t.tag_ID WHERE p.is_deleted=0 AND p.body LIKE CONCAT('%', ?, '%') ORDER BY p.created_at DESC");
+    $stmt->bind_param('s', $search);
+    $stmt->execute();
+    $stmt->bind_result($postID, $title, $tagID, $thumbnail, $body, $createdAt, $tagTitle);
 
 // 検索バーから記事検索をしていない場合
 } else {
@@ -15,11 +18,13 @@ if (isset($_GET['search']) && isset($_GET['submit'])){
 }
 ?>
 
+<!--================================ HTML ================================-->
+
     <section class="search__bar">
         <form class="container search__bar-container" action="<?php echo ROOT_URL ?>search.php" method="GET">
             <div>
                 <i class="uil uil-search"></i>
-                <input type="search" name="search" value="<?php echo h($search) ?>" placeholder="タイトルを入力">
+                <input type="search" name="search" value="<?php echo h($search) ?>" placeholder="単語等を入力">
             </div>
             <button type="submit" name="submit" class="btn white">検索</button>
         </form>
@@ -27,30 +32,23 @@ if (isset($_GET['search']) && isset($_GET['submit'])){
     <!--================ END OF SEARCH ================-->
 
     <!-- 検索結果に該当する記事がある場合 -->
-    <?php if (mysqli_num_rows($posts) > 0): ?>
+    <?php //if ($stmt->fetch()): ?>
         <section class="posts section__extra-margin">
             <div class="container posts__container">
-                <!-- DBから取得した記事の値を表示 -->
-                <?php while($post = mysqli_fetch_assoc($posts)): ?>
+                <!-- DBから取得した記事の値を表示（表示されない） -->
+                <?php while($stmt->fetch()): ?>
                     <article class="post">
                         <div class="post__thumbnail">
-                            <img src="./images/<?php echo $post['thumbnail'] ?>">
+                            <img src="./images/<?php echo $thumbnail ?>">
                         </div>
                         <div class="post__info">
-                        <?php
-                        // DBからタグデータを取得
-                        $tagID = $post['tag_ID'];
-                        $tagQuery = "SELECT * FROM tags WHERE tag_ID=$tagID";
-                        $tagResult = mysqli_query($connection, $tagQuery);
-                        $tag = mysqli_fetch_assoc($tagResult);
-                        ?>
                             <h3 class="post__title">
-                                <a href="<?php echo ROOT_URL ?>post.php?post_ID=<?php echo $post['post_ID'] ?>"><?php echo h($post['title']) ?></a>
+                                <a href="<?php echo ROOT_URL ?>post.php?post_ID=<?php echo $postID ?>"><?php echo h($title) ?></a>
                             </h3>
-                            <a href="<?php echo ROOT_URL ?>tag-posts.php?tag_ID=<?php echo $tag['tag_ID'] ?>" class="tag__button"><?php echo h($tag['tag_title']) ?></a>
-                            <small class="publish__date"><?php echo date("Y.m.d - H:i", strtotime($post['updated_at'])) ?></small>
+                            <a href="<?php echo ROOT_URL ?>tag-posts.php?tag_ID=<?php echo $tagID ?>" class="tag__button"><?php echo h($tagTitle) ?></a>
+                            <small class="publish__date"><?php echo date("Y.m.d - H:i", strtotime($createdAt)) ?></small>
                             <p class="post__body">
-                                <?php echo substr(h($post['body']), 0, 180) ?>...
+                                <?php echo substr(h($body), 0, 180) ?>...
                             </p>
                         </div>
                     </article>
@@ -58,23 +56,24 @@ if (isset($_GET['search']) && isset($_GET['submit'])){
             </div>
         </section>
     <!-- 検索結果に該当する記事がない場合 -->
-    <?php else: ?>
-        <div class="alert__message error lg section__extra-margin">
+    <?php //else: ?>
+        <!-- <div class="alert__message error lg section__extra-margin">
             <p>記事がありません</p>
-        </div>
-    <?php endif; ?>
+        </div> -->
+    <?php //endif; ?>
     <!--================ END OF POSTS ================-->
 
     <section class="tag__buttons">
         <div class="container tag__buttons-container">
             <?php
-            $allTagsQuery = "SELECT * FROM tags WHERE is_deleted=0";
-            $allTags = mysqli_query($connection, $allTagsQuery);
-            ?>
-            <?php while($tag = mysqli_fetch_assoc($allTags)): ?>
-                <a href="<?php echo ROOT_URL ?>tag-posts.php?tag_ID=<?php echo $tag['tag_ID'] ?>" class="tag__button"><?php echo h($tag['tag_title']) ?></a>
+            // DBから全てのタグタイトルを取得
+            $stmt = $connection->prepare('SELECT tag_ID, tag_title FROM tags WHERE is_deleted=0');
+            $stmt->execute();
+            $stmt->bind_result($tagID, $tagTitle);
+            while($stmt->fetch()): ?>
+                <a href="<?php echo ROOT_URL ?>tag-posts.php?tag_ID=<?php echo $tagID ?>" class="tag__button"><?php echo h($tagTitle) ?></a>
             <?php endwhile; ?>
-            </div>
+        </div>
     </section>
     <!--================ END OF TAGS ================-->
 

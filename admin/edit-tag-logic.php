@@ -9,20 +9,21 @@ if(isset($_POST['submit'])){
 
     // タグ名が空欄の場合
     if (!$tagTitle){
-        $_SESSION['edit-tag-error'] = "タグ名を入力してください";
+        $_SESSION['edit_tag_error'] = "タグ名を入力してください";
     
     // 説明が空欄の場合
     } elseif (!$description){ 
-        $_SESSION['edit-tag-error'] = "説明を入力してください";
+        $_SESSION['edit_tag_error'] = "説明を入力してください";
 
     } else {
-        $query = "UPDATE tags SET tag_title='$tagTitle', description='$description', updated_at=CURRENT_TIMESTAMP() WHERE tag_ID=$tagID LIMIT 1";
-        $result = mysqli_query($connection, $query);
-
-        if (mysqli_errno($connection)){
-            $_SESSION['edit-tag-error'] = "タグを編集できませんでした";
+        $connection = dbconnect();
+        $stmt = $connection->prepare('UPDATE tags SET tag_title=?, description=?, updated_at=CURRENT_TIMESTAMP() WHERE tag_ID=? LIMIT 1');
+        $stmt->bind_param('ssi', $tagTitle, $description, $tagID);
+        $success = $stmt->execute();
+        if (!$success){
+            $_SESSION['edit_tag_error'] = "タグを編集できませんでした";
         } else {
-            $_SESSION['edit-tag-success'] = "タグ「 " . h($tagTitle) . " 」を編集しました";
+            $_SESSION['edit_tag_success'] = "タグ「" . h($tagTitle) . "」を編集しました";
         }
     }
 

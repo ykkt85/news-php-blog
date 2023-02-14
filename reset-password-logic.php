@@ -4,6 +4,7 @@ require 'config/database.php';
 // mb_send_mailの設定
 mb_language("Japanese");
 mb_internal_encoding("UTF-8");
+date_default_timezone_set('Asia/Tokyo');
 
 // reset-password.phpのフォームが送信された場合
 if (isset($_POST['submit'])){
@@ -25,20 +26,20 @@ if (isset($_POST['submit'])){
     mb_send_mail($email, $autoReplyTitle, $autoReplyBody, $header);
 
     // DBにトークンを登録
-    $insertUserQuery = "UPDATE users SET token='$token', updated_at=CURRENT_TIMESTAMP() WHERE email='$email' AND is_deleted=0 LIMIT 1";
-    $insertUserResult = mysqli_query($connection, $insertUserQuery);
-        
-    // DB接続エラーがない場合
-    if (!mysqli_errno($connection)){
-        $_SESSION['reset-password-success'] = "パスワード変更用のURLを送信しました。登録済みのメールアドレスを確認してください";
-        header('location:' . ROOT_URL . 'reset-password.php');
-        die();
-    
-    // DB接続エラーがある場合
-    } else {
-        $_SESSION['reset-password-error'] = "パスワードを変更できません";
-        $_SESSION['reset-password-data'] = $_POST;
+    $connection = dbconnect();
+    $stmt = $connection->prepare('UPDATE users SET token=?, updated_at=CURRENT_TIMESTAMP() WHERE email=? AND is_deleted=0 LIMIT 1');
+    $stmt->bind_param('ss', $token, $email);
+    $success = $stmt->execute();
+
+    // エラーがある場合
+    if (!$success){
+        $_SESSION['reset_password_error'] = "パスワードを変更できません";
+        $_SESSION['reset_password_data'] = $_POST;
         header('location: ' . ROOT_URL . 'reset-password.php');
+        die();
+    } else {
+        $_SESSION['reset_password_success'] = "パスワード変更用のURLを送信しました。登録済みのメールアドレスを確認してください";
+        header('location:' . ROOT_URL . 'reset-password.php');
         die();
     }
 

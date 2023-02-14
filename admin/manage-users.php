@@ -3,51 +3,55 @@ include 'partials/header.php';
 
 // ログイン中以外のユーザーを読み込む
 $currentAdminID = $_SESSION['user_ID'];
-$query = "SELECT * FROM users WHERE user_ID!=$currentAdminID AND is_deleted=0";
-$users = mysqli_query($connection, $query);
+$connection = dbconnect();
+$stmt = $connection->prepare('SELECT email, user_ID, role_ID FROM users WHERE user_ID!=? AND is_deleted=0');
+$stmt->bind_param('i', $currentAdminID);
+$stmt->execute();
+$stmt->bind_result($email, $userID, $roleID);
+//$result = $stmt->fetch();
 ?>
 
-    <!--================ END OF NAV ================-->
+<!--================================ HTML ================================-->
 
     <section class="dashboard">
         <!-- ユーザー追加に成功した場合 -->
-        <?php if (isset($_SESSION['add-user-success'])): ?>
+        <?php if (isset($_SESSION['add_user_success'])): ?>
             <div class="alert__message success container">
                 <p>
-                    <?php echo $_SESSION['add-user-success'];
-                    unset($_SESSION['add-user-success']); ?>
+                    <?php echo $_SESSION['add_user_success'];
+                    unset($_SESSION['add_user_success']); ?>
                 </p>
             </div>
         <!-- ユーザー編集に成功した場合 -->
-        <?php elseif (isset($_SESSION['edit-user-success'])): ?>
+        <?php elseif (isset($_SESSION['edit_user_success'])): ?>
             <div class="alert__message success container">
                 <p>
-                    <?php echo $_SESSION['edit-user-success'];
-                    unset($_SESSION['edit-user-success']); ?>
+                    <?php echo $_SESSION['edit_user_success'];
+                    unset($_SESSION['edit_user_success']); ?>
                 </p>
             </div>
         <!-- ユーザー削除に成功した場合 -->
-        <?php elseif (isset($_SESSION['delete-user-success'])): ?>
+        <?php elseif (isset($_SESSION['delete_user_success'])): ?>
             <div class="alert__message success container">
                 <p>
-                    <?php echo $_SESSION['delete-user-success'];
-                    unset($_SESSION['delete-user-success']); ?>
+                    <?php echo $_SESSION['delete_user_success'];
+                    unset($_SESSION['delete_user_success']); ?>
                 </p>
             </div>
         <!-- ユーザー編集に失敗した場合 -->
-        <?php elseif (isset($_SESSION['edit-user-error'])): ?>
+        <?php elseif (isset($_SESSION['edit_user_error'])): ?>
             <div class="alert__message error container">
                 <p>
-                    <?php echo $_SESSION['edit-user-error'];
-                    unset($_SESSION['edit-user-error']); ?>
+                    <?php echo $_SESSION['edit_user_error'];
+                    unset($_SESSION['edit_user_error']); ?>
                 </p>
             </div>
         <!-- ユーザー削除に失敗した場合 -->
-        <?php elseif (isset($_SESSION['delete-user-error'])): ?>
+        <?php elseif (isset($_SESSION['delete_user_error'])): ?>
             <div class="alert__message error container">
                 <p>
-                    <?php echo $_SESSION['delete-user-error'];
-                    unset($_SESSION['delete-user-error']); ?>
+                    <?php echo $_SESSION['delete_user_error'];
+                    unset($_SESSION['delete_user_error']); ?>
                 </p>
             </div>
         <?php endif; ?>
@@ -93,13 +97,13 @@ $users = mysqli_query($connection, $query);
                         </li>
                     <?php endif; ?>
                     <!-- <li>
-                        <a href="<?php echo ROOT_URL ?>admin/change-email.php">
+                        <a href="<?php //echo ROOT_URL ?>admin/change-email.php">
                             <i class="uil uil-envelope-edit"></i>                            
                             <h5>メールアドレス変更</h5>
                         </a>
                     </li>
                     <li>
-                        <a href="<?php echo ROOT_URL ?>admin/change-password.php">
+                        <a href="<?php //echo ROOT_URL ?>admin/change-password.php">
                             <i class="uil uil-key-skeleton-alt"></i>
                             <h5>パスワード変更</h5>
                         </a>
@@ -115,7 +119,7 @@ $users = mysqli_query($connection, $query);
             <main>
                 <h2>投稿者・管理者編集</h2>
                 <!-- ログイン中のユーザー以外に登録されているユーザーがいる場合 -->
-                <?php if(mysqli_num_rows($users) > 0): ?>
+                <?php //if ($result): ?>
                     <table>
                         <thead>
                             <tr>
@@ -127,20 +131,20 @@ $users = mysqli_query($connection, $query);
                         </thead>
                         <tbody>
                             <!-- ログイン中以外のユーザーを表示 -->
-                            <?php while($user = mysqli_fetch_assoc($users)): ?>
-                                    <tr>
-                                        <td><?php echo h($user['email']) ?></td>
-                                        <td><a href="<?php echo ROOT_URL ?>admin/edit-user.php?user_ID=<?php echo $user['user_ID'] ?>" class="btn sm">編集</a></td>
-                                        <td><a href="<?php echo ROOT_URL ?>admin/delete-user.php?user_ID=<?php echo $user['user_ID'] ?>" class="btn sm danger">削除</a></td>
-                                        <td><?php echo $user['role_ID'] ? 'はい' : 'いいえ' ?></td>
-                                    </tr>
+                            <?php while($stmt->fetch()): ?>
+                                <tr>
+                                    <td><?php echo h($email) ?></td>
+                                    <td><a href="<?php echo ROOT_URL ?>admin/edit-user.php?user_ID=<?php echo $userID ?>" class="btn sm">編集</a></td>
+                                    <td><a href="<?php echo ROOT_URL ?>admin/delete-user.php?user_ID=<?php echo $userID ?>" class="btn sm danger">削除</a></td>
+                                    <td><?php echo $roleID ? 'はい' : 'いいえ' ?></td>
+                                </tr>
                             <?php endwhile; ?>
                         </tbody>
                     </table>
                 <!-- ログイン中以外のユーザーが登録されていない場合 -->
-                <?php else: ?>
-                    <div class="alert__message error"><?php echo "ユーザーが見つかりません"; ?></div>
-                <?php endif; ?>
+                <?php //else: ?>
+                    <!-- <div class="alert__message error"><?php //echo "ユーザーが見つかりません"; ?></div> -->
+                <?php //endif; ?>
             </main>
         </div>
     </section>
