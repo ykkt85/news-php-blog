@@ -3,7 +3,7 @@ require __DIR__ . '/../config/database.php';
 
 // edit-post.phpのフォームから値が送信された場合
 if (isset($_POST['submit'])){
-    $postID = filter_var($_POST['post_ID'], FILTER_SANITIZE_NUMBER_INT);
+    $postID = filter_var($_SESSION['post_ID'], FILTER_SANITIZE_NUMBER_INT);
     $title = filter_var($_POST['title'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $tagID = filter_var($_POST['tag_ID'], FILTER_SANITIZE_NUMBER_INT);
     $isFeatured = filter_var($_POST['is_featured'], FILTER_SANITIZE_NUMBER_INT);
@@ -80,6 +80,7 @@ if (isset($_POST['submit'])){
         // エラーがない場合
         if ($result){
             $_SESSION['edit_post_success'] = "記事を編集しました";
+            unset($_SESSION['post_ID']);
             header(('location: ' . ROOT_URL . 'admin/'));
             die();
         }
