@@ -1,5 +1,5 @@
 <?php
-include 'partials/header.php';
+include __DIR__ . '/partials/header.php';
 
 // エラー時にセッションデータを戻す
 $title = $_SESSION['contact_data']['title'] ?? NULL;
@@ -46,6 +46,9 @@ unset($_SESSION['contact_data']);
     </section>
     <!--================ END OF CONARCT ================-->
     
-    <script src="<?php echo ROOT_URL ?>js/main.js"></script>
+<?php
+include __DIR__ . '/partials/footer.php';
+?>
+
 </body>
 </html>

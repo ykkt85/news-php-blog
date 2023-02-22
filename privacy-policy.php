@@ -1,5 +1,5 @@
 <?php
-include 'partials/header.php';
+include __DIR__ . '/partials/header.php';
 ?>
 
 <!--================================ HTML ================================-->
@@ -10,5 +10,5 @@ include 'partials/header.php';
     <!--================ END OF PRIVACY-POLICY ================-->
 
 <?php
-include 'partials/footer.php';
+include __DIR__ . '/partials/footer.php';
 ?>

@@ -1,15 +1,20 @@
 <?php
-include 'partials/header.php';
+include __DIR__ . '/partials/header.php';
 
 // DBから記事の値を取得
 if (isset($_GET['post_ID'])){
     $postID = filter_var($_GET['post_ID'], FILTER_SANITIZE_NUMBER_INT);
     $connection = dbconnect();
-    $postStmt = $connection->prepare('SELECT post_ID, title, body, thumbnail FROM posts WHERE post_ID=? AND is_deleted=0');
+    $postStmt = $connection->prepare('SELECT post_ID, title, thumbnail, body, user_ID FROM posts WHERE post_ID=? AND is_deleted=0');
     $postStmt->bind_param('i', $postID);
     $postStmt->execute();
-    $postStmt->bind_result($postID, $title, $body, $thumbnail);
+    $postStmt->bind_result($postID, $title, $thumbnail, $body, $userID);
     $postStmt->fetch();
+
+    //ログイン中のユーザーと記事投稿ユーザーが異なる場合
+    if ($_SESSION['user_ID'] !== $userID){
+        header('location:' . ROOT_URL . 'admin/');
+    }
 
 } else {
     header('location:'. ROOT_URL .'admin/');

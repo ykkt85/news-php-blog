@@ -1,5 +1,5 @@
 <?php
-require 'config/database.php';
+require __DIR__ . '/../config/database.php';
 
 // URLにpost_IDの値が含まれている場合
 if (isset($_GET['post_ID'])){

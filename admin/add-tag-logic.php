@@ -1,5 +1,5 @@
 <?php
-require 'config/database.php';
+require __DIR__ . '/../config/database.php';
 
 // add-tag.phpのフォームから値が渡された場合
 if(isset($_POST['submit'])){

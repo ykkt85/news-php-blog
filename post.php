@@ -1,5 +1,5 @@
 <?php
-include 'partials/header.php';
+include __DIR__ . '/partials/header.php';
 
 // post.phpのURLにpost_IDがある場合、DBから記事データを取得
 if (isset($_GET['post_ID'])){
@@ -60,5 +60,5 @@ if (isset($_GET['post_ID'])){
     <!--================ END OF TAGS ================-->
     
 <?php
-include 'partials/footer.php';
+include __DIR__ . '/partials/footer.php';
 ?>

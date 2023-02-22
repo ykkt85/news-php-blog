@@ -1,5 +1,5 @@
 <?php
-require 'config/database.php';
+require __DIR__ . '/config/database.php';
 
 // 前回エラーの場合セッション値を表示
 $email = $_SESSION['signup_data']['email'] ?? null;

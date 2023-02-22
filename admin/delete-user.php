@@ -1,5 +1,5 @@
 <?php
-require 'config/database.php';
+require __DIR__ . '/../config/database.php';
 
 // user_IDのセッション値を受け取った場合
 if (isset($_GET['user_ID'])){

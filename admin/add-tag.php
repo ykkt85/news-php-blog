@@ -1,5 +1,5 @@
 <?php
-include 'partials/header.php';
+include __DIR__ . '/partials/header.php';
 
 // 前回エラー時にセッションデータを戻す
 $tagTitle = $_SESSION['add_tag_data']['tag_title'] ?? NULL;

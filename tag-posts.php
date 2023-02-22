@@ -1,5 +1,5 @@
 <?php
-include 'partials/header.php';
+include __DIR__ . '/partials/header.php';
 
 // tag-posts.phpのURLにtag_IDがある場合、タグと関連付けられている記事を表示
 if (isset($_GET['tag_ID'])){
@@ -92,5 +92,5 @@ if (isset($_GET['tag_ID'])){
     <!--================ END OF TAGS ================-->
 
 <?php
-include 'partials/footer.php';
+include __DIR__ . '/partials/footer.php';
 ?>

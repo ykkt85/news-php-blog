@@ -1,5 +1,5 @@
 <?php
-include 'partials/header.php';
+include __DIR__ . '/partials/header.php';
 
 // edit-user.phpのURLにuser_IDの値が含まれている場合
 if (isset($_GET['user_ID'])){
