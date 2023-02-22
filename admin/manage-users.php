@@ -1,5 +1,5 @@
 <?php
-include 'partials/header.php';
+include __DIR__ . '/partials/header.php';
 
 // ログイン中以外のユーザーを読み込む
 $currentAdminID = $_SESSION['user_ID'];
@@ -118,8 +118,6 @@ $stmt->bind_result($email, $userID, $roleID);
             </aside>
             <main>
                 <h2>投稿者・管理者編集</h2>
-                <!-- ログイン中のユーザー以外に登録されているユーザーがいる場合 -->
-                <?php //if ($result): ?>
                     <table>
                         <thead>
                             <tr>
@@ -141,10 +139,6 @@ $stmt->bind_result($email, $userID, $roleID);
                             <?php endwhile; ?>
                         </tbody>
                     </table>
-                <!-- ログイン中以外のユーザーが登録されていない場合 -->
-                <?php //else: ?>
-                    <!-- <div class="alert__message error"><?php //echo "ユーザーが見つかりません"; ?></div> -->
-                <?php //endif; ?>
             </main>
         </div>
     </section>

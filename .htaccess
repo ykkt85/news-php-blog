@@ -1,0 +1,17 @@
+# 注意：最後1行空行
+# 一覧を表示しない設定
+Options -Indexes
+
+# basic認証
+<Files ~ "(login.php|signup.php|reset-password.php)">
+AuthType Basic
+AuthName "ユーザー名とパスワードを入力してください"
+AuthUserFile C:\MAMP\htdocs\TsukubaUniversityNews\.htpasswd
+# AuthGroupFile /dev/null
+require valid-user
+</Files>
+
+# ブラウザからの閲覧を拒否する設定方法
+<Files ~ ".(gitignore|htaccess|htpasswd)$">
+    deny from all
+</Files>

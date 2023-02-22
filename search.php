@@ -1,5 +1,5 @@
 <?php
-include 'partials/header.php';
+include __DIR__ . '/partials/header.php';
 $connection = dbconnect();
 
 // 検索バーから記事検索をした場合
@@ -77,4 +77,4 @@ if (isset($_GET['search'])){
     </section>
     <!--================ END OF TAGS ================-->
 
-<?php include 'partials/footer.php'; ?>
+<?php include __DIR__ . '/partials/footer.php'; ?>

@@ -1,5 +1,5 @@
 <?php
-include 'partials/header.php';
+include __DIR__ . '/partials/header.php';
 
 $connection = dbconnect();
 $stmt = $connection->prepare('SELECT tag_ID, tag_title, description FROM tags WHERE is_deleted=0');
@@ -115,7 +115,6 @@ $stmt->bind_result($tagID, $tagTitle, $description);
             <main>
                 <h2>タグ編集</h2>
                 <!-- タグが登録されている場合 -->
-                <?php //if($result = $stmt->fetch()): ?>
                     <table>
                         <thead>
                             <tr>

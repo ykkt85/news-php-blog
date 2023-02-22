@@ -1,5 +1,5 @@
 <?php
-require 'config/database.php';
+require __DIR__ . '/config/database.php';
 
 // 前回エラー時のセッション値を表示
 $email = $_SESSION['login_data']['email'] ?? NULL;
@@ -32,26 +32,26 @@ unset($_SESSION['login_data']);
         <div class="container form__section-container">
             <h2>ログイン</h2>
             <!-- 新規投稿者をを登録した時 -->
-            <?php if (isset($_SESSION['signup-success'])): ?>
+            <?php if (isset($_SESSION['signup_success'])): ?>
                 <div class="alert__message success">
                     <p>
-                        <?php echo $_SESSION['signup-success'];
-                        unset($_SESSION['signup-success']); ?>
+                        <?php echo $_SESSION['signup_success'];
+                        unset($_SESSION['signup_success']); ?>
                     </p>
                 </div>
             <!-- パスワードを変更したとき -->
-            <?php if (isset($_SESSION['new-password-success'])): ?>
+            <?php if (isset($_SESSION['new_password_success'])): ?>
                 <div class ="alert__message success">
-                    <p><?php echo $_SESSION['new-password-success'];
-                    unset($_SESSION['new-password-success']); ?></p>
+                    <p><?php echo $_SESSION['new_password_success'];
+                    unset($_SESSION['new_password_success']); ?></p>
                 </div>
             <?php endif; ?>
             <!-- ログインに失敗した時 -->
-            <?php elseif (isset($_SESSION['login-error'])): ?>
+            <?php elseif (isset($_SESSION['login_error'])): ?>
                 <div class="alert__message error">
                     <p>
-                        <?php echo $_SESSION['login-error'];
-                        unset($_SESSION['login-error']); ?>
+                        <?php echo $_SESSION['login_error'];
+                        unset($_SESSION['login_error']); ?>
                     </p>
                 </div>
             <?php endif; ?>

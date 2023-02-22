@@ -1,11 +1,13 @@
 <?php
-require 'config/database.php';
+require __DIR__ . '/config/database.php';
 
 // signup.phpのフォームが送信された場合
 if (isset($_POST['submit'])){
     $email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);
     $createdPassword = filter_var($_POST['createdpassword'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $confirmedPassword = filter_var($_POST['confirmedpassword'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $pattern = '/\A(?=.*?[a-z])(?=.*?[A-Z])(?=.*?\d)(?=.*?[!-\/:-@[-`{-~])[!-~]{8,100}+\z/i';
+    $result = preg_match($pattern, $createdPassword);
 
     //フォームの値確認
     // メールアドレスが空の場合
@@ -19,6 +21,10 @@ if (isset($_POST['submit'])){
     // パスワードが異なる場合
     } elseif ($createdPassword !== $confirmedPassword){
         $_SESSION['signup_error'] = "パスワードが違います";
+    
+    // パスワードに大文字・記号・数字のいずれかが使われていない場合
+    } elseif ($result === 0) {
+        $_SESSION['signup_error'] = "パスワードに半角英大文字・小文字・数字・記号が含まれていません";
     
     // フォームに全ての値が入力されている場合
     } else {
@@ -56,6 +62,7 @@ if (isset($_POST['submit'])){
             $_SESSION['signup_data'] = $_POST;
             header('location: ' . ROOT_URL . 'signup.php');
             die();
+
         // エラーがない場合
         } else {
             $_SESSION['signup_success'] = "ユーザー登録が完了しました。ログインしてください";

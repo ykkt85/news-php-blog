@@ -1,5 +1,5 @@
 <?php
-include 'partials/header.php';
+include __DIR__ . '/partials/header.php';
 
 // DBから注目記事を取得
 $connection = dbconnect();
@@ -90,5 +90,5 @@ $stmt->bind_result($postID, $title, $tagID, $thumbnail, $body, $createdAt, $tagT
     <!--================ END OF TAGS ================-->
 
 <?php
-include 'partials/footer.php';
+include __DIR__ . '/partials/footer.php';
 ?>

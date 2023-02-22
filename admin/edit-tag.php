@@ -1,5 +1,5 @@
 <?php
-include 'partials/header.php';
+include __DIR__ . '/partials/header.php';
 
 // edit-tag.phpのURLからtag_IDの値を受け取った場合
 if (isset($_GET['tag_ID'])){

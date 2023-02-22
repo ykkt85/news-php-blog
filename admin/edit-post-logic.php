@@ -1,5 +1,5 @@
 <?php
-require 'config/database.php';
+require __DIR__ . '/../config/database.php';
 
 // edit-post.phpのフォームから値が送信された場合
 if (isset($_POST['submit'])){

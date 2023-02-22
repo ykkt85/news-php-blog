@@ -1,5 +1,5 @@
 <?php
-include 'partials/header.php';
+include __DIR__ . '/partials/header.php';
 $connection = dbconnect();
 
 // タグ表示のためDBからデータを取得

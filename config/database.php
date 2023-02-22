@@ -1,5 +1,5 @@
 <?php
-require 'config/constants.php';
+require __DIR__ . '/constants.php';
 
 // DBに接続
 function dbconnect(){

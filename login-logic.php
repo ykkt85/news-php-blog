@@ -1,5 +1,5 @@
 <?php
-require 'config/database.php';
+require __DIR__ . '/config/database.php';
 
 // login.phpからフォームが送信されたとき
 if (isset($_POST['submit'])){
@@ -17,7 +17,7 @@ if (isset($_POST['submit'])){
     
     // フォームに全ての値が入力されている場合
     } else {
-        //　DBに接続
+        // DBに接続
         $connection = dbconnect();
         $stmt = $connection->prepare('SELECT user_ID, email, password, role_ID FROM users WHERE email=?');
         $stmt->bind_param('s', $email);
