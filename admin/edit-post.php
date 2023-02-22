@@ -10,6 +10,7 @@ if (isset($_GET['post_ID'])){
     $postStmt->execute();
     $postStmt->bind_result($postID, $title, $thumbnail, $body, $userID);
     $postStmt->fetch();
+    $_SESSION['post_ID'] = $postID;
 
     //ログイン中のユーザーと記事投稿ユーザーが異なる場合
     if ($_SESSION['user_ID'] !== $userID){
@@ -38,7 +39,6 @@ if (isset($_GET['post_ID'])){
             <?php endif; ?>
             <!-- 記事編集フォーム -->
             <form class="form__column" action="<?php echo ROOT_URL ?>admin/edit-post-logic.php" enctype="multipart/form-data" method="POST">
-                <input type="hidden" name="post_ID" value="<?php echo $postID ?>">
                 <input type="hidden" name="previous_thumbnail_name" value="<?php echo $thumbnail ?>">
                 <input type="text" name="title" value="<?php echo h($title) ?>" placeholder="タイトル">
                 <select name="tag_ID">
