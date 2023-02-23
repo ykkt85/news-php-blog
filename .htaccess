@@ -11,7 +11,10 @@ AuthUserFile C:\MAMP\htdocs\TsukubaUniversityNews\.htpasswd
 require valid-user
 </Files>
 
-# ブラウザからの閲覧を拒否する設定方法
-<Files ~ ".(gitignore|htaccess|htpasswd)$">
+# ブラウザからの閲覧を拒否する設定
+<Files ~ ".(gitignore|htaccess|htpasswd|env)$">
+    deny from all
+</Files>
+<Files ~ "(vendor|config|css|iamge|js)$">
     deny from all
 </Files>

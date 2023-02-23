@@ -30,7 +30,7 @@ unset($_SESSION['reset_password_data']);
     <section class="form__section">
         <div class="container form__section-container">
             <h2>パスワード変更</h2>
-            <!-- メール送信できなかった場合 -->
+            <!-- 一致するメールアドレスが存在しない時 -->
             <?php if (isset($_SESSION['reset_password_error'])): ?>
                 <div class="alert__message error">
                     <p>
@@ -42,9 +42,7 @@ unset($_SESSION['reset_password_data']);
             <!-- パスワードリセット用のフォーム -->
             <form class="form__column" action="<?php echo ROOT_URL ?>reset-password-logic.php" method="POST">
                 <input type="email" name="email" value="<?php echo h($email) ?>" placeholder="メールアドレス">
-                <input type="password" name="createdpassword" value="" placeholder="新しいパスワード">
-                <input type="password" name="confirmedpassword" value="" placeholder="新しいパスワード（再入力）">
-                <button type="submit" name="submit" class="btn purple">変更</button>
+                <button type="submit" name="submit" class="btn purple">確認</button>
             </form>        
         </div>
     </section>
