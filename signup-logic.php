@@ -7,7 +7,6 @@ if (isset($_POST['submit'])){
     $createdPassword = filter_var($_POST['createdpassword'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $confirmedPassword = filter_var($_POST['confirmedpassword'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $pattern = '/\A(?=.*?[a-z])(?=.*?[A-Z])(?=.*?\d)(?=.*?[!-\/:-@[-`{-~])[!-~]{8,100}+\z/i';
-    $result = preg_match($pattern, $createdPassword);
 
     //フォームの値確認
     // メールアドレスが空の場合
@@ -19,11 +18,11 @@ if (isset($_POST['submit'])){
         $_SESSION['signup_error'] = "パスワードは８文字以上で設定してください";
     
     // パスワードが異なる場合
-    } elseif ($createdPassword !== $confirmedPassword){
+    } elseif (!hash_equals($createdPassword, $confirmedPassword)){
         $_SESSION['signup_error'] = "パスワードが違います";
     
     // パスワードに大文字・記号・数字のいずれかが使われていない場合
-    } elseif ($result === 0) {
+    } elseif (preg_match($pattern, $createdPassword) === 0) {
         $_SESSION['signup_error'] = "パスワードに半角英大文字・小文字・数字・記号が含まれていません";
     
     // フォームに全ての値が入力されている場合
