@@ -10,52 +10,52 @@ if ($_SESSION['role_ID'] === 0){
 
 // 登録してあるタグを読み込む
 $connection = dbconnect();
-$stmt = $connection->prepare('SELECT tag_ID, tag_title, description FROM tags WHERE is_deleted=0');
+$stmt = $connection->prepare('SELECT category_ID, category_title, description FROM categories WHERE is_deleted=0');
 $success = $stmt->execute();
-$stmt->bind_result($tagID, $tagTitle, $description);
+$stmt->bind_result($categoryID, $categoryTitle, $description);
 ?>
 
 <!--================================ HTML ================================-->
 
     <section class="dashboard">
         <!-- タグ追加に成功した場合 -->
-        <?php if (isset($_SESSION['add_tag_success'])): ?>
+        <?php if (isset($_SESSION['add_category_success'])): ?>
             <div class="alert__message success container">
                 <p>
-                    <?php echo $_SESSION['add_tag_success'];
-                    unset($_SESSION['add_tag_success']); ?>
+                    <?php echo $_SESSION['add_category_success'];
+                    unset($_SESSION['add_category_success']); ?>
                 </p>
             </div>
         <!-- タグ編集に成功した場合 -->
-        <?php elseif (isset($_SESSION['edit_tag_success'])): ?>
+        <?php elseif (isset($_SESSION['edit_category_success'])): ?>
             <div class="alert__message success container">
                 <p>
-                    <?php echo $_SESSION['edit_tag_success'];
-                    unset($_SESSION['edit_tag_success']); ?>
+                    <?php echo $_SESSION['edit_category_success'];
+                    unset($_SESSION['edit_category_success']); ?>
                 </p>
             </div>
         <!-- タグ削除に成功した場合 -->
-        <?php elseif (isset($_SESSION['delete_tag_success'])): ?>
+        <?php elseif (isset($_SESSION['delete_category_success'])): ?>
             <div class="alert__message success container">
                 <p>
-                    <?php echo $_SESSION['delete_tag_success'];
-                    unset($_SESSION['delete_tag_success']); ?>
+                    <?php echo $_SESSION['delete_category_success'];
+                    unset($_SESSION['delete_category_success']); ?>
                 </p>
             </div>
         <!-- タグ編集に失敗した場合 -->
-        <?php elseif (isset($_SESSION['edit_tag_error'])): ?>
+        <?php elseif (isset($_SESSION['edit_category_error'])): ?>
             <div class="alert__message error container">
                 <p>
-                    <?php echo $_SESSION['edit_tag_error'];
-                    unset($_SESSION['edit_tag_error']); ?>
+                    <?php echo $_SESSION['edit_category_error'];
+                    unset($_SESSION['edit_category_error']); ?>
                 </p>
             </div>
         <!-- タグ削除に失敗した場合 -->
-        <?php elseif (isset($_SESSION['delete_tag_error'])): ?>
+        <?php elseif (isset($_SESSION['delete_category_error'])): ?>
             <div class="alert__message error container">
                 <p>
-                    <?php echo $_SESSION['delete_tag_error'];
-                    unset($_SESSION['delete_tag_error']); ?>
+                    <?php echo $_SESSION['delete_category_error'];
+                    unset($_SESSION['delete_category_error']); ?>
                 </p>
             </div>
         <?php endif; ?>
@@ -88,13 +88,13 @@ $stmt->bind_result($tagID, $tagTitle, $description);
                             </a>
                         </li>                
                         <li>
-                            <a href="<?php echo ROOT_URL ?>admin/add-tag.php">
+                            <a href="<?php echo ROOT_URL ?>admin/add-category.php">
                                 <i class="uil uil-label-alt"></i>
                                 <h5>新規タグ</h5>
                             </a>
                         </li>
                         <li>
-                            <a href="<?php echo ROOT_URL ?>admin/manage-tags.php" class="active">
+                            <a href="<?php echo ROOT_URL ?>admin/manage-categories.php" class="active">
                                 <i class="uil uil-list-ul"></i>
                                 <h5>タグ編集</h5>
                             </a>
@@ -136,10 +136,10 @@ $stmt->bind_result($tagID, $tagTitle, $description);
                             <!-- タグ表示 -->
                             <?php while($stmt->fetch()): ?>
                                 <tr>
-                                    <td><?php echo h($tagTitle) ?></td>
+                                    <td><?php echo h($categoryTitle) ?></td>
                                     <td><?php echo h($description) ?></td>
-                                    <td><a href="<?php echo ROOT_URL ?>admin/edit-tag.php?tag_ID=<?php echo $tagID ?>" class="btn sm">編集</a></td>
-                                    <td><a href="<?php echo ROOT_URL ?>admin/delete-tag.php?tag_ID=<?php echo $tagID ?>" class="btn sm danger">削除</a></td>
+                                    <td><a href="<?php echo ROOT_URL ?>admin/edit-category.php?category_ID=<?php echo $categoryID ?>" class="btn sm">編集</a></td>
+                                    <td><a href="<?php echo ROOT_URL ?>admin/delete-category.php?category_ID=<?php echo $categoryID ?>" class="btn sm danger">削除</a></td>
                                 </tr>
                             <?php endwhile; ?>
                         </tbody>
@@ -151,7 +151,7 @@ $stmt->bind_result($tagID, $tagTitle, $description);
             </main>
         </div>
     </section>
-    <!--================ END OF MANAGE-TAGS ================-->
+    <!--================ END OF MANAGE-categories ================-->
     
     <script src="<?php echo ROOT_URL ?>js/main.js"></script>
 </body>

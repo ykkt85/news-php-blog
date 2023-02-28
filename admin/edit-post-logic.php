@@ -5,7 +5,7 @@ require __DIR__ . '/../config/database.php';
 if (isset($_POST['submit'])){
     $postID = filter_var($_POST['post_ID'], FILTER_SANITIZE_NUMBER_INT);
     $title = filter_var($_POST['title'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-    $tagID = filter_var($_POST['tag_ID'], FILTER_SANITIZE_NUMBER_INT);
+    $categoryID = filter_var($_POST['category_ID'], FILTER_SANITIZE_NUMBER_INT);
     $isFeatured = filter_var($_POST['is_featured'], FILTER_SANITIZE_NUMBER_INT);
     $thumbnail = $_FILES['thumbnail'];
     $previousThumbnailName = filter_var($_POST['previous_thumbnail_name'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -86,8 +86,8 @@ if (isset($_POST['submit'])){
 
         // DBにデータを記録
         $connection = dbconnect();
-        $stmt = $connection->prepare('UPDATE posts SET title=?, tag_ID=?, is_featured=?, thumbnail=?, body=?, updated_at=CURRENT_TIMESTAMP() WHERE post_ID=? LIMIT 1');
-        $stmt->bind_param('siisss', $title, $tagID, $isFeatured, $thumbnailToInsert, $body, $postID);
+        $stmt = $connection->prepare('UPDATE posts SET title=?, category_ID=?, is_featured=?, thumbnail=?, body=?, updated_at=CURRENT_TIMESTAMP() WHERE post_ID=? LIMIT 1');
+        $stmt->bind_param('siisss', $title, $categoryID, $isFeatured, $thumbnailToInsert, $body, $postID);
         $result = $stmt->execute();
 
         // エラーがない場合

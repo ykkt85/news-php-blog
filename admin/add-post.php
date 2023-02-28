@@ -3,7 +3,7 @@ include __DIR__ . '/partials/header.php';
 $connection = dbconnect();
 
 // タグ表示のためDBからデータを取得
-$stmt = $connection->query('SELECT * FROM tags WHERE is_deleted=0');
+$stmt = $connection->query('SELECT * FROM categorys WHERE is_deleted=0');
 
 // 前回エラー時にセッションデータを表示
 $title = $_SESSION['add-post-data']['title'] ?? NULL;
@@ -30,9 +30,9 @@ unset($_SESSION['add-post-data']);
             <!-- 記事投稿 -->
             <form class="form__column" action="<?php echo ROOT_URL ?>admin/add-post-logic.php" enctype="multipart/form-data" method="POST">
                 <input type="text" name="title" value="<?php echo h($title) ?>" placeholder="タイトル">
-                <select name="tag_ID">
-                    <?php while($tag = $stmt->fetch_assoc()): ?>
-                        <option value="<?php echo $tag['tag_ID'] ?>"><?php echo $tag['tag_title'] ?></option>
+                <select name="category_ID">
+                    <?php while($category = $stmt->fetch_assoc()): ?>
+                        <option value="<?php echo $category['category_ID'] ?>"><?php echo $category['category_title'] ?></option>
                     <?php endwhile; ?>
                 </select>
                 <div class="form__control inline">

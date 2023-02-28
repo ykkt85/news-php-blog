@@ -5,7 +5,7 @@ require __DIR__ . '/../config/database.php';
 if (isset($_POST['submit'])){
     $userID = $_SESSION['user_ID'];
     $title = filter_var($_POST['title'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-    $tagID = filter_var($_POST['tag_ID'], FILTER_SANITIZE_NUMBER_INT);
+    $categoryID = filter_var($_POST['category_ID'], FILTER_SANITIZE_NUMBER_INT);
     $isFeatured = filter_var($_POST['is_featured'], FILTER_SANITIZE_NUMBER_INT);
     $thumbnail = $_FILES['thumbnail'];
     $body = filter_var($_POST['body'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -57,8 +57,8 @@ if (isset($_POST['submit'])){
         }
 
         // DBに値を記録
-        $stmt = $connection->prepare('INSERT INTO posts (title, tag_ID, is_featured, thumbnail, body, status_ID, user_ID, created_at, updated_at, is_deleted) VALUES(?, ?, ?, ?, ?, 0, ?, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 0)');
-        $stmt->bind_param('siissi', $title, $tagID, $isFeatured, $thumbnailName, $body, $userID);
+        $stmt = $connection->prepare('INSERT INTO posts (title, category_ID, is_featured, thumbnail, body, status_ID, user_ID, created_at, updated_at, is_deleted) VALUES(?, ?, ?, ?, ?, 0, ?, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 0)');
+        $stmt->bind_param('siissi', $title, $categoryID, $isFeatured, $thumbnailName, $body, $userID);
         $success = $stmt->execute();
 
         // エラーがない場合

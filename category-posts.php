@@ -1,11 +1,11 @@
 <?php
 include __DIR__ . '/partials/header.php';
 
-// tag-posts.phpのURLにtag_IDがある場合、タグと関連付けられている記事を表示
-if (isset($_GET['tag_ID'])){
-    $tagID = filter_var($_GET['tag_ID'], FILTER_SANITIZE_NUMBER_INT);
+// category-posts.phpのURLにcategory_IDがある場合、タグと関連付けられている記事を表示
+if (isset($_GET['category_ID'])){
+    $categoryID = filter_var($_GET['category_ID'], FILTER_SANITIZE_NUMBER_INT);
 
-// tag-posts.phpのURLにtag_IDがない場合
+// category-posts.phpのURLにcategory_IDがない場合
 } else {
     header('location: ' . ROOT_URL);
     die();
@@ -25,19 +25,19 @@ if (isset($_GET['tag_ID'])){
     </section>
     <!--================ END OF SEARCH ================-->
 
-    <header class="tag__title">
+    <header class="category__title">
         <?php
         // DBからタグの値を取得
         $connection = dbconnect();
-        $tagStmt = $connection->prepare('SELECT tag_title FROM tags WHERE tag_ID=? AND is_deleted=0');
-        $tagStmt->bind_param('i', $tagID);
-        $tagStmt->execute();
-        $tagStmt->bind_result($barTagTitle);
-        $tagStmt->fetch();
+        $categoryStmt = $connection->prepare('SELECT category_title FROM categories WHERE category_ID=? AND is_deleted=0');
+        $categoryStmt->bind_param('i', $categoryID);
+        $categoryStmt->execute();
+        $categoryStmt->bind_result($barcategoryTitle);
+        $categoryStmt->fetch();
         ?>
-        <h2><?php echo h($barTagTitle) ?></h2>
+        <h2><?php echo h($barcategoryTitle) ?></h2>
     </header>
-    <!--================ END OF TAG TITLE ================-->
+    <!--================ END OF category TITLE ================-->
 
     <!-- 該当タグの付いた記事がある場合 -->
     <?php //if ($postResult): ?>
@@ -46,8 +46,8 @@ if (isset($_GET['tag_ID'])){
                 <!-- 記事を表示 -->
                 <?php
                 $connection = dbconnect();
-                $postStmt = $connection->prepare('SELECT post_ID, title, thumbnail, body, created_at FROM posts WHERE tag_ID=? AND is_deleted=0 ORDER BY updated_at DESC');
-                $postStmt->bind_param('i', $tagID);
+                $postStmt = $connection->prepare('SELECT post_ID, title, thumbnail, body, created_at FROM posts WHERE category_ID=? AND is_deleted=0 ORDER BY updated_at DESC');
+                $postStmt->bind_param('i', $categoryID);
                 $success = $postStmt->execute();
                 $postStmt->bind_result($postID, $title, $thumbnail, $body, $createdAt);
                 while($postStmt->fetch()): ?>
@@ -76,20 +76,20 @@ if (isset($_GET['tag_ID'])){
     <?php //endif; ?>
     <!--================ END OF POSTS ================-->
     
-    <section class="tag__buttons">
-        <div class="container tag__buttons-container">
+    <section class="category__buttons">
+        <div class="container category__buttons-container">
             <?php
             // DBから全てのタグタイトルを取得
             $connection = dbconnect();
-            $downTagStmt = $connection->prepare('SELECT tag_ID, tag_title FROM tags WHERE is_deleted=0');
-            $downTagStmt->execute();
-            $downTagStmt->bind_result($tagID, $tagTitle);
-            while($downTagStmt->fetch()): ?>
-                <a href="<?php echo ROOT_URL ?>tag-posts.php?tag_ID=<?php echo $tagID ?>" class="tag__button"><?php echo h($tagTitle) ?></a>
+            $stmt = $connection->prepare('SELECT category_ID, category_title FROM categories WHERE is_deleted=0');
+            $stmt->execute();
+            $stmt->bind_result($categoryID, $categoryTitle);
+            while($stmt->fetch()): ?>
+                <a href="<?php echo ROOT_URL ?>category-posts.php?category_ID=<?php echo $categoryID ?>" class="category__button"><?php echo h($categoryTitle) ?></a>
             <?php endwhile; ?>
         </div>
     </section>
-    <!--================ END OF TAGS ================-->
+    <!--================ END OF CATEGORIES ================-->
 
 <?php
 include __DIR__ . '/partials/footer.php';

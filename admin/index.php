@@ -83,13 +83,13 @@ include __DIR__ . '/partials/header.php';
                             </a>
                         </li>                
                         <li>
-                            <a href="<?php echo ROOT_URL ?>admin/add-tag.php">
+                            <a href="<?php echo ROOT_URL ?>admin/add-category.php">
                                 <i class="uil uil-label-alt"></i>
                                 <h5>新規タグ</h5>
                             </a>
                         </li>
                         <li>
-                            <a href="<?php echo ROOT_URL ?>admin/manage-tags.php">
+                            <a href="<?php echo ROOT_URL ?>admin/manage-categories.php">
                                 <i class="uil uil-list-ul"></i>
                                 <h5>タグ編集</h5>
                             </a>
@@ -141,14 +141,14 @@ include __DIR__ . '/partials/header.php';
                         <?php
                         //記事を表示
                         $connection = dbconnect();
-                        $postStmt = $connection->prepare('SELECT p.post_ID, p.title, t.tag_title FROM posts AS p INNER JOIN tags AS t ON p.tag_ID=t.tag_ID WHERE p.user_ID=? AND p.is_deleted=0 ORDER BY p.updated_at DESC');
+                        $postStmt = $connection->prepare('SELECT p.post_ID, p.title, t.category_title FROM posts AS p INNER JOIN categories AS t ON p.category_ID=t.category_ID WHERE p.user_ID=? AND p.is_deleted=0 ORDER BY p.updated_at DESC');
                         $postStmt->bind_param('i', $currentUserID);
                         $postStmt->execute();
-                        $postStmt->bind_result($postID, $title, $tagTitle);
+                        $postStmt->bind_result($postID, $title, $categoryTitle);
                         while($postStmt->fetch()): ?>
                         <tr>
                             <td><?php echo h($title) ?></td>
-                            <td><?php echo h($tagTitle) ?></td>
+                            <td><?php echo h($categoryTitle) ?></td>
                             <td><a href="<?php echo ROOT_URL ?>admin/edit-post.php?post_ID=<?php echo $postID ?>" class="btn sm">編集</a></td>
                             <td><a href="<?php echo ROOT_URL ?>admin/delete-post.php?post_ID=<?php echo $postID ?>" class="btn sm danger">削除</a></td>
                         </tr>

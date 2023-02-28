@@ -43,15 +43,15 @@ if (isset($_GET['post_ID'])){
                 <input type="hidden" name="post_ID" value="<?php echo $postID ?>">    
                 <input type="hidden" name="previous_thumbnail_name" value="<?php echo $thumbnail ?>">
                 <input type="text" name="title" value="<?php echo h($title) ?>" placeholder="タイトル">
-                <select name="tag_ID">
+                <select name="category_ID">
                     <?php
                     // タグを全種取得
                     $connection = dbconnect();
-                    $tagStmt = $connection->prepare('SELECT tag_ID, tag_title FROM tags WHERE is_deleted=0');
-                    $tagStmt->execute();
-                    $tagStmt->bind_result($tagID, $tagTitle);
-                    while ($tagStmt->fetch()): ?>
-                        <option value="<?php echo $tagID ?>"><?php echo $tagTitle ?></option>     
+                    $categoryStmt = $connection->prepare('SELECT category_ID, category_title FROM categories WHERE is_deleted=0');
+                    $categoryStmt->execute();
+                    $categoryStmt->bind_result($categoryID, $categoryTitle);
+                    while ($categoryStmt->fetch()): ?>
+                        <option value="<?php echo $categoryID ?>"><?php echo $categoryTitle ?></option>     
                     <?php endwhile; ?>
                 </select>
                 <div class="form__control inline">

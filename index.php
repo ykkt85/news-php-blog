@@ -3,9 +3,9 @@ include __DIR__ . '/partials/header.php';
 
 // DBから注目記事を取得
 $connection = dbconnect();
-$stmt = $connection->prepare('SELECT p.post_ID, p.title, p.tag_ID, p.thumbnail, p.body, p.created_at, t.tag_title FROM posts AS p INNER JOIN tags AS t ON p.tag_ID=t.tag_ID WHERE p.is_featured=1 AND p.is_deleted=0');
+$stmt = $connection->prepare('SELECT p.post_ID, p.title, p.category_ID, p.thumbnail, p.body, p.created_at, t.category_title FROM posts AS p INNER JOIN categories AS t ON p.category_ID=t.category_ID WHERE p.is_featured=1 AND p.is_deleted=0');
 $stmt->execute();
-$stmt->bind_result($postID, $title, $tagID, $thumbnail, $body, $createdAt, $tagTitle);
+$stmt->bind_result($postID, $title, $categoryID, $thumbnail, $body, $createdAt, $categoryTitle);
 ?>
 
 <!--================================ HTML ================================-->
@@ -30,7 +30,7 @@ $stmt->bind_result($postID, $title, $tagID, $thumbnail, $body, $createdAt, $tagT
                 </div>
                 <div class="post__info">
                     <h2 class="post__title"><a href="<?php echo ROOT_URL ?>post.php?post_ID=<?php echo $postID ?>"><?php echo h($title) ?></a></h2>
-                    <a href="<?php echo ROOT_URL ?>tag-posts.php?tag_ID=<?php echo $tagID ?>" class="tag__button"><?php echo h($tagTitle) ?></a>
+                    <a href="<?php echo ROOT_URL ?>category-posts.php?category_ID=<?php echo $categoryID ?>" class="category__button"><?php echo h($categoryTitle) ?></a>
                     <small class="publish__date"><?php echo date("Y.m.d - H:i", strtotime($createdAt)) ?></small>
                     <p class="post__body">
                         <?php echo substr(h($body), 0, 180) ?>...
@@ -48,9 +48,9 @@ $stmt->bind_result($postID, $title, $tagID, $thumbnail, $body, $createdAt, $tagT
             <?php
             // DBから記事を取得
             $connection = dbconnect();
-            $stmt = $connection->prepare('SELECT p.post_ID, p.title, p.tag_ID, p.thumbnail, p.body, p.created_at, t.tag_title FROM posts AS p INNER JOIN tags AS t ON p.tag_ID=t.tag_ID WHERE p.is_featured=0 AND p.is_deleted=0 ORDER BY p.created_at DESC');
+            $stmt = $connection->prepare('SELECT p.post_ID, p.title, p.category_ID, p.thumbnail, p.body, p.created_at, t.category_title FROM posts AS p INNER JOIN categories AS t ON p.category_ID=t.category_ID WHERE p.is_featured=0 AND p.is_deleted=0 ORDER BY p.created_at DESC');
             $stmt->execute();
-            $stmt->bind_result($postID, $title, $tagID, $thumbnail, $body, $createdAt, $tagTitle);
+            $stmt->bind_result($postID, $title, $categoryID, $thumbnail, $body, $createdAt, $categoryTitle);
             while($stmt->fetch()):
             ?>
                 <article class="post">
@@ -61,7 +61,7 @@ $stmt->bind_result($postID, $title, $tagID, $thumbnail, $body, $createdAt, $tagT
                         <h3 class="post__title">
                             <a href="<?php echo ROOT_URL ?>post.php?post_ID=<?php echo $postID ?>"><?php echo h($title) ?></a>
                         </h3>
-                        <a href="<?php echo ROOT_URL ?>tag-posts.php?tag_ID=<?php echo $tagID ?>" class="tag__button"><?php echo h($tagTitle) ?></a>
+                        <a href="<?php echo ROOT_URL ?>category-posts.php?category_ID=<?php echo $categoryID ?>" class="category__button"><?php echo h($categoryTitle) ?></a>
                         <small class="publish__date"><?php echo date("Y.m.d - H:i", strtotime($createdAt)) ?></small>
                         <p class="post__body">
                             <?php echo substr(h($body), 0, 180) ?>...
@@ -73,21 +73,21 @@ $stmt->bind_result($postID, $title, $tagID, $thumbnail, $body, $createdAt, $tagT
     </section>
     <!--================ END OF POSTS ================-->
     
-    <section class="tag__buttons">
-        <div class="container tag__buttons-container">
+    <section class="category__buttons">
+        <div class="container category__buttons-container">
             <?php
             // DBから全てのタグタイトルを取得
             $connection = dbconnect();
-            $stmt = $connection->prepare('SELECT tag_ID, tag_title FROM tags WHERE is_deleted=0');
+            $stmt = $connection->prepare('SELECT category_ID, category_title FROM categories WHERE is_deleted=0');
             $stmt->execute();
-            $stmt->bind_result($tagID, $tagTitle);
+            $stmt->bind_result($categoryID, $categoryTitle);
             while($stmt->fetch()):
             ?>
-                <a href="<?php echo ROOT_URL ?>tag-posts.php?tag_ID=<?php echo $tagID ?>" class="tag__button"><?php echo h($tagTitle) ?></a>
+                <a href="<?php echo ROOT_URL ?>category-posts.php?category_ID=<?php echo $categoryID ?>" class="category__button"><?php echo h($categoryTitle) ?></a>
             <?php endwhile; ?>
         </div>
     </section>
-    <!--================ END OF TAGS ================-->
+    <!--================ END OF CATEGORIES ================-->
 
 <?php
 include __DIR__ . '/partials/footer.php';
