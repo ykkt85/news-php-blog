@@ -3,7 +3,16 @@ require __DIR__ . '/config/database.php';
 
 // login.phpからフォームが送信されたとき
 if (isset($_POST['submit'])){
-    $email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);
+    // メールアドレス判定
+    if(strpos($_POST['email'], '@docomo.ne.jp') !== false || strpos($_POST['email'], '@ezweb.ne.jp') !== false){
+		$pattern = '/^([a-zA-Z])+([a-zA-Z0-9\._-])*@(docomo\.ne\.jp|ezweb\.ne\.jp)$/';
+		if(preg_match($pattern, $_POST['email']) === 1) {
+			$email = $_POST['email'];
+		}
+    } else {
+        $email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);
+    }
+    // パスワード判定
     $password = filter_var($_POST['password'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
     // フォームの値確認
