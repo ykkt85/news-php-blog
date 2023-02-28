@@ -3,7 +3,7 @@ require __DIR__ . '/../config/database.php';
 
 // edit-post.phpのフォームから値が送信された場合
 if (isset($_POST['submit'])){
-    $postID = filter_var($_SESSION['post_ID'], FILTER_SANITIZE_NUMBER_INT);
+    $postID = filter_var($_POST['post_ID'], FILTER_SANITIZE_NUMBER_INT);
     $title = filter_var($_POST['title'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $tagID = filter_var($_POST['tag_ID'], FILTER_SANITIZE_NUMBER_INT);
     $isFeatured = filter_var($_POST['is_featured'], FILTER_SANITIZE_NUMBER_INT);
@@ -11,6 +11,19 @@ if (isset($_POST['submit'])){
     $previousThumbnailName = filter_var($_POST['previous_thumbnail_name'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $body = filter_var($_POST['body'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     
+    // DBのuser_IDとログインユーザーが異なる場合
+    $connection = dbconnect();
+    $stmt = $connection->prepare('SELECT user_ID FROM posts WHERE post_ID=? AND is_deleted=0 LIMIT 1');
+    $stmt->bind_param('i', $postID);
+    $stmt->execute();
+    $stmt->bind_result($userID);
+    $stmt->fetch();
+    if ($_SESSION['user_ID'] !== $userID){
+        $_SESSION['nonadmin_error'] = 'アクセス権限がありません';
+        header('location: ' . ROOT_URL . 'message.php');
+        die();
+    }
+
     // 注目記事がチェックされていれば1にする
     $isFeatured = $isFeatured == 1 ?: 0;
 
