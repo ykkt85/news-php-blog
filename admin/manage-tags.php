@@ -1,6 +1,14 @@
 <?php
 include __DIR__ . '/partials/header.php';
 
+// 管理者以外（投稿者）がアクセスした場合
+if ($_SESSION['role_ID'] === 0){
+    $_SESSION['nonadmin_error'] = 'アクセス権限がありません';
+    header('location: ' . ROOT_URL . 'message.php');
+    die();
+}
+
+// 登録してあるタグを読み込む
 $connection = dbconnect();
 $stmt = $connection->prepare('SELECT tag_ID, tag_title, description FROM tags WHERE is_deleted=0');
 $success = $stmt->execute();
