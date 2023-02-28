@@ -5,6 +5,14 @@ require __DIR__ . '/../config/database.php';
 if (isset($_GET['user_ID'])){
     $userID = filter_var($_GET['user_ID'], FILTER_SANITIZE_NUMBER_INT);
     $isDeleted = filter_var($_POST['is_deleted'], FILTER_SANITIZE_NUMBER_INT);
+
+    // 管理者以外（投稿者）が削除しようとした場合、または
+    // ログインユーザーが本人のアカウントを削除しようとした場合
+    if ($_SESSION['role_ID'] === 0 || $_SESSION['user_ID'] === $userID){
+        $_SESSION['nonadmin_error'] = 'アクセス権限がありません';
+        header('location: ' . ROOT_URL . 'message.php');
+        die();
+    }
     
     // DBの内容を上書き
     $connection = dbconnect();
