@@ -7,6 +7,13 @@ if(isset($_POST['submit'])){
     $tagTitle = filter_var($_POST['tag_title'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $description = filter_var($_POST['description'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
+    // 管理者以外（投稿者）がアクセスした場合
+    if ($_SESSION['role_ID'] === 0){
+        $_SESSION['nonadmin_error'] = 'アクセス権限がありません';
+        header('location: ' . ROOT_URL . 'message.php');
+        die();
+    }
+
     // タグ名が空欄の場合
     if (!$tagTitle){
         $_SESSION['edit_tag_error'] = "タグ名を入力してください";
