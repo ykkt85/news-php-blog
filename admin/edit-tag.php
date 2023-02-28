@@ -5,6 +5,13 @@ include __DIR__ . '/partials/header.php';
 if (isset($_GET['tag_ID'])){
     $tagID = filter_var($_GET['tag_ID'], FILTER_SANITIZE_NUMBER_INT);
 
+    // 管理者以外（投稿者）がアクセスした場合
+    if ($_SESSION['role_ID'] === 0){
+        $_SESSION['nonadmin_error'] = 'アクセス権限がありません';
+        header('location: ' . ROOT_URL . 'message.php');
+        die();
+    }
+    
     // DBから値を取り出す
     $connection = dbconnect();
     $stmt = $connection->prepare('SELECT tag_ID, tag_title, description FROM tags WHERE tag_ID=? AND is_deleted=0');
