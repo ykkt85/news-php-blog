@@ -21,20 +21,26 @@ if (isset($_POST['submit'])){
         $connection = dbconnect();
         $stmt = $connection->prepare('SELECT user_ID, email, password, role_ID FROM users WHERE email=?');
         $stmt->bind_param('s', $email);
-        $success = $stmt->execute();
-        $stmt->bind_result($userID, $email, $hashed, $roleID);
+        $stmt->execute();
+        $stmt->bind_result($userID, $dbEmail, $hashed, $roleID);
         $stmt->fetch();
 
-        // パスワードが正しいか確認
-        if (password_verify($password, $hashed)){
+        // 入力されたメールアドレスが存在しない場合
+        if (!isset($dbEmail)){
+            $_SESSION['login_error'] = "メールアドレスまたはパスワードが正しくありません";
+        
+        // パスワードが正しい場合
+        } elseif (password_verify($password, $hashed)){
             // 各セッション値を設定
             session_regenerate_id();
             $_SESSION['user_ID'] = $userID;
             $_SESSION['email'] = $email;
             $_SESSION['role_ID'] = $roleID;
             header('location: ' . ROOT_URL . 'admin/index.php');
+        
+        // パスワードが正しくない場合
         } else {
-            $_SESSION['login_error'] = "パスワードが正しくありません";
+            $_SESSION['login_error'] = "メールアドレスまたはパスワードが正しくありません";
         }
     }
 
