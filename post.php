@@ -11,6 +11,11 @@ if (isset($_GET['post_ID'])){
     $stmt->bind_result($title, $tagID, $thumbnail, $body, $createdAt);
     $stmt->fetch();
 
+// post_IDが存在しない値の場合
+if (!isset($title)){
+    header('location: '. ROOT_URL);
+}
+
 // post.phpのURLにpost_IDがない場合
 } else {
     header('location: ' . ROOT_URL);
