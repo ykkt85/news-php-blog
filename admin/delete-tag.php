@@ -4,9 +4,16 @@ require __DIR__ . '/../config/database.php';
 // delete-tag.phpのURLにtag_IDの値が含まれている場合
 if (isset($_GET['tag_ID'])){
     $tagID = filter_var($_GET['tag_ID'], FILTER_SANITIZE_NUMBER_INT);
-    $connection = dbconnect();
+
+    // 管理者以外（投稿者）がアクセスした場合
+    if ($_SESSION['role_ID'] === 0){
+        $_SESSION['nonadmin_error'] = 'アクセス権限がありません';
+        header('location: ' . ROOT_URL . 'message.php');
+        die();
+    }
     
     // DBの内容を上書き
+    $connection = dbconnect();
     $stmt = $connection->prepare('UPDATE tags SET updated_at=CURRENT_TIMESTAMP(), is_deleted=1 WHERE tag_ID=? LIMIT 1');
     $stmt->bind_param('i', $tagID);
     $successTags = $stmt->execute();
