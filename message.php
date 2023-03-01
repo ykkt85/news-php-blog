@@ -4,7 +4,7 @@ include __DIR__ . '/partials/header.php';
 
 <!--================================ HTML ================================-->
 
-    <section class=" section__extra-margin">
+    <section class="section__extra-margin">
         <!-- パスワード変更を完了できた場合 -->
         <?php if (isset($_SESSION['new_password_success'])): ?>
             <div class ="alert__message success lg">
