@@ -5,16 +5,25 @@ require __DIR__ . '/config/database.php';
 if (isset($_GET['token'])){
     $token = filter_var($_GET['token'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-    // DBから一致するトークンを持つ投稿者を取得
+    // DBから一致するトークンがあるか確認
     $connection = dbconnect();
     $stmt = $connection->prepare('SELECT token FROM users WHERE token=? AND is_deleted=0');
     $stmt->bind_param('s', $token);
-    $success = $stmt->execute();
+    $stmt->execute();
     $stmt->bind_result($dbToken);
     $stmt->fetch();
 
-    // DBにトークンが存在しない場合
-    if (!$success || $dbToken === NULL){
+    // URLが1時間以内に発行されたものか確認
+    $connection = dbconnect();
+    $stmt = $connection->prepare('SELECT TIMESTAMPDIFF(MINUTE, updated_at, CURRENT_TIMESTAMP()) AS time FROM users WHERE token=? AND is_deleted=0 LIMIT 1');
+    $stmt->bind_param('s', $dbToken);
+    $stmt->execute();
+    $stmt->bind_result($time);
+    $stmt->fetch();
+
+    // DBにトークンが存在しない場合、または
+    // トークン発行（メール送信）から1時間経過した場合
+    if ($dbToken === NULL || $time > 60){
         $_SESSION['new_password_error'] = '無効のURLです';
         header('location: ' . ROOT_URL . 'message.php');
         die();

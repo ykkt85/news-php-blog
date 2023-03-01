@@ -44,14 +44,14 @@ if (isset($_POST['submit'])){
 
     // エラーがない場合
     } else {
-        $_SESSION['reset_password_success'] = "パスワード変更用のURLを送信しました。登録済みのメールアドレスを確認してください";
+        $_SESSION['reset_password_success'] = "パスワード変更用のURLを送信しました。登録済みのメールアドレスを確認し、１時間以内に新しいパスワードを設定してください。";
         header('location:' . ROOT_URL . 'message.php');
         
         // パスワード変更用メールを送るための設定
         // メールタイトル
         $autoReplyTitle = 'パスワード変更 | Tsukuba University News';
         // メール本文
-        $autoReplyBody = "下記URLから新しいパスワードを設定してください\n";
+        $autoReplyBody = "下記URLから新しいパスワードを設定してください。URLの有効期限は１時間です。\n";
         $autoReplyBody .= "http://localhost:8888/TsukubaUniversityNews/new-password.php?token=" . $token . "\n\n";
         $autoReplyBody .= "Tsukuba University News";
         // ヘッダー
