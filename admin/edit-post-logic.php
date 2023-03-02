@@ -72,7 +72,7 @@ if (isset($_POST['submit'])){
 
     // この時点でエラーがある場合
     if (isset($_SESSION['edit_post_error'])){
-        $_SESSION['edit-post-data'] = $_POST;
+        $_SESSION['edit_post_data'] = $_POST;
         $_SESSION['post_ID'] = $postID;
         header('location: ' . ROOT_URL . 'admin/edit-post.php?post_ID=' . $_SESSION['post_ID']);
 

@@ -6,11 +6,11 @@ $connection = dbconnect();
 $stmt = $connection->query('SELECT * FROM categorys WHERE is_deleted=0');
 
 // 前回エラー時にセッションデータを表示
-$title = $_SESSION['add-post-data']['title'] ?? NULL;
-$body = $_SESSION['add-post-data']['body'] ?? NULL;
+$title = $_SESSION['add_post_data']['title'] ?? NULL;
+$body = $_SESSION['add_post_data']['body'] ?? NULL;
 
 // セッションデータを消去
-unset($_SESSION['add-post-data']);
+unset($_SESSION['add_post_data']);
 ?>
 
 <!--================================ HTML ================================-->
@@ -19,11 +19,11 @@ unset($_SESSION['add-post-data']);
         <div class="container form__section-container">
             <h2>新規記事</h2>
             <!-- 新規記事投稿に失敗した場合 -->
-            <?php if (isset($_SESSION['add-post-error'])):?>    
+            <?php if (isset($_SESSION['add_post_error'])):?>    
                 <div class="alert__message error">
                     <p>
-                        <?php echo $_SESSION['add-post-error'];
-                        unset($_SESSION['add-post-error']); ?>
+                        <?php echo $_SESSION['add_post_error'];
+                        unset($_SESSION['add_post_error']); ?>
                     </p>
                 </div>
             <?php endif; ?>
