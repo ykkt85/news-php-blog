@@ -1,16 +1,16 @@
 <?php
 include __DIR__ . '/partials/header.php';
-$connection = dbconnect();
 
 // タグ表示のためDBからデータを取得
-$stmt = $connection->query('SELECT * FROM tags WHERE is_deleted=0');
+$connection = dbconnect();
+$stmt = $connection->query('SELECT * FROM categories WHERE is_deleted=0');
 
-// 前回エラー時にセッションデータを表示
-$title = $_SESSION['add-post-data']['title'] ?? NULL;
-$body = $_SESSION['add-post-data']['body'] ?? NULL;
+// 前回エラー時にセッション値を表示
+$title = $_SESSION['add_post_data']['title'] ?? NULL;
+$body = $_SESSION['add_post_data']['body'] ?? NULL;
 
-// セッションデータを消去
-unset($_SESSION['add-post-data']);
+// セッション値を消去
+unset($_SESSION['add_post_data']);
 ?>
 
 <!--================================ HTML ================================-->
@@ -19,20 +19,26 @@ unset($_SESSION['add-post-data']);
         <div class="container form__section-container">
             <h2>新規記事</h2>
             <!-- 新規記事投稿に失敗した場合 -->
-            <?php if (isset($_SESSION['add-post-error'])):?>    
+            <?php if (isset($_SESSION['add_post_error'])):?>    
                 <div class="alert__message error">
                     <p>
-                        <?php echo $_SESSION['add-post-error'];
-                        unset($_SESSION['add-post-error']); ?>
+                        <?php
+                        //インデックスを変数$iで指定
+                        for($i = 0; $i < count($_SESSION['add_post_error']); $i++){
+                            // 全エラーを表示
+                            echo $_SESSION['add_post_error'][$i];
+                            echo "<br>";
+                        }                        
+                        unset($_SESSION['add_post_error']); ?>
                     </p>
                 </div>
             <?php endif; ?>
             <!-- 記事投稿 -->
             <form class="form__column" action="<?php echo ROOT_URL ?>admin/add-post-logic.php" enctype="multipart/form-data" method="POST">
                 <input type="text" name="title" value="<?php echo h($title) ?>" placeholder="タイトル">
-                <select name="tag_ID">
-                    <?php while($tag = $stmt->fetch_assoc()): ?>
-                        <option value="<?php echo $tag['tag_ID'] ?>"><?php echo $tag['tag_title'] ?></option>
+                <select name="category_ID">
+                    <?php while($category = $stmt->fetch_assoc()): ?>
+                        <option value="<?php echo $category['category_ID'] ?>"><?php echo $category['category_title'] ?></option>
                     <?php endwhile; ?>
                 </select>
                 <div class="form__control inline">

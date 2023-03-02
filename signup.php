@@ -36,7 +36,13 @@ unset($_SESSION['signup_data']);
             <?php if (isset($_SESSION['signup_error'])): ?>
                 <div class="alert__message error">
                     <p>
-                        <?php echo $_SESSION['signup_error'];
+                        <?php
+                        //インデックスを変数$iで指定
+                        for($i = 0; $i < count($_SESSION['signup_error']); $i++){
+                            // 全エラーを表示
+                            echo $_SESSION['signup_error'][$i];
+                            echo "<br>";
+                        }                        
                         unset($_SESSION['signup_error']); ?>
                     </p>
                 </div>

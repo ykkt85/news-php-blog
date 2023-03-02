@@ -1,6 +1,13 @@
 <?php
 include __DIR__ . '/partials/header.php';
 
+// 管理者以外（投稿者）がアクセスした場合
+if ($_SESSION['role_ID'] === 0){
+    $_SESSION['nonadmin_error'] = 'アクセス権限がありません';
+    header('location: ' . ROOT_URL . 'message.php');
+    die();
+}
+
 // ログイン中以外のユーザーを読み込む
 $currentAdminID = $_SESSION['user_ID'];
 $connection = dbconnect();
@@ -84,15 +91,15 @@ $stmt->bind_result($email, $userID, $roleID);
                             </a>
                         </li>                
                         <li>
-                            <a href="<?php echo ROOT_URL ?>admin/add-tag.php">
+                            <a href="<?php echo ROOT_URL ?>admin/add-category.php">
                                 <i class="uil uil-label-alt"></i>
-                                <h5>新規タグ</h5>
+                                <h5>新規カテゴリ</h5>
                             </a>
                         </li>
                         <li>
-                            <a href="<?php echo ROOT_URL ?>admin/manage-tags.php">
+                            <a href="<?php echo ROOT_URL ?>admin/manage-categories.php">
                                 <i class="uil uil-list-ul"></i>
-                                <h5>タグ編集</h5>
+                                <h5>カテゴリ編集</h5>
                             </a>
                         </li>
                     <?php endif; ?>

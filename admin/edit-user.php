@@ -5,6 +5,14 @@ include __DIR__ . '/partials/header.php';
 if (isset($_GET['user_ID'])){
     $userID = filter_var($_GET['user_ID'], FILTER_SANITIZE_NUMBER_INT);
 
+    // 管理者以外（投稿者）が編集しようとした場合、または
+    // ログインユーザーが本人のedit-user.phpを編集しようとした場合
+    if ($_SESSION['role_ID'] === 0 || $_SESSION['user_ID'] === $userID){
+        $_SESSION['nonadmin_error'] = 'アクセス権限がありません';
+        header('location: ' . ROOT_URL . 'message.php');
+        die();
+    }
+
     // DBから値を取得
     $connection = dbconnect();
     $stmt = $connection->prepare('SELECT user_ID, email FROM users WHERE user_id=?');
@@ -12,6 +20,10 @@ if (isset($_GET['user_ID'])){
     $stmt->execute();
     $stmt->bind_result($userID, $email);
     $stmt->fetch();
+
+    // CSRF対策のトークン発行
+    $token = bin2hex(random_bytes(32));
+    $_SESSION['token'] = $token;
 
 // edit-user.phpのURLにuser_IDの値が含まれていない場合
 } else {
@@ -32,6 +44,7 @@ if (isset($_GET['user_ID'])){
                     <option value="0">投稿者</option>
                     <option value="1">管理者</option>
                 </select>
+                <input type="hidden" name="token" value="<?php echo $token ?>">
                 <button type="submit" name="submit" class="btn purple">保存</button>
             </form>
         </div>

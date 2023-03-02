@@ -1,6 +1,13 @@
 <?php
 include __DIR__ . '/partials/header.php';
 
+// 前回エラー時にセッション値を表示
+$title = $_SESSION['edit_post_data']['title'] ?? NULL;
+$body = $_SESSION['edit_post_data']['body'] ?? NULL;
+
+// セッション値を消去
+unset($_SESSION['edit_post_data']);
+
 // DBから記事の値を取得
 if (isset($_GET['post_ID'])){
     $postID = filter_var($_GET['post_ID'], FILTER_SANITIZE_NUMBER_INT);
@@ -10,11 +17,16 @@ if (isset($_GET['post_ID'])){
     $postStmt->execute();
     $postStmt->bind_result($postID, $title, $thumbnail, $body, $userID);
     $postStmt->fetch();
-    $_SESSION['post_ID'] = $postID;
+
+    // CSRF対策のトークン発行
+    $token = bin2hex(random_bytes(32));
+    $_SESSION['token'] = $token;
 
     //ログイン中のユーザーと記事投稿ユーザーが異なる場合
     if ($_SESSION['user_ID'] !== $userID){
-        header('location:' . ROOT_URL . 'admin/');
+        $_SESSION['nonadmin_error'] = 'アクセス権限がありません';
+        header('location: ' . ROOT_URL . 'message.php');
+        die();
     }
 
 } else {
@@ -32,24 +44,31 @@ if (isset($_GET['post_ID'])){
             <?php if (isset($_SESSION['edit_post_error'])):?>    
                 <div class="alert__message error">
                     <p>
-                        <?php echo $_SESSION['edit_post_error'];
+                        <?php
+                        //インデックスを変数$iで指定
+                        for($i = 0; $i < count($_SESSION['edit_post_error']); $i++){
+                            // 全エラーを表示
+                            echo $_SESSION['edit_post_error'][$i];
+                            echo "<br>";
+                        }                        
                         unset($_SESSION['edit_post_error']); ?>
                     </p>
                 </div>
             <?php endif; ?>
             <!-- 記事編集フォーム -->
             <form class="form__column" action="<?php echo ROOT_URL ?>admin/edit-post-logic.php" enctype="multipart/form-data" method="POST">
+                <input type="hidden" name="post_ID" value="<?php echo $postID ?>">
                 <input type="hidden" name="previous_thumbnail_name" value="<?php echo $thumbnail ?>">
                 <input type="text" name="title" value="<?php echo h($title) ?>" placeholder="タイトル">
-                <select name="tag_ID">
+                <select name="category_ID">
                     <?php
-                    // タグを全種取得
+                    // カテゴリを全種取得
                     $connection = dbconnect();
-                    $tagStmt = $connection->prepare('SELECT tag_ID, tag_title FROM tags WHERE is_deleted=0');
-                    $tagStmt->execute();
-                    $tagStmt->bind_result($tagID, $tagTitle);
-                    while ($tagStmt->fetch()): ?>
-                        <option value="<?php echo $tagID ?>"><?php echo $tagTitle ?></option>     
+                    $categoryStmt = $connection->prepare('SELECT category_ID, category_title FROM categories WHERE is_deleted=0');
+                    $categoryStmt->execute();
+                    $categoryStmt->bind_result($categoryID, $categoryTitle);
+                    while ($categoryStmt->fetch()): ?>
+                        <option value="<?php echo $categoryID ?>"><?php echo $categoryTitle ?></option>     
                     <?php endwhile; ?>
                 </select>
                 <div class="form__control inline">
@@ -61,6 +80,7 @@ if (isset($_GET['post_ID'])){
                     <input type="file" name="thumbnail" id="thumbnail">
                 </div>
                 <textarea rows="15" name="body" placeholder="本文"><?php echo h($body) ?></textarea>
+                <input type="hidden" name="token" value="<?php echo $token ?>">
                 <button type="submit" name="submit" class="btn purple">投稿する</button>
             </form>
         </div>

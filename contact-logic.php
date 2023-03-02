@@ -15,16 +15,19 @@ if (isset($_POST['submit'])){
 
     // フォーム内容を確認
     if (!$title){
-        $_SESSION['contact_error'] = "タイトルを入力してください";
-    } elseif (!$name){
-        $_SESSION['contact_error'] = "名前を入力してください";
-    } elseif (!$email){
-        $_SESSION['contact_error'] = "メールアドレスを入力してください";
-    } elseif (!$body){
-        $_SESSION['contact_error'] = "本文を入力してください";
+        $_SESSION['contact_error'][] = "件名を入力してください";
+    }
+    if (!$name){
+        $_SESSION['contact_error'][] = "名前を入力してください";
+    }
+    if (!$email){
+        $_SESSION['contact_error'][] = "メールアドレスを入力してください";
+    }
+    if (!$body){
+        $_SESSION['contact_error'][] = "本文を入力してください";
     }
 
-    // この時点でエラーがあるとき
+    // この時点でエラーがある場合
     if (isset($_SESSION['contact_error'])){
         $_SESSION['contact_data'] = $_POST;
         header('location: ' . ROOT_URL . 'contact.php');
@@ -40,7 +43,7 @@ if (isset($_POST['submit'])){
         // エラーがない場合
         if ($success){
             $_SESSION['contact_success'] = "お問い合わせいただきありがとうございます";
-            header(('location: ' . ROOT_URL . 'message.php'));
+            header('location: ' . ROOT_URL . 'message.php');
             
             // パスワード変更用メールを送るための設定
             // メールタイトル

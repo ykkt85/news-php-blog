@@ -16,19 +16,17 @@ unset($_SESSION['contact_data']);
     <section class="form__section">
         <div class="container form__section-container">
             <h2>問い合わせ</h2>
-            <!-- 問い合わせに成功した場合 -->
-            <?php if (isset($_SESSION['contact_success'])):?>    
-                <div class="alert__message success">
-                    <p>
-                        <?php echo $_SESSION['contact_success'];
-                        unset($_SESSION['contact_success']); ?>
-                    </p>
-                </div>
             <!-- 問い合わせに失敗した場合 -->
-            <?php elseif (isset($_SESSION['contact_error'])):?>    
+            <?php if (isset($_SESSION['contact_error'])):?>    
                 <div class="alert__message error">
                     <p>
-                        <?php echo $_SESSION['contact_error'];
+                        <?php
+                        //インデックスを変数$iで指定
+                        for($i = 0; $i < count($_SESSION['contact_error']); $i++){
+                            // 全エラーを表示
+                            echo $_SESSION['contact_error'][$i];
+                            echo "<br>";
+                        }
                         unset($_SESSION['contact_error']); ?>
                     </p>
                 </div>
