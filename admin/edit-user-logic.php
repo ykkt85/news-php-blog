@@ -23,14 +23,14 @@ if (isset($_POST['submit'])){
     $stmt->bind_param('ii', $roleID, $userID);
     $success = $stmt->execute();
 
-    // エラーがない場合
+    // エラーの有無確認
     if (!$success){
         $_SESSION['edit_user_error'] = "内容変更に失敗しました";
-        header('location: ' . ROOT_URL . 'admin/manage-users.php');
     } else {
         $_SESSION['edit_user_success'] = "変更内容が保存されました";
-        header('location: ' . ROOT_URL . 'admin/manage-users.php');
     }
+    header('location: ' . ROOT_URL . 'admin/manage-users.php');
+    die();
 
 // edit-user.phpのフォームから値が送信されていない場合
 } else {

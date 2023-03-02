@@ -30,12 +30,12 @@ if (isset($_GET['user_ID'])){
     // エラーがない場合
     if ($successUpdate && $successSelect){
         $_SESSION['delete_user_success'] = "ユーザー {$email} が削除されました";
-        header('location: ' . ROOT_URL . 'admin/manage-users.php');
     // エラーがある場合
     } else {
         $_SESSION['delete_user_error'] = "ユーザー {$email} の削除に失敗しました";
-        header('location: ' . ROOT_URL . 'admin/manage-users.php');
     }
+    header('location: ' . ROOT_URL . 'admin/manage-users.php');
+    die();
 
 // セッション値がない場合
 } else {

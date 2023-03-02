@@ -35,13 +35,12 @@ if (isset($_GET['category_ID'])){
     // 全ての動作においてエラーがない場合
     if ($successCategories && $successPosts && $successCategoryTitle){
         $_SESSION['delete_category_success'] = "タグ「 {$categoryTitle} 」が削除されました";
-        header('location: ' . ROOT_URL . 'admin/manage-categories.php');
-    
     // エラーがある場合
     } else {
         $_SESSION['delete_category_error'] = "タグ「 {$categoryTitle} 」の削除に失敗しました";
-        header('location: ' . ROOT_URL . 'admin/manage-categories.php');
     }
+    header('location: ' . ROOT_URL . 'admin/manage-categories.php');
+    die();
 
 // delete-category.phpのURLにcategory_IDの値が含まれていない場合
 } else {
