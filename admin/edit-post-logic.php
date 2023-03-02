@@ -95,7 +95,7 @@ if (isset($_POST['submit'])){
         // エラーがない場合
         if ($result){
             $_SESSION['edit_post_success'] = "記事を編集しました";
-            header(('location: ' . ROOT_URL . 'admin/'));
+            header('location: ' . ROOT_URL . 'admin/');
             die();
         }
     }
