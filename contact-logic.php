@@ -40,7 +40,7 @@ if (isset($_POST['submit'])){
         // エラーがない場合
         if ($success){
             $_SESSION['contact_success'] = "お問い合わせいただきありがとうございます";
-            header(('location: ' . ROOT_URL . 'message.php'));
+            header('location: ' . ROOT_URL . 'message.php');
             
             // パスワード変更用メールを送るための設定
             // メールタイトル
