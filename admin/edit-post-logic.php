@@ -10,16 +10,19 @@ if (isset($_POST['submit'])){
     $thumbnail = $_FILES['thumbnail'];
     $previousThumbnailName = filter_var($_POST['previous_thumbnail_name'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $body = filter_var($_POST['body'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $token = filter_var($_POST['token'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     
-    // DBのuser_IDとログインユーザーが異なる場合
+    // DBのuser_IDとログインユーザーが異なる場合、または
+    // トークンが異なる場合
     $connection = dbconnect();
     $stmt = $connection->prepare('SELECT user_ID FROM posts WHERE post_ID=? AND is_deleted=0 LIMIT 1');
     $stmt->bind_param('i', $postID);
     $stmt->execute();
     $stmt->bind_result($userID);
     $stmt->fetch();
-    if ($_SESSION['user_ID'] !== $userID){
+    if ($_SESSION['user_ID'] !== $userID || $_SESSION['token'] !== $token){
         $_SESSION['nonadmin_error'] = 'アクセス権限がありません';
+        unset($_SESSION['token']);
         header('location: ' . ROOT_URL . 'message.php');
         die();
     }

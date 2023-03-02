@@ -21,6 +21,10 @@ if (isset($_GET['category_ID'])){
     $stmt->fetch();
     var_dump($categoryID, $categoryTitle, $description);
 
+    // CSRF対策のトークン発行
+    $token = bin2hex(random_bytes(32));
+    $_SESSION['token'] = $token;
+
 // URLからcategory_IDの値を受け取っていない場合
 } else {
     header('location: ' . ROOT_URL . 'admin/manage-categorys.php');
@@ -37,6 +41,7 @@ if (isset($_GET['category_ID'])){
                 <input type="hidden" name="category_ID" value="<?php echo $categoryID ?>">
                 <input type="text" name="category_title" value="<?php echo h($categoryTitle) ?>" placeholder="タグ名">
                 <textarea rows="4" name="description" placeholder="説明"><?php echo h($description) ?></textarea>
+                <input type="hidden" name="token" value="<?php echo $token ?>">
                 <button type="submit" name="submit" class="btn purple">保存</button>
             </form>
         </div>

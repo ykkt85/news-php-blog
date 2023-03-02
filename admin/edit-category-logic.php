@@ -6,10 +6,13 @@ if(isset($_POST['submit'])){
     $categoryID = filter_var($_POST['category_ID'], FILTER_SANITIZE_NUMBER_INT);
     $categoryTitle = filter_var($_POST['category_title'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $description = filter_var($_POST['description'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $token = filter_var($_POST['token'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-    // 管理者以外（投稿者）がアクセスした場合
-    if ($_SESSION['role_ID'] === 0){
+    // 管理者以外（投稿者）がアクセスした場合、または
+    // トークンが異なる場合
+    if ($_SESSION['role_ID'] === 0 || $_SESSION['token'] !== $token){
         $_SESSION['nonadmin_error'] = 'アクセス権限がありません';
+        unset($_SESSION['token']);
         header('location: ' . ROOT_URL . 'message.php');
         die();
     }
@@ -23,12 +26,16 @@ if(isset($_POST['submit'])){
         $_SESSION['edit_category_error'] = "説明を入力してください";
 
     } else {
+        // DBにデータを記録
         $connection = dbconnect();
         $stmt = $connection->prepare('UPDATE categories SET category_title=?, description=?, updated_at=CURRENT_TIMESTAMP() WHERE category_ID=? LIMIT 1');
         $stmt->bind_param('ssi', $categoryTitle, $description, $categoryID);
         $success = $stmt->execute();
+
+        // エラーがある場合
         if (!$success){
             $_SESSION['edit_category_error'] = "タグを編集できませんでした";
+        // エラーがない場合
         } else {
             $_SESSION['edit_category_success'] = "タグ「" . h($categoryTitle) . "」を編集しました";
         }

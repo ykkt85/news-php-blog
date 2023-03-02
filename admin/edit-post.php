@@ -11,6 +11,10 @@ if (isset($_GET['post_ID'])){
     $postStmt->bind_result($postID, $title, $thumbnail, $body, $userID);
     $postStmt->fetch();
 
+    // CSRF対策のトークン発行
+    $token = bin2hex(random_bytes(32));
+    $_SESSION['token'] = $token;
+
     //ログイン中のユーザーと記事投稿ユーザーが異なる場合
     if ($_SESSION['user_ID'] !== $userID){
         $_SESSION['nonadmin_error'] = 'アクセス権限がありません';
@@ -40,7 +44,7 @@ if (isset($_GET['post_ID'])){
             <?php endif; ?>
             <!-- 記事編集フォーム -->
             <form class="form__column" action="<?php echo ROOT_URL ?>admin/edit-post-logic.php" enctype="multipart/form-data" method="POST">
-                <input type="hidden" name="post_ID" value="<?php echo $postID ?>">    
+                <input type="hidden" name="post_ID" value="<?php echo $postID ?>">
                 <input type="hidden" name="previous_thumbnail_name" value="<?php echo $thumbnail ?>">
                 <input type="text" name="title" value="<?php echo h($title) ?>" placeholder="タイトル">
                 <select name="category_ID">
@@ -63,6 +67,7 @@ if (isset($_GET['post_ID'])){
                     <input type="file" name="thumbnail" id="thumbnail">
                 </div>
                 <textarea rows="15" name="body" placeholder="本文"><?php echo h($body) ?></textarea>
+                <input type="hidden" name="token" value="<?php echo $token ?>">
                 <button type="submit" name="submit" class="btn purple">投稿する</button>
             </form>
         </div>

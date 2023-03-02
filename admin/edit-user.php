@@ -21,6 +21,10 @@ if (isset($_GET['user_ID'])){
     $stmt->bind_result($userID, $email);
     $stmt->fetch();
 
+    // CSRF対策のトークン発行
+    $token = bin2hex(random_bytes(32));
+    $_SESSION['token'] = $token;
+
 // edit-user.phpのURLにuser_IDの値が含まれていない場合
 } else {
     header('location: ' . ROOT_URL . 'admin/manage-users.php');
@@ -40,6 +44,7 @@ if (isset($_GET['user_ID'])){
                     <option value="0">投稿者</option>
                     <option value="1">管理者</option>
                 </select>
+                <input type="hidden" name="token" value="<?php echo $token ?>">
                 <button type="submit" name="submit" class="btn purple">保存</button>
             </form>
         </div>
