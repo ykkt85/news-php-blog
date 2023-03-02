@@ -2,7 +2,8 @@
 
 ブログ式webアプリ。機能は以下の通り<br>
 <ul>
-<li>タイトル検索</li>
+<li>記事閲覧</li>
+<li>記事検索</li>
 <li>問い合わせフォームを送ると自動メールが送信される</li>
 </ul>
 
@@ -12,14 +13,15 @@
 <ul>
 <li>記事投稿</li>
 <li>記事編集</li>
-<li>ユーザーアカウントのメールアドレス変更</li>
+<li>記事削除</li>
+<li>ユーザーアカウントのパスワード変更</li>
 </ul>
 
 <b>管理者の機能</b>
 <ul>
-<li>タグ追加</li>
-<li>タグ編集</li>
-<li>タグ削除</li>
+<li>カテゴリ追加</li>
+<li>カテゴリ編集</li>
+<li>カテゴリ削除</li>
 <li>投稿者編集</li>
 </ul>
 
@@ -35,19 +37,5 @@
 <li>CSS</li>
 <li>Javascript</li>
 <li>MAMP 4.2.0</li>
+<li>[vlucas/phpdotenv](https://github.com/vlucas/phpdotenv)</li>
 </ul><br>
-
-<h2>Description</h2>
-<h3>How to use</h3>
-Credits: none
-
-is possible...:
-Motivation:
-This project solves:
-Technologies:
-The challenges I faced:
-I am proud of: 
-In this process I learned:
-Next fot the project:
-Languages, frameworks, databases:
-Deploy links or any other links:
