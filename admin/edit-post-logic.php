@@ -73,7 +73,6 @@ if (isset($_POST['submit'])){
     // この時点でエラーがある場合
     if (isset($_SESSION['edit_post_error'])){
         $_SESSION['edit_post_data'] = $_POST;
-        $_SESSION['post_ID'] = $postID;
         header('location: ' . ROOT_URL . 'admin/edit-post.php?post_ID=' . $_SESSION['post_ID']);
 
     } else {
@@ -96,7 +95,6 @@ if (isset($_POST['submit'])){
         // エラーがない場合
         if ($result){
             $_SESSION['edit_post_success'] = "記事を編集しました";
-            unset($_SESSION['post_ID']);
             header(('location: ' . ROOT_URL . 'admin/'));
             die();
         }
@@ -107,3 +105,4 @@ if (isset($_POST['submit'])){
     header('location: ' . ROOT_URL . 'admin/');
     die();
 }
+?>
