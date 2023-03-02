@@ -21,14 +21,6 @@ include __DIR__ . '/partials/header.php';
                     unset($_SESSION['edit_post_success']); ?>
                 </p>
             </div>
-        <!-- 記事編集に失敗した場合 -->
-        <?php elseif (isset($_SESSION['edit_post_error'])): ?>
-            <div class="alert__message error container">
-                <p>
-                    <?php echo $_SESSION['edit_post_error'];
-                    unset($_SESSION['edit_post_error']); ?>
-                </p>
-            </div>
         <!-- 記事削除に成功した場合 -->
         <?php elseif (isset($_SESSION['delete_post_success'])): ?>
             <div class="alert__message success container">
@@ -46,13 +38,13 @@ include __DIR__ . '/partials/header.php';
                 </p>
             </div>
         <!-- パスワード変更に成功した場合 -->
-        <?php //elseif (isset($_SESSION['new_password_success'])): ?>
-            <!-- <div class="alert__message success container">
+        <?php elseif (isset($_SESSION['new_password_success'])): ?>
+            <div class="alert__message success container">
                 <p>
-                    <?php /*echo $_SESSION['new_password_success'];
-                    unset($_SESSION['new_password_success']);*/ ?>
+                    <?php echo $_SESSION['new_password_success'];
+                    unset($_SESSION['new_password_success']); ?>
                 </p>
-            </div> -->
+            </div>
         <?php endif; ?>
         <div class="container dashboard__container">
             <!-- メディアクエリ用ボタン途中 -->
@@ -121,11 +113,11 @@ include __DIR__ . '/partials/header.php';
                 // 現在ログイン中のユーザーのメールアドレスを取得
                 $currentUserID = $_SESSION['user_ID'];
                 $connection = dbconnect();
-                $emailStmt = $connection->prepare('SELECT email from users WHERE user_ID=?');
-                $emailStmt->bind_param('i', $currentUserID);
-                $emailSuccess = $emailStmt->execute();
-                $emailStmt->bind_result($email);
-                $emailStmt->fetch();
+                $stmt = $connection->prepare('SELECT email from users WHERE user_ID=?');
+                $stmt->bind_param('i', $currentUserID);
+                $emailSuccess = $stmt->execute();
+                $stmt->bind_result($email);
+                $stmt->fetch();
                 ?>
                 <p>現在ログイン中のユーザー：<?php echo h($email) ?></p>
                 <table>
@@ -141,11 +133,11 @@ include __DIR__ . '/partials/header.php';
                         <?php
                         //記事を表示
                         $connection = dbconnect();
-                        $postStmt = $connection->prepare('SELECT p.post_ID, p.title, t.category_title FROM posts AS p INNER JOIN categories AS t ON p.category_ID=t.category_ID WHERE p.user_ID=? AND p.is_deleted=0 ORDER BY p.updated_at DESC');
-                        $postStmt->bind_param('i', $currentUserID);
-                        $postStmt->execute();
-                        $postStmt->bind_result($postID, $title, $categoryTitle);
-                        while($postStmt->fetch()): ?>
+                        $stmt = $connection->prepare('SELECT p.post_ID, p.title, t.category_title FROM posts AS p INNER JOIN categories AS t ON p.category_ID=t.category_ID WHERE p.user_ID=? AND p.is_deleted=0 ORDER BY p.updated_at DESC');
+                        $stmt->bind_param('i', $currentUserID);
+                        $stmt->execute();
+                        $stmt->bind_result($postID, $title, $categoryTitle);
+                        while($stmt->fetch()): ?>
                         <tr>
                             <td><?php echo h($title) ?></td>
                             <td><?php echo h($categoryTitle) ?></td>
