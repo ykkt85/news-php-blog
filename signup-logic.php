@@ -81,7 +81,7 @@ if (isset($_POST['submit'])){
 
 // 登録ボタンがクリックされずに画面遷移した場合
 } else {
-    header(('location:' . ROOT_URL));
+    header('location:' . ROOT_URL);
     die();
 }
 ?>
