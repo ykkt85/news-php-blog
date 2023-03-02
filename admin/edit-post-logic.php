@@ -48,8 +48,8 @@ if (isset($_POST['submit'])){
 
             // 画像の名前を変更
             $time = time();
-            $thumbnailName = $time . $thumbnail['name'];
-            $thumbnailTmpName = $thumbnail['tmp_name'];
+            $thumbnailName = $time . h($thumbnail['name']);
+            $thumbnailTmpName = h($thumbnail['tmp_name']);
             $thumbnailDescriptionPath = '../images/' . $thumbnailName;
 
             // データの拡張子を確認
