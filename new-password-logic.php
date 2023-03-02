@@ -59,7 +59,6 @@ if (isset($_POST['submit'])){
         // 値更新時にエラーがある場合
         if (!$success) {
             $_SESSION['new_password_error'] = "パスワードを変更できません";
-            $_SESSION['new_password_data'] = $_POST;
             header('location: ' . ROOT_URL . 'new-password.php?token=' . $token);
             die();
             
