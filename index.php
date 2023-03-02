@@ -76,7 +76,7 @@ $stmt->bind_result($postID, $title, $categoryID, $thumbnail, $body, $createdAt, 
     <section class="category__buttons">
         <div class="container category__buttons-container">
             <?php
-            // DBから全てのタグタイトルを取得
+            // DBから全てのカテゴリタイトルを取得
             $connection = dbconnect();
             $stmt = $connection->prepare('SELECT category_ID, category_title FROM categories WHERE is_deleted=0');
             $stmt->execute();

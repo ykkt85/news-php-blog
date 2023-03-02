@@ -8,7 +8,7 @@ if ($_SESSION['role_ID'] === 0){
     die();
 }
 
-// 登録してあるタグを読み込む
+// 登録してあるカテゴリを読み込む
 $connection = dbconnect();
 $stmt = $connection->prepare('SELECT category_ID, category_title, description FROM categories WHERE is_deleted=0');
 $success = $stmt->execute();
@@ -18,7 +18,7 @@ $stmt->bind_result($categoryID, $categoryTitle, $description);
 <!--================================ HTML ================================-->
 
     <section class="dashboard">
-        <!-- タグ追加に成功した場合 -->
+        <!-- カテゴリ追加に成功した場合 -->
         <?php if (isset($_SESSION['add_category_success'])): ?>
             <div class="alert__message success container">
                 <p>
@@ -26,7 +26,7 @@ $stmt->bind_result($categoryID, $categoryTitle, $description);
                     unset($_SESSION['add_category_success']); ?>
                 </p>
             </div>
-        <!-- タグ編集に成功した場合 -->
+        <!-- カテゴリ編集に成功した場合 -->
         <?php elseif (isset($_SESSION['edit_category_success'])): ?>
             <div class="alert__message success container">
                 <p>
@@ -34,7 +34,7 @@ $stmt->bind_result($categoryID, $categoryTitle, $description);
                     unset($_SESSION['edit_category_success']); ?>
                 </p>
             </div>
-        <!-- タグ削除に成功した場合 -->
+        <!-- カテゴリ削除に成功した場合 -->
         <?php elseif (isset($_SESSION['delete_category_success'])): ?>
             <div class="alert__message success container">
                 <p>
@@ -42,7 +42,7 @@ $stmt->bind_result($categoryID, $categoryTitle, $description);
                     unset($_SESSION['delete_category_success']); ?>
                 </p>
             </div>
-        <!-- タグ編集に失敗した場合 -->
+        <!-- カテゴリ編集に失敗した場合 -->
         <?php elseif (isset($_SESSION['edit_category_error'])): ?>
             <div class="alert__message error container">
                 <p>
@@ -50,7 +50,7 @@ $stmt->bind_result($categoryID, $categoryTitle, $description);
                     unset($_SESSION['edit_category_error']); ?>
                 </p>
             </div>
-        <!-- タグ削除に失敗した場合 -->
+        <!-- カテゴリ削除に失敗した場合 -->
         <?php elseif (isset($_SESSION['delete_category_error'])): ?>
             <div class="alert__message error container">
                 <p>
@@ -90,13 +90,13 @@ $stmt->bind_result($categoryID, $categoryTitle, $description);
                         <li>
                             <a href="<?php echo ROOT_URL ?>admin/add-category.php">
                                 <i class="uil uil-label-alt"></i>
-                                <h5>新規タグ</h5>
+                                <h5>新規カテゴリ</h5>
                             </a>
                         </li>
                         <li>
                             <a href="<?php echo ROOT_URL ?>admin/manage-categories.php" class="active">
                                 <i class="uil uil-list-ul"></i>
-                                <h5>タグ編集</h5>
+                                <h5>カテゴリ編集</h5>
                             </a>
                         </li>
                     <?php endif; ?>
@@ -121,19 +121,19 @@ $stmt->bind_result($categoryID, $categoryTitle, $description);
                 </ul>
             </aside>
             <main>
-                <h2>タグ編集</h2>
-                <!-- タグが登録されている場合 -->
+                <h2>カテゴリ編集</h2>
+                <!-- カテゴリが登録されている場合 -->
                     <table>
                         <thead>
                             <tr>
-                                <th>タグ</th>
+                                <th>カテゴリ</th>
                                 <th>説明</th>
                                 <th>編集</th>
                                 <th>削除</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- タグ表示 -->
+                            <!-- カテゴリ表示 -->
                             <?php while($stmt->fetch()): ?>
                                 <tr>
                                     <td><?php echo h($categoryTitle) ?></td>
@@ -144,9 +144,9 @@ $stmt->bind_result($categoryID, $categoryTitle, $description);
                             <?php endwhile; ?>
                         </tbody>
                     </table>
-                <!-- タグが登録されていないとき -->
+                <!-- カテゴリが登録されていないとき -->
                 <?php //else: ?>
-                    <!--<div class="alert__message error"><?php //echo "タグが登録されていません"; ?></div>-->
+                    <!--<div class="alert__message error"><?php //echo "カテゴリが登録されていません"; ?></div>-->
                 <?php //endif; ?>
             </main>
         </div>

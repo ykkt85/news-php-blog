@@ -7,16 +7,16 @@ if(isset($_POST['submit'])){
     $description = filter_var($_POST['description'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
     //フォームの値確認
-    // タグ名が空の場合
+    // カテゴリ名が空の場合
     if (!$categoryTitle){
-        $_SESSION['add_category_error'] = "タグ名を入力してください";
+        $_SESSION['add_category_error'] = "カテゴリ名を入力してください";
     
     // 説明が空の場合
     } elseif (!$description){
         $_SESSION['add_category_error'] = "説明を入力してください";
     
     } else {
-        // タグ名に被りがないか確認
+        // カテゴリ名に被りがないか確認
         $connection = dbconnect();
         $stmt = $connection->prepare('SELECT category_title FROM categories WHERE category_title=?');
         $stmt->bind_param('s', $categoryTitle);
@@ -24,7 +24,7 @@ if(isset($_POST['submit'])){
         $stmt->bind_result($categoryID);
         $stmt->fetch();
         if ($categoryID !== NULL){
-            $_SESSION['add_category_error'] = "そのタグ名は既に登録されています";
+            $_SESSION['add_category_error'] = "そのカテゴリ名は既に登録されています";
         }
     }
 
@@ -44,13 +44,13 @@ if(isset($_POST['submit'])){
 
         // エラーがある場合
         if (!$success){
-            $_SESSION['add_category_error'] = "タグを登録できません";
+            $_SESSION['add_category_error'] = "カテゴリを登録できません";
             $_SESSION['add_category_data'] = $_POST;
             header('location: ' . ROOT_URL . 'admin/add-category.php');
             die();
         // エラーがない場合
         } else {
-            $_SESSION['add_category_success'] = "タグ「" . h($categoryTitle) . "」が登録されました";
+            $_SESSION['add_category_success'] = "カテゴリ「" . h($categoryTitle) . "」が登録されました";
             header('location: ' . ROOT_URL . 'admin/manage-categories.php');
             die();
         }

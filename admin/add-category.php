@@ -1,11 +1,11 @@
 <?php
 include __DIR__ . '/partials/header.php';
 
-// 前回エラー時にセッションデータを戻す
+// 前回エラー時にセッション値を戻す
 $categoryTitle = $_SESSION['add_category_data']['category_title'] ?? NULL;
 $description = $_SESSION['add_category_data']['description'] ?? NULL;
 
-// セッションデータを消去
+// セッション値を消去
 unset($_SESSION['add_category_data']);
 ?>
 
@@ -13,7 +13,7 @@ unset($_SESSION['add_category_data']);
 
     <section class="form__section">
         <div class="container form__section-container">
-            <h2>タグ追加</h2>
+            <h2>カテゴリ追加</h2>
             <?php if (isset($_SESSION['add_category_error'])): ?>
                 <div class="alert__message error">
                     <p>
@@ -23,7 +23,7 @@ unset($_SESSION['add_category_data']);
                 </div>
             <?php endif; ?>
             <form class="form__column" action="<?php echo ROOT_URL ?>admin/add-category-logic.php" method="POST">
-                <input type="text" name="category_title" value="<?php echo h($categoryTitle) ?>" placeholder="タグ名">
+                <input type="text" name="category_title" value="<?php echo h($categoryTitle) ?>" placeholder="カテゴリ名">
                 <textarea rows="4" name="description" placeholder="説明"><?php echo h($description) ?></textarea>
                 <button type="submit" name="submit" class="btn purple">追加</button>
             </form>

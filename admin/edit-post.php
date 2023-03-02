@@ -1,11 +1,11 @@
 <?php
 include __DIR__ . '/partials/header.php';
 
-// 前回エラー時にセッションデータを表示
+// 前回エラー時にセッション値を表示
 $title = $_SESSION['edit_post_data']['title'] ?? NULL;
 $body = $_SESSION['edit_post_data']['body'] ?? NULL;
 
-// セッションデータを消去
+// セッション値を消去
 unset($_SESSION['edit_post_data']);
 
 // DBから記事の値を取得
@@ -56,7 +56,7 @@ if (isset($_GET['post_ID'])){
                 <input type="text" name="title" value="<?php echo h($title) ?>" placeholder="タイトル">
                 <select name="category_ID">
                     <?php
-                    // タグを全種取得
+                    // カテゴリを全種取得
                     $connection = dbconnect();
                     $categoryStmt = $connection->prepare('SELECT category_ID, category_title FROM categories WHERE is_deleted=0');
                     $categoryStmt->execute();

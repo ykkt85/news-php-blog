@@ -1,7 +1,7 @@
 <?php
 include __DIR__ . '/partials/header.php';
 
-// category-posts.phpのURLにcategory_IDがある場合、タグと関連付けられている記事を表示
+// category-posts.phpのURLにcategory_IDがある場合、カテゴリと関連付けられている記事を表示
 if (isset($_GET['category_ID'])){
     $categoryID = filter_var($_GET['category_ID'], FILTER_SANITIZE_NUMBER_INT);
 
@@ -27,7 +27,7 @@ if (isset($_GET['category_ID'])){
 
     <header class="category__title">
         <?php
-        // DBからタグの値を取得
+        // DBからカテゴリの値を取得
         $connection = dbconnect();
         $categoryStmt = $connection->prepare('SELECT category_title FROM categories WHERE category_ID=? AND is_deleted=0');
         $categoryStmt->bind_param('i', $categoryID);
@@ -39,7 +39,7 @@ if (isset($_GET['category_ID'])){
     </header>
     <!--================ END OF category TITLE ================-->
 
-    <!-- 該当タグの付いた記事がある場合 -->
+    <!-- 該当カテゴリの付いた記事がある場合 -->
     <?php //if ($postResult): ?>
         <section class="posts">
             <div class="container posts__container">
@@ -68,7 +68,7 @@ if (isset($_GET['category_ID'])){
                 <?php endwhile; ?>
             </div>
         </section>
-    <!-- 該当タグの付いた記事がない場合 -->
+    <!-- 該当カテゴリの付いた記事がない場合 -->
     <?php //else: ?>
         <!--<div class ="alert__message error lg">
             <p>記事がありません</p>
@@ -79,7 +79,7 @@ if (isset($_GET['category_ID'])){
     <section class="category__buttons">
         <div class="container category__buttons-container">
             <?php
-            // DBから全てのタグタイトルを取得
+            // DBから全てのカテゴリタイトルを取得
             $connection = dbconnect();
             $stmt = $connection->prepare('SELECT category_ID, category_title FROM categories WHERE is_deleted=0');
             $stmt->execute();

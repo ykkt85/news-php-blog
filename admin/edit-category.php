@@ -36,7 +36,7 @@ if (isset($_GET['category_ID'])){
 
     <section class="form__section">
         <div class="container form__section-container">
-            <h2>タグ編集</h2>
+            <h2>カテゴリ編集</h2>
             <form class="form__column" action="<?php echo ROOT_URL ?>admin/edit-category-logic.php" method="POST">
                 <input type="hidden" name="category_ID" value="<?php echo $categoryID ?>">
                 <input type="text" name="category_title" value="<?php echo h($categoryTitle) ?>" placeholder="タグ名">

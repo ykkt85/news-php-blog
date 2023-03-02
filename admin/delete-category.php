@@ -19,7 +19,7 @@ if (isset($_GET['category_ID'])){
     $successCategories = $stmt->execute();
 
 
-    // 削除したタグがついていた記事のタグ表示を変更
+    // 削除したカテゴリがついていた記事のカテゴリ表示を変更
     $stmt = $connection->prepare('UPDATE posts SET category_ID=10 WHERE category_ID=?');
     $stmt->bind_param('i', $categoryID);
     $successPosts = $stmt->execute();
@@ -34,10 +34,10 @@ if (isset($_GET['category_ID'])){
     
     // 全ての動作においてエラーがない場合
     if ($successCategories && $successPosts && $successCategoryTitle){
-        $_SESSION['delete_category_success'] = "タグ「 {$categoryTitle} 」が削除されました";
+        $_SESSION['delete_category_success'] = "カテゴリ「 {$categoryTitle} 」が削除されました";
     // エラーがある場合
     } else {
-        $_SESSION['delete_category_error'] = "タグ「 {$categoryTitle} 」の削除に失敗しました";
+        $_SESSION['delete_category_error'] = "カテゴリ「 {$categoryTitle} 」の削除に失敗しました";
     }
     header('location: ' . ROOT_URL . 'admin/manage-categories.php');
     die();

@@ -28,7 +28,7 @@ if (!isset($title)){
     <section class="singlepost">
         <div class="container singlepost__container">
             <?php
-            // DBからタグの値を取得
+            // DBからカテゴリの値を取得
             $connection = dbconnect();
             $stmt = $connection->prepare('SELECT category_title FROM categories WHERE category_ID=?');
             $stmt->bind_param('i', $categoryID);
@@ -52,7 +52,7 @@ if (!isset($title)){
     <section class="category__buttons">
         <div class="container category__buttons-container">
             <?php
-            // DBから全てのタグタイトルを取得
+            // DBから全てのカテゴリタイトルを取得
             $connection = dbconnect();
             $stmt = $connection->prepare('SELECT category_ID, category_title FROM categories WHERE is_deleted=0');
             $stmt->execute();

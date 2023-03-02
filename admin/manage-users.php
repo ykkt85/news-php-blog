@@ -93,13 +93,13 @@ $stmt->bind_result($email, $userID, $roleID);
                         <li>
                             <a href="<?php echo ROOT_URL ?>admin/add-tag.php">
                                 <i class="uil uil-label-alt"></i>
-                                <h5>新規タグ</h5>
+                                <h5>新規カテゴリ</h5>
                             </a>
                         </li>
                         <li>
                             <a href="<?php echo ROOT_URL ?>admin/manage-tags.php">
                                 <i class="uil uil-list-ul"></i>
-                                <h5>タグ編集</h5>
+                                <h5>カテゴリ編集</h5>
                             </a>
                         </li>
                     <?php endif; ?>

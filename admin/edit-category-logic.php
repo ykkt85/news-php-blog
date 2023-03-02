@@ -17,9 +17,9 @@ if(isset($_POST['submit'])){
         die();
     }
 
-    // タグ名が空欄の場合
+    // カテゴリ名が空欄の場合
     if (!$categoryTitle){
-        $_SESSION['edit_category_error'] = "タグ名を入力してください";
+        $_SESSION['edit_category_error'] = "カテゴリ名を入力してください";
     
     // 説明が空欄の場合
     } elseif (!$description){ 
@@ -34,10 +34,10 @@ if(isset($_POST['submit'])){
 
         // エラーがある場合
         if (!$success){
-            $_SESSION['edit_category_error'] = "タグを編集できませんでした";
+            $_SESSION['edit_category_error'] = "カテゴリを編集できませんでした";
         // エラーがない場合
         } else {
-            $_SESSION['edit_category_success'] = "タグ「" . h($categoryTitle) . "」を編集しました";
+            $_SESSION['edit_category_success'] = "カテゴリ「" . h($categoryTitle) . "」を編集しました";
         }
     }
 

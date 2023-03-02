@@ -66,7 +66,7 @@ if (isset($_GET['search'])){
     <section class="category__buttons">
         <div class="container category__buttons-container">
             <?php
-            // DBから全てのタグタイトルを取得
+            // DBから全てのカテゴリタイトルを取得
             $stmt = $connection->prepare('SELECT category_ID, category_title FROM categories WHERE is_deleted=0');
             $stmt->execute();
             $stmt->bind_result($categoryID, $categoryTitle);
