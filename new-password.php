@@ -62,7 +62,13 @@ if (isset($_GET['token'])){
             <?php if (isset($_SESSION['new_password_error'])): ?>
                 <div class="alert__message error">
                     <p>
-                        <?php echo $_SESSION['new_password_error'];
+                        <?php                         
+                        //インデックスを変数$iで指定
+                        for($i = 0; $i < count($_SESSION['new_password_error']); $i++){
+                            // 全エラーを表示
+                            echo $_SESSION['new_password_error'][$i];
+                            echo "<br>";
+                        }
                         unset($_SESSION['new_password_error']); ?>
                     </p>
                 </div>

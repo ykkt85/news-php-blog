@@ -27,7 +27,7 @@ if (isset($_GET['category_ID'])){
 
 // URLからcategory_IDの値を受け取っていない場合
 } else {
-    header('location: ' . ROOT_URL . 'admin/manage-categorys.php');
+    header('location: ' . ROOT_URL . 'admin/manage-categories.php');
     die();
 }
 ?>
@@ -37,6 +37,21 @@ if (isset($_GET['category_ID'])){
     <section class="form__section">
         <div class="container form__section-container">
             <h2>カテゴリ編集</h2>
+            <!-- 新規記事投稿に失敗した場合 -->
+            <?php if (isset($_SESSION['edit_category_error'])):?>    
+                <div class="alert__message error">
+                    <p>
+                        <?php
+                        //インデックスを変数$iで指定
+                        for($i = 0; $i < count($_SESSION['edit_category_error']); $i++){
+                            // 全エラーを表示
+                            echo $_SESSION['edit_category_error'][$i];
+                            echo "<br>";
+                        }                        
+                        unset($_SESSION['edit_category_error']); ?>
+                    </p>
+                </div>
+            <?php endif; ?>
             <form class="form__column" action="<?php echo ROOT_URL ?>admin/edit-category-logic.php" method="POST">
                 <input type="hidden" name="category_ID" value="<?php echo $categoryID ?>">
                 <input type="text" name="category_title" value="<?php echo h($categoryTitle) ?>" placeholder="タグ名">
@@ -46,7 +61,7 @@ if (isset($_GET['category_ID'])){
             </form>
         </div>
     </section>
-    <!--================ END OF EDIT-category ================-->
+    <!--================ END OF EDIT-CATEGORY ================-->
     
     <script src="<?php echo ROOT_URL ?>js/main.js"></script>
 </body>

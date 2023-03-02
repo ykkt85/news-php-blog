@@ -19,11 +19,17 @@ if(isset($_POST['submit'])){
 
     // カテゴリ名が空欄の場合
     if (!$categoryTitle){
-        $_SESSION['edit_category_error'] = "カテゴリ名を入力してください";
-    
+        $_SESSION['edit_category_error'][] = "カテゴリ名を入力してください";
+    }
     // 説明が空欄の場合
-    } elseif (!$description){ 
-        $_SESSION['edit_category_error'] = "説明を入力してください";
+    if (!$description){ 
+        $_SESSION['edit_category_error'][] = "説明を入力してください";
+    }
+
+    // この時点でエラーがある場合
+    if (isset($_SESSION['edit_category_error'])){
+        header('location: ' . ROOT_URL . 'admin/edit-category.php?category_ID='. $categoryID);
+        die();
 
     } else {
         // DBにデータを記録
@@ -39,14 +45,13 @@ if(isset($_POST['submit'])){
         } else {
             $_SESSION['edit_category_success'] = "カテゴリ「" . h($categoryTitle) . "」を編集しました";
         }
+        header('location: ' . ROOT_URL . 'admin/manage-categories.php');
+        die();
     }
-
-    header('location: ' . ROOT_URL . 'admin/manage-categories.php');
-    die();
 
 // edit-category.phpからフォームが送信されていない場合
 } else {
-    header('location: ' . ROOT_URL . 'admin/manage-category.php');
+    header('location: ' . ROOT_URL . 'admin/manage-categories.php');
     die();
 }
 ?>

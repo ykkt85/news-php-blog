@@ -1,15 +1,15 @@
 <?php
 include __DIR__ . '/partials/header.php';
-$connection = dbconnect();
 
 // タグ表示のためDBからデータを取得
-$stmt = $connection->query('SELECT * FROM categorys WHERE is_deleted=0');
+$connection = dbconnect();
+$stmt = $connection->query('SELECT * FROM categories WHERE is_deleted=0');
 
-// 前回エラー時にセッションデータを表示
+// 前回エラー時にセッション値を表示
 $title = $_SESSION['add_post_data']['title'] ?? NULL;
 $body = $_SESSION['add_post_data']['body'] ?? NULL;
 
-// セッションデータを消去
+// セッション値を消去
 unset($_SESSION['add_post_data']);
 ?>
 
@@ -22,7 +22,13 @@ unset($_SESSION['add_post_data']);
             <?php if (isset($_SESSION['add_post_error'])):?>    
                 <div class="alert__message error">
                     <p>
-                        <?php echo $_SESSION['add_post_error'];
+                        <?php
+                        //インデックスを変数$iで指定
+                        for($i = 0; $i < count($_SESSION['add_post_error']); $i++){
+                            // 全エラーを表示
+                            echo $_SESSION['add_post_error'][$i];
+                            echo "<br>";
+                        }                        
                         unset($_SESSION['add_post_error']); ?>
                     </p>
                 </div>

@@ -17,7 +17,13 @@ unset($_SESSION['add_category_data']);
             <?php if (isset($_SESSION['add_category_error'])): ?>
                 <div class="alert__message error">
                     <p>
-                        <?php echo $_SESSION['add_category_error'];
+                        <?php
+                        //インデックスを変数$iで指定
+                        for($i = 0; $i < count($_SESSION['add_category_error']); $i++){
+                            // 全エラーを表示
+                            echo $_SESSION['add_category_error'][$i];
+                            echo "<br>";
+                        }                        
                         unset($_SESSION['add_category_error']); ?>
                     </p>
                 </div>

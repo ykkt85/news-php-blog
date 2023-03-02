@@ -31,14 +31,19 @@ if (isset($_POST['submit'])){
     $isFeatured = $isFeatured == 1 ?: 0;
 
     // フォーム内容を確認
+    // タイトルが空欄の場合
     if (!$title) {
-        $_SESSION['edit_post_error'] = "タイトルを入力してください";
-    } elseif (!$thumbnail['name'] && !$previousThumbnailName){
-        $_SESSION['edit_post_error'] = "画像を選択してください";
-    } elseif (!$body){
-        $_SESSION['edit_post_error'] = "本文を入力してください";
-    } else {
+        $_SESSION['edit_post_error'][] = "タイトルを入力してください";
+    }
+    // 本文が空欄の場合
+    if (!$body){
+        $_SESSION['edit_post_error'][] = "本文を入力してください";
+    }
 
+    // 画像が選択されていない場合
+    if (!$thumbnail['name'] && !$previousThumbnailName){
+        $_SESSION['edit_post_error'][] = "画像を選択してください";
+    } else {
         // 新しい画像をアップロードする場合以前の画像を消去
         if ($thumbnail['name']){
             $previousThumbnailPath = '../images/' . $previousThumbnailName;
@@ -62,10 +67,10 @@ if (isset($_POST['submit'])){
                 if ($thumbnail['size'] < 2_000_000){
                     move_uploaded_file($thumbnailTmpName, $thumbnailDescriptionPath);
                 } else {
-                    $_SESSION['edit_post_error'] = "画像サイズが大きすぎます。2MB以下の画像を指定し直してください";
+                    $_SESSION['edit_post_error'][] = "画像サイズが大きすぎます。2MB以下の画像を指定し直してください";
                 }
             } else {
-                $_SESSION['edit_post_error'] = "JPG、JPEG、またはPNGファイルを指定してください";
+                $_SESSION['edit_post_error'][] = "JPG、JPEG、またはPNGファイルを指定してください";
             }
         }
     }
@@ -73,7 +78,7 @@ if (isset($_POST['submit'])){
     // この時点でエラーがある場合
     if (isset($_SESSION['edit_post_error'])){
         $_SESSION['edit_post_data'] = $_POST;
-        header('location: ' . ROOT_URL . 'admin/edit-post.php?post_ID=' . $_SESSION['post_ID']);
+        header('location: ' . ROOT_URL . 'admin/edit-post.php?post_ID=' . $postID);
 
     } else {
         // 注目記事が指定された場合

@@ -7,14 +7,10 @@ if(isset($_POST['submit'])){
     $description = filter_var($_POST['description'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
     //フォームの値確認
-    // カテゴリ名が空の場合
+    // カテゴリ名が空欄の場合
     if (!$categoryTitle){
-        $_SESSION['add_category_error'] = "カテゴリ名を入力してください";
-    
-    // 説明が空の場合
-    } elseif (!$description){
-        $_SESSION['add_category_error'] = "説明を入力してください";
-    
+        $_SESSION['add_category_error'][] = "カテゴリ名を入力してください";
+
     } else {
         // カテゴリ名に被りがないか確認
         $connection = dbconnect();
@@ -24,8 +20,14 @@ if(isset($_POST['submit'])){
         $stmt->bind_result($categoryID);
         $stmt->fetch();
         if ($categoryID !== NULL){
-            $_SESSION['add_category_error'] = "そのカテゴリ名は既に登録されています";
+            $_SESSION['add_category_error'][] = "そのカテゴリ名は既に登録されています";
         }
+    }
+
+    // 説明が空欄の場合
+    if (!$description){
+        $_SESSION['add_category_error'][] = "説明を入力してください";
+    
     }
 
     // $_SESSION['add_category_error']に何らかの値が含まれている場合
@@ -44,7 +46,7 @@ if(isset($_POST['submit'])){
 
         // エラーがある場合
         if (!$success){
-            $_SESSION['add_category_error'] = "カテゴリを登録できません";
+            $_SESSION['add_category_error'][] = "カテゴリを登録できません";
             $_SESSION['add_category_data'] = $_POST;
             header('location: ' . ROOT_URL . 'admin/add-category.php');
             die();

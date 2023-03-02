@@ -14,12 +14,18 @@ if (isset($_POST['submit'])){
     $isFeatured = $isFeatured == 1 ?: 0;
 
     // フォーム内容を確認
+    // タイトルが空欄の場合
     if (!$title){
-        $_SESSION['add_post_error'] = "タイトルを入力してください";
-    } elseif (!$thumbnail['name']){
-        $_SESSION['add_post_error'] = "画像を選択してください";
-    } elseif (!$body){
-        $_SESSION['add_post_error'] = "本文を入力してください";
+        $_SESSION['add_post_error'][] = "タイトルを入力してください";
+    }
+    // 本文が空欄の場合
+    if (!$body){
+        $_SESSION['add_post_error'][] = "本文を入力してください";
+    }
+    // 画像ファイルが選択されていない場合
+    if (!$thumbnail['name']){
+        $_SESSION['add_post_error'][] = "画像を選択してください";
+
     } else {
         // 画像の名前を変更
         $time = time();
@@ -31,15 +37,16 @@ if (isset($_POST['submit'])){
         $allowedFiles = ['png', 'jpg', 'jpeg'];
         $extension = explode('.', $thumbnailName);
         $extension = end($extension);
+
         if (in_array($extension, $allowedFiles)){
             // データサイズを確認
             if ($thumbnail['size'] < 2_000_000){
                 move_uploaded_file($thumbnailTmpName, $thumbnailDescriptionPath);
             } else {
-                $_SESSION['add_post_error'] = "画像サイズが大きすぎます。2MB以下の画像を指定し直してください";
+                $_SESSION['add_post_error'][] = "画像サイズが大きすぎます。2MB以下の画像を指定し直してください";
             }
         } else {
-            $_SESSION['add_post_error'] = "JPG、JPEG、またはPNGファイルを指定してください";
+            $_SESSION['add_post_error'][] = "JPG、JPEG、またはPNGファイルを指定してください";
         }
     }
 

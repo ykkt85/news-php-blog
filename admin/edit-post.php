@@ -44,7 +44,13 @@ if (isset($_GET['post_ID'])){
             <?php if (isset($_SESSION['edit_post_error'])):?>    
                 <div class="alert__message error">
                     <p>
-                        <?php echo $_SESSION['edit_post_error'];
+                        <?php
+                        //インデックスを変数$iで指定
+                        for($i = 0; $i < count($_SESSION['edit_post_error']); $i++){
+                            // 全エラーを表示
+                            echo $_SESSION['edit_post_error'][$i];
+                            echo "<br>";
+                        }                        
                         unset($_SESSION['edit_post_error']); ?>
                     </p>
                 </div>

@@ -31,7 +31,7 @@ unset($_SESSION['login_data']);
     <section class="form__section">
         <div class="container form__section-container">
             <h2>ログイン</h2>
-            <!-- 新規投稿者をを登録した時 -->
+            <!-- 新規投稿者をを登録した場合 -->
             <?php if (isset($_SESSION['signup_success'])): ?>
                 <div class="alert__message success">
                     <p>
@@ -39,19 +39,26 @@ unset($_SESSION['login_data']);
                         unset($_SESSION['signup_success']); ?>
                     </p>
                 </div>
-            <!-- パスワードを変更したとき -->
+            <!-- パスワードを変更した場合 -->
             <?php if (isset($_SESSION['new_password_success'])): ?>
                 <div class ="alert__message success">
                     <p><?php echo $_SESSION['new_password_success'];
                     unset($_SESSION['new_password_success']); ?></p>
                 </div>
             <?php endif; ?>
-            <!-- ログインに失敗した時 -->
+            <!-- ログインに失敗した場合 -->
             <?php elseif (isset($_SESSION['login_error'])): ?>
                 <div class="alert__message error">
                     <p>
-                        <?php echo $_SESSION['login_error'];
-                        unset($_SESSION['login_error']); ?>
+                        <?php
+                        //インデックスを変数$iで指定
+                        for($i = 0; $i < count($_SESSION['login_error']); $i++){
+                            // 全エラーを表示
+                            echo $_SESSION['login_error'][$i];
+                            echo "<br/>";
+                        }
+                        unset($_SESSION['login_error']);
+                        ?>
                     </p>
                 </div>
             <?php endif; ?>

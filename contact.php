@@ -20,7 +20,13 @@ unset($_SESSION['contact_data']);
             <?php if (isset($_SESSION['contact_error'])):?>    
                 <div class="alert__message error">
                     <p>
-                        <?php echo $_SESSION['contact_error'];
+                        <?php
+                        //インデックスを変数$iで指定
+                        for($i = 0; $i < count($_SESSION['contact_error']); $i++){
+                            // 全エラーを表示
+                            echo $_SESSION['contact_error'][$i];
+                            echo "<br>";
+                        }
                         unset($_SESSION['contact_error']); ?>
                     </p>
                 </div>

@@ -11,15 +11,15 @@ if (isset($_POST['submit'])){
     //フォームの値確認
     // パスワードが８文字未満の場合
     if (strlen($createdPassword) < 8 || strlen($confirmedPassword) < 8){
-        $_SESSION['new_password_error'] = "パスワードは８文字以上で設定してください";
-
+        $_SESSION['new_password_error'][] = "パスワードは８文字以上で設定してください";
+    }
     // パスワードが異なる場合
-    } elseif (!hash_equals($createdPassword, $confirmedPassword)){
-        $_SESSION['new_password_error'] = "パスワードが違います";
-
+    if (!hash_equals($createdPassword, $confirmedPassword)){
+        $_SESSION['new_password_error'][] = "パスワードが違います";
+    }
     // パスワードに大文字・記号・数字のいずれかが使われていない場合
-    } elseif (preg_match($pattern, $createdPassword) === 0){
-        $_SESSION['new_password_error'] = "パスワードに半角英大文字・小文字・数字・記号が含まれていません";
+    if (preg_match($pattern, $createdPassword) === 0){
+        $_SESSION['new_password_error'][] = "パスワードに半角英大文字・小文字・数字・記号が含まれていません";
     }
 
     // この時点でエラーがある場合
@@ -58,7 +58,7 @@ if (isset($_POST['submit'])){
 
         // 値更新時にエラーがある場合
         if (!$success) {
-            $_SESSION['new_password_error'] = "パスワードを変更できません";
+            $_SESSION['new_password_error'][] = "パスワードを変更できません";
             header('location: ' . ROOT_URL . 'new-password.php?token=' . $token);
             die();
             
