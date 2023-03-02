@@ -1,6 +1,13 @@
 <?php
 include __DIR__ . '/partials/header.php';
 
+// 前回エラー時にセッションデータを表示
+$title = $_SESSION['edit_post_data']['title'] ?? NULL;
+$body = $_SESSION['edit_post_data']['body'] ?? NULL;
+
+// セッションデータを消去
+unset($_SESSION['edit_post_data']);
+
 // DBから記事の値を取得
 if (isset($_GET['post_ID'])){
     $postID = filter_var($_GET['post_ID'], FILTER_SANITIZE_NUMBER_INT);
