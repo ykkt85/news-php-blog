@@ -21,4 +21,4 @@ require valid-user
 
 # 文字化け防止
 # php_flag mbstring.encoding_translation off はデプロイエラー出る
-# php_value default_charset "UTF-8" はデプロイエラー出る
+php_value default_charset "UTF-8"
