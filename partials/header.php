@@ -14,8 +14,8 @@ require __DIR__ . '/../config/database.php';
     <link rel="stylesheet" href="<?php echo ROOT_URL ?>css/style.css">
     <!-- ICONSCOUT CDN -->
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
-    <!-- MONTSERRAT GOOGLE FONT -->
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- NOTO SANS JAPANESE GOOGLE FONT -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 </head>
 <body>
