@@ -1,4 +1,4 @@
 # 以下に追跡しないファイルを指定
-#/config/.env
+/config/.env
 #/images
-#/.htpasswd
+/.htpasswd
