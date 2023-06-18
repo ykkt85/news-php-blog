@@ -125,6 +125,16 @@ $stmt->bind_result($email, $userID, $roleID);
             </aside>
             <main>
                 <h2>投稿者・管理者編集</h2>
+                <?php
+                // 現在ログイン中のユーザーのメールアドレスを取得
+                $connection2 = dbconnect();
+                $currentAdminStmt = $connection2->prepare('SELECT email from users WHERE user_ID=?');
+                $currentAdminStmt->bind_param('i', $currentAdminID);
+                $emailSuccess = $currentAdminStmt->execute();
+                $currentAdminStmt->bind_result($currentAdminEmail);
+                $currentAdminStmt->fetch();
+                ?>
+                <p>現在ログイン中のユーザー：<?php echo h($currentAdminEmail) ?></p>
                     <table>
                         <thead>
                             <tr>
