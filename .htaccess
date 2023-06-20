@@ -6,7 +6,7 @@ Options -Indexes
 <Files ~ "(login.php|signup.php|reset-password.php)">
 AuthType Basic
 AuthName "ユーザー名とパスワードを入力してください"
-AuthUserFile C:\MAMP\htdocs\TsukubaUniversityNews\.htpasswd
+AuthUserFile https://news-php-blog.herokuapp.com/
 # AuthGroupFile /dev/null
 require valid-user
 </Files>
