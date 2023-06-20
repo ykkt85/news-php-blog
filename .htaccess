@@ -2,14 +2,14 @@
 # 一覧を表示しない設定
 Options -Indexes
 
-# basic認証
-<Files ~ "(login.php|signup.php|reset-password.php)">
-AuthType Basic
-AuthName "ユーザー名とパスワードを入力してください"
-AuthUserFile https://tsukubauniversitynews-9febd51e9f98.herokuapp.com/.htpasswd
+# basic認証（internal server error発生のためコメントアウト中）
+# <Files ~ "(login.php|signup.php|reset-password.php)">
+# AuthType Basic
+# AuthName "ユーザー名とパスワードを入力してください"
+# AuthUserFile https://tsukubauniversitynews-9febd51e9f98.herokuapp.com/.htpasswd
 # AuthGroupFile /dev/null
-require valid-user
-</Files>
+# require valid-user
+# </Files>
 
 # ブラウザからの閲覧を拒否する設定
 <Files ~ ".(gitignore|htaccess|htpasswd|env)$">
